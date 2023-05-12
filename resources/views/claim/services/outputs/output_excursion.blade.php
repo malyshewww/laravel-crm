@@ -1,0 +1,37 @@
+@if (count($claim->serviceExcursion) > 0)
+	@foreach ($claim->serviceExcursion as $excursion)
+		<tr> 
+			<td><strong>ЭКСКУРСИОННАЯ ПРОГРАММА</strong></td>
+			<td>% </td>
+			<td>
+				{{$excursion->excursion_description ?: ''}}
+			</td>
+			<td>
+				@if ($excursion->excursion_date_start || $excursion->excursion_date_end)
+					c {{$excursion->excursion_date_start ? $excursion->excursion_date_start->format('d.m.Y') : '-'}}
+					до {{$excursion->excursion_date_end ? $excursion->excursion_date_end->format('d.m.Y') : '-'}}
+				@else
+					Даты не указаны
+				@endif
+			</td>
+			<td>
+				@include('claim.tourists.quantity')
+			</td>
+			<td class="table__actions">
+				<div class="table__buttons">
+					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
+						<button class="btn-gear" type="button" data-id="{{$excursion->id}}" data-bs-toggle="modal" data-bs-target="#updateExcursionProgramm-{{$excursion->id}}">
+							<i class="fa-solid fa-gear"></i>
+						</button>
+					</div>
+					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить услугу">
+						<button class="btn-trash" type="button">
+							<i class="fa-solid fa-trash-can"></i>
+						</button>
+					</div>
+				</div>
+				@include('claim.services.modals.update_excursion', ['excursion' => $excursion])
+			</td>
+		</tr>
+	@endforeach
+@endif
