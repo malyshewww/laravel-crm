@@ -1,4 +1,8 @@
 @extends('layouts.app')
+@section('title','Главная страница')
+@section('header')
+	@include('layouts.header')
+@endsection
 @section('content')
 	<div class="container">
 		<div class="main__top"> 
@@ -173,14 +177,11 @@
 								</div>
 							</td>
 							<td>
-								<form action="{{route('claim.destroy', $claim->id)}}" id="formDeleteRecord" method="post">
-									@csrf
-									@method('delete')
-									<input type="hidden" name="csrf-token" value="{{ csrf_token() }}">
-									<button class="btn-archive" type="submit" data-id="{{$claim->id}}" data-bs-toggle="tooltip" data-bs-trigger="hover" aria-label="Перенести в архив" data-bs-original-title="Перенести в архив">
+								<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+									<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data-type="delete" data-id="{{$claim->id}}" data-url="{{route('claim.destroy', $claim->id)}}">
 										<i class="fa-solid fa-box-archive"></i>
 									</button>
-								</form>
+								</div>
 							</td>
 							{{-- <td>
 								<button class="btn-copy" type="button" data-bs-toggle="tooltip" aria-label="Клонировать заявку" data-bs-original-title="Клонировать заявку">
@@ -200,6 +201,7 @@
 @endsection
 @section('page-modal')
 	@include('claim.indexmodals.createclaim')
+	@include('claim.showmodals.delete_record')
 @endsection
 {{-- @section('page-script')
 @endsection --}}

@@ -23,8 +23,8 @@ function formData() {
 				const inputBirthday = formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
 				const token = thisForm._token;
 				const inputId = thisForm.id?.value;
-				const formInputs = formGroup.querySelectorAll('input');
-				const formSelects = formGroup.querySelectorAll('select');
+				const formInputs = formGroup?.querySelectorAll('input');
+				const formSelects = formGroup?.querySelectorAll('select');
 				// const routes = {
 				// 	'formCreateClaim': `${url}/claims`,
 				// 	'formComment': `${url}/claims/${inputId}`,
@@ -236,4 +236,61 @@ async function elementUpdate(selector) {
 	}
 }
 
-console.log(BASE_URL);
+const modalDelete = document.getElementById('deleteRecord');
+
+modalDelete.addEventListener('show.bs.modal', (event) => {
+	const thisModal = event.target;
+	const modalTitle = thisModal.querySelector('.modal__title');
+	const form = thisModal.querySelector('form');
+	const btn = event.relatedTarget;
+	const currentTable = btn.closest('table');
+	const tableId = currentTable.getAttribute('id');
+	const dataUrl = btn.dataset.url;
+	const dataId = btn.dataset.id;
+	form.setAttribute('action', dataUrl);
+	const titles = {
+		'table-id': `Вы действительно хотите удалить заявку № ${dataId}`,
+	};
+	modalTitle.textContent = getTitle(tableId, titles);
+})
+
+function getTitle(tableId, obj) {
+	for (const [key, value] of Object.entries(obj)) {
+		if (key == tableId) return value;
+	}
+}
+
+function deleteRecord() {
+	const form = modalDelete.querySelector('form');
+	if (form) {
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const thisForm = event.target;
+			const currentModal = thisForm.closest('.modal');
+			const formData = new FormData(thisForm);
+			const buttonSubmit = thisForm.querySelector('button[type="submit"]');
+			buttonSubmit.setAttribute('disabled', 'true');
+			const route = thisForm.getAttribute('action');
+			const token = form._token;
+			fetch(route, {
+				headers: {
+					"X-CSRF-Token": token
+				},
+				method: 'POST',
+				body: formData,
+			})
+				.then((response) => response.json())
+				.then((result) => {
+					if (result.status === 'success') {
+						$(currentModal).modal('hide');
+					}
+					buttonSubmit.removeAttribute('disabled');
+				})
+				.catch((error) => {
+					console.log(error);
+					buttonSubmit.removeAttribute('disabled');
+				})
+		})
+	}
+}
+deleteRecord();

@@ -64,7 +64,7 @@ class Claim extends Model
     {
         return $this->hasMany(Service::class);
     }
-    // Услуги
+    // УСЛУГИ
     // Услуга - Перелёт
     public function serviceFlight()
     {
@@ -104,5 +104,22 @@ class Claim extends Model
     public function serviceOther()
     {
         return $this->hasMany(OtherService::class);
+    }
+    public function file()
+    {
+        return $this->hasMany(FileUpload::class);
+    }
+    // ФИНАНСЫ
+    public function prepayment()
+    {
+        return $this->hasOne(FinancePrepayment::class);
+    }
+    public function payment()
+    {
+        return $this->hasOne(FinancePayment::class);
+    }
+    public function paymentInvoices()
+    {
+        return $this->hasMany(FinancePaymentInvoice::class);
     }
 }

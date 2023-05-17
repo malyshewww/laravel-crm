@@ -98,10 +98,12 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function destroy($id)
+    public function destroy(Claim $claim)
     {
-        Claim::find($id)->delete();
-        return redirect()->route('claim.index');
+        $claim->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
     // public function createTourOperator(Request $request, Claim $claim)
     // {

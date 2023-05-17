@@ -7,7 +7,9 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="" method="post" enctype="multipart/form-data">
+			<form action="{{route('file.store')}}" method="post" enctype="multipart/form-data" id="formFile" class="form">
+				@csrf
+				<input type="hidden" name="claim_id" value="{{$claim->id}}">
 				<div class="modal__body">
 					<div class="field-group">
 						<div class="drag-area">
@@ -27,8 +29,8 @@
 										<ul class="upload-file__list" id="fileList"></ul>
 									</div>
 									<div class="upload-file__button">
-										<label class="upload-file__label" for="upload">Обзор</label>
-										<input class="upload-file__input" id="file_uploads" type="file" name="uploads">
+										<label class="upload-file__label" for="file_uploads">Обзор</label>
+										<input class="upload-file__input" id="file_uploads" type="file" name="file_name">
 									</div>
 								</div>
 							</div>

@@ -20,6 +20,8 @@ class ContractController extends Controller
             'date' => $request->date,
             'number' => $request->number,
         ]);
-        return redirect()->back();
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

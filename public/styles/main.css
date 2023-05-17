@@ -20463,7 +20463,8 @@ input[type=date]::before {
   gap: 20px;
 }
 
-.table__buttons button {
+.table__buttons button,
+.table__buttons a {
   width: 30px;
   height: 30px;
   display: -ms-grid;
@@ -20471,7 +20472,8 @@ input[type=date]::before {
   place-items: center;
 }
 
-.table__buttons button i {
+.table__buttons button i,
+.table__buttons a i {
   font-size: 20px;
   color: #0092ff;
 }
@@ -21298,6 +21300,28 @@ table.dataTable.no-footer {
   background-position: center;
   background-size: 40px 40px;
   background-repeat: no-repeat;
+}
+
+.auth__body {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.auth__title {
+  text-align: center;
+  font-size: 30px;
+}
+
+.auth__button {
+  margin-top: 20px;
+}
+
+.field-group__items {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
 /* ПОДКЛЮЧЕНИЕ СТИЛЕЙ АДАПТИВА */

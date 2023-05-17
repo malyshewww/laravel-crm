@@ -36,7 +36,8 @@
             "app/Helpers/TourPackageHelper.php",
             "app/Helpers/TouristHelper.php",
             "app/Helpers/ServiceHelper.php",
-            "app/Helpers/FileHelper.php"
+            "app/Helpers/FileHelper.php",
+            "app/Helpers/FinanceHelper.php"
         ]
     },
     "autoload-dev": {

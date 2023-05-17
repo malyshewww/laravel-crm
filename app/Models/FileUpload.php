@@ -4,20 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Contract extends Model
+class FileUpload extends Model
 {
     use HasFactory;
-    protected $table = 'contracts';
+    use SoftDeletes;
+    protected $table = "files";
     protected $fillable = [
-        'date',
-        'number',
+        'file_name',
+        'file_type',
         'claim_id',
     ];
     protected $casts = [
-        'date' => 'date:d.m.Y', // Свой формат
+        'created_at' => 'date:d.m.Y H:m', // Свой формат
     ];
-    protected $dates = ['date'];
+    protected $dates = ['created_at'];
     public function claim()
     {
         return $this->belongsTo(Claim::class, 'claim_id', 'id');

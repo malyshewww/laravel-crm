@@ -1,6 +1,6 @@
 <div class="data-claim__group group-data" id="groupDataCustomer">
 	<header class="group-data__header">
-		<h1 class="group-data__title">Заказчик</h1>
+		<h2 class="group-data__title">Заказчик</h2>
 		<div class="group-data__buttons">
 			<button class="btn btn-blue btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addCustomer">
 				Указать заказчика

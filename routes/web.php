@@ -9,6 +9,10 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExcursionController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\FinancePaymentController;
+use App\Http\Controllers\FinancePaymentInvoiceController;
+use App\Http\Controllers\FinancePrepaymentController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\FuelSurchangeController;
 use App\Http\Controllers\HabitationController;
@@ -20,6 +24,7 @@ use App\Http\Controllers\TourOperatorController;
 use App\Http\Controllers\TourPackageController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\VisaController;
+use App\Models\FinancePrepayment;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,38 +103,48 @@ Route::patch('/excursions/update', [ExcursionController::class, 'update'])->name
 Route::post('/otherservices', [OtherServiceController::class, 'store'])->name('otherservice.store');
 Route::patch('/otherservices/update', [OtherServiceController::class, 'update'])->name('otherservice.update');
 
+// Добавление/Удаление файлов
+Route::post('/files', [FileController::class, 'store'])->name('file.store');
+Route::delete('/files/{file}/delete', [FileController::class, 'destroy'])->name('file.destroy');
+
+// Финансы
+
+// Параметры предоплаты
+Route::post('/prepayments', [FinancePrepaymentController::class, 'store'])->name('prepayment.store');
+
+// Параметры стоимости
+Route::post('/payments', [FinancePaymentController::class, 'store'])->name('payment.store');
+
+// Выставление счета туристу
+Route::post('/payment_invoices', [FinancePaymentInvoiceController::class, 'store'])->name('payment_invoice.store');
+Route::patch('/payment_invoices/update', [FinancePaymentInvoiceController::class, 'update'])->name('payment_invoice.update');
+
 // Сотрудники
 Route::get('/employee', 'EmployeeController@index')->name('employee.index');
 Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('employee.show');
 Route::post('/employee', [EmployeeController::class, 'store'])->name('employee.store');
 Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
-
-
 // Авторизация
-Route::name('user.')->group(function () {
-    Route::view('/private', 'private')->middleware('auth')->name('private');
-    Route::get('/login', function () {
-        if (Auth::check()) {
-            return redirect(route('user.private'));
-        }
-        return view('login');
-    })->name('login');
+// Route::name('user.')->group(function () {
+Route::view('/private', 'private')->middleware('auth')->name('private');
+Route::get('/login', function () {
+    if (Auth::check()) {
+        return redirect(route('claim.index'));
+    }
+    return view('login');
+})->name('user.login');
 
-    Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login']);
 
-    Route::get('/logout', function () {
-        Auth::logout();
-        return redirect('/');
-    })->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
 
+Route::get('/registration', function () {
+    if (Auth::check()) {
+        return redirect(route('claim.index'));
+    }
+    return view('registration');
+})->name('user.registration');
 
-    Route::get('/registration', function () {
-        if (Auth::check()) {
-            return redirect(route('user.private'));
-        }
-        return view('registration');
-    })->name('registration');
-
-    Route::post('/registration', [RegisterController::class, 'save']);
-});
+Route::post('/registration', [RegisterController::class, 'save']);
+// });

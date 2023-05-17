@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CRM @yield('title')</title>
+    <title>CRM | @yield('title')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="wrapper">
-        @include('layouts.header')
+        @yield('header')
         <main class="main">
             <div class="content-wrapper">
                 @yield('content')
@@ -27,7 +27,7 @@
         @yield('page-modal')
     </div>
 	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="{{asset('scripts/main.min.js?v27042023_2')}}" defer></script>
+    <script src="{{asset('scripts/main.min.js?v27042023_3')}}" defer></script>
     <script src="{{asset('scripts/ajax.js')}}"></script>
     @yield('page-script')
 </body>

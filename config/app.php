@@ -235,5 +235,6 @@ return [
         'TouristHelper' => App\Helpers\TouristHelper::class,
         'ServiceHelper' => App\Helpers\ServiceHelper::class,
         'FileHelper' => App\Helpers\FileHelper::class,
+        'FinanceHelper' => App\Helpers\FinanceHelper::class,
     ],
 ];

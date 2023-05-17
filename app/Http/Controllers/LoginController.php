@@ -12,15 +12,23 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         if (Auth::check()) {
-            return redirect()->intended(route('user.private'));
+            return redirect()->intended(route('claim.index'));
         }
         // $request->only - вытащить из запроса только те поля, которые мы передадим в качестве параметров
         $formFields = $request->only(['email', 'password']);
         if (Auth::attempt($formFields)) {
-            return redirect()->intended(route('user.private'));
+            $request->session()->regenerate();
+            return redirect()->intended(route('claim.index'));
         }
         return redirect(route('user.login'))->withErrors([
             'email' => 'Не удалось авторизоваться'
         ]);
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('user.login');
     }
 }

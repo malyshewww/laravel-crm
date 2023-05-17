@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Contract extends Model
+class FinancePrepayment extends Model
 {
     use HasFactory;
-    protected $table = 'contracts';
+    use SoftDeletes;
+    protected $table = 'finance_prepayments';
     protected $fillable = [
-        'date',
-        'number',
-        'claim_id',
+        'percent',
+        'days',
+        'claim_id'
     ];
-    protected $casts = [
-        'date' => 'date:d.m.Y', // Свой формат
-    ];
-    protected $dates = ['date'];
     public function claim()
     {
         return $this->belongsTo(Claim::class, 'claim_id', 'id');

@@ -18,7 +18,7 @@
 									<label class="field-group__label">Дата договора</label>
 									<div class="field-group__box">
 										<input class="field-group__input" type="text" data-name="date" data-format="date"
-										value="{{$claim->contract && $claim->contract->date  ? $claim->contract->date->format('Y-m-d') : ''}}">
+										value="{{$claim->contract && $claim->contract->date ? $claim->contract->date->format('Y-m-d') : ''}}">
 										<div class="field-group__trigger">
 											<i class="fa-regular fa-calendar-days calendar-icon"></i>
 											<input class="input-trigger" type="text" data-trigger="date">
@@ -30,7 +30,8 @@
 								<div class="field-group__item">
 									<label class="field-group__label">Номер брони</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="number" value="{{$claim->contract ? $claim->contract->number : ''}}">
+										<input class="field-group__input" type="text" name="number" 
+										value="{{$claim->contract && $claim->contract->number ? $claim->contract->number : ''}}">
 									</div>
 								</div>
 							</div>

@@ -4,20 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Contract extends Model
+class FinancePayment extends Model
 {
     use HasFactory;
-    protected $table = 'contracts';
+    use SoftDeletes;
+    protected $table = 'finance_payments';
     protected $fillable = [
-        'date',
-        'number',
-        'claim_id',
+        'currency',
+        'tourist_course',
+        'tour_price',
+        'comission_price',
+        'claim_id'
     ];
-    protected $casts = [
-        'date' => 'date:d.m.Y', // Свой формат
-    ];
-    protected $dates = ['date'];
     public function claim()
     {
         return $this->belongsTo(Claim::class, 'claim_id', 'id');
