@@ -45,4 +45,12 @@ class InsuranceController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $insurance = Insurance::findOrFail($id);
+        $insurance->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

@@ -45,4 +45,12 @@ class TransferController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $transfer = Transfer::findOrFail($id);
+        $transfer->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

@@ -49,4 +49,12 @@ class HabitationController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $habitation = Habitation::findOrFail($id);
+        $habitation->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

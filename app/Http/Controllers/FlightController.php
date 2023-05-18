@@ -47,4 +47,12 @@ class FlightController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $flight = Flight::findOrFail($id);
+        $flight->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

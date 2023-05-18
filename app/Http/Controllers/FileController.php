@@ -24,15 +24,12 @@ class FileController extends Controller
             'status' => 'success'
         ]);
     }
-    public function destroy(Request $request, FileUpload $file)
+    public function destroy($id)
     {
-        dd('deleted');
-        $filename = $request->file('file_name');
+        $file = FileUpload::findOrFail($id);
         $file->delete();
-        // if (Storage::exists($filename)) {
-        //     Storage::delete($filename);
-        // } else {
-        //     echo 'File does not exists.';
-        // }
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }

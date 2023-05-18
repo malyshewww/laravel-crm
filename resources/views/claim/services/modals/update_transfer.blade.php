@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('transfer.update')}}" method="post" id="formTransferUpdate" class="form">
+			<form action="{{route('transfer.update')}}" method="post" id="formTransferUpdate-{{$transfer->id}}" class="form">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="transfer">

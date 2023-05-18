@@ -37,4 +37,12 @@ class FinancePaymentInvoiceController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $payment_invoice = FinancePaymentInvoice::findOrFail($id);
+        $payment_invoice->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

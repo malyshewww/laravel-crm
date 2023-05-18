@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('excursion.update')}}" method="post" id="formExcursionUpdate" class="form">
+			<form action="{{route('excursion.update')}}" method="post" id="formExcursionUpdate-{{$excursion->id}}" class="form">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="excursion">

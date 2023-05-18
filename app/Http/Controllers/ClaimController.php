@@ -15,17 +15,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+
 class ClaimController extends Controller
 {
     public function index(Claim $claim)
     {
-        // $claims = DB::table('claims')
-        //     ->get()
-        //     ->sortByDesc('id');
         // $claims =  Claim::with('latestClaim')->get()->sortByDesc('latestClaim.created_at');
         // $claims =  Claim::with('latestClaim')->get()->sortByDesc('latestClaim.created_at');
-        $claims = Claim::get()->sortBy('id');
-        $tourpackages = TourPackage::all();
+        // $claims = Claim::paginate(5);
+        $claims = Claim::get();
+        DB::table('claims')
+            ->where('id', $claim->id)
+            ->update(['deleted_at' => null]);
+        $tourpackages = TourPackage::get();
         return view('claim.index', compact('claims', 'tourpackages'));
     }
     public function get_comment(Request $request, $id)
@@ -98,35 +100,114 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function destroy(Claim $claim)
+    public function destroy($id)
     {
+        $claim = Claim::findOrFail($id);
         $claim->delete();
         return response()->json([
             'status' => 'success'
         ]);
     }
-    // public function createTourOperator(Request $request, Claim $claim)
-    // {
-    //     $data = request()->validate([
-    //         'title' => '',
-    //         'claim_id' => '',
-    //     ]);
-    //     $touroperator = new Touroperator;
-    //     $touroperator->id = $request->title;
-    //     $touroperator->claim_id = $request->claim_id;
-    //     Touroperator::create($data);
-    //     // Нужно показать, что пост создался. Для чего - чтобы мы могли указать id для привязки с тегами
-    //     // $touropeartor->claim()->attach($id);
-    //     return redirect()->to('claims/' . $claim->id);
-    // }
-    // public function updateTourOperator(Request $request, Touroperator $touroperator)
-    // {
-    //     $data = request()->validate([
-    //         'title' => '',
-    //         'claim_id' => '',
-    //     ]);
-    //     $touroperator->update($data);
-    //     dd('updated');
-    //     // return redirect()->to('claims/' . $claim->id);
-    // }
+
+    // Fetch DataTable data
+    public function getClaims(Request $request)
+    {
+        return response()->json([
+            'data' => 'success'
+        ]);
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        // Custom search filter 
+        $searchCity = $request->get('fio');
+        $searchGender = $request->get('date_start');
+        $searchName = $request->get('date_end');
+
+        // Total records
+        $records = Claim::select('count(*) as allcount');
+
+        ## Add custom filter conditions
+        if (!empty($searchCity)) {
+            $records->where('city', $searchCity);
+        }
+        if (!empty($searchGender)) {
+            $records->where('gender', $searchGender);
+        }
+        if (!empty($searchName)) {
+            $records->where('name', 'like', '%' . $searchName . '%');
+        }
+        $totalRecords = $records->count();
+
+        // Total records with filter
+        $records = Claim::select('count(*) as allcount')->where('name', 'like', '%' . $searchValue . '%');
+
+        ## Add custom filter conditions
+        if (!empty($searchCity)) {
+            $records->where('city', $searchCity);
+        }
+        if (!empty($searchGender)) {
+            $records->where('gender', $searchGender);
+        }
+        if (!empty($searchName)) {
+            $records->where('name', 'like', '%' . $searchName . '%');
+        }
+        $totalRecordswithFilter = $records->count();
+
+        // Fetch records
+        $records = Claim::orderBy($columnName, $columnSortOrder)
+            ->select('claims.*')
+            ->where('claims.date_start', 'like', '%' . $searchValue . '%');
+        ## Add custom filter conditions
+        if (!empty($searchCity)) {
+            $records->where('city', $searchCity);
+        }
+        if (!empty($searchGender)) {
+            $records->where('gender', $searchGender);
+        }
+        if (!empty($searchName)) {
+            $records->where('name', 'like', '%' . $searchName . '%');
+        }
+        $employees = $records->skip($start)
+            ->take($rowperpage)
+            ->get();
+
+        $data_arr = array();
+        foreach ($employees as $employee) {
+
+            $username = $employee->username;
+            $name = $employee->name;
+            $email = $employee->email;
+            $gender = $employee->gender;
+            $city = $employee->city;
+
+            $data_arr[] = array(
+                "username" => $username,
+                "name" => $name,
+                "email" => $email,
+                "gender" => $gender,
+                "city" => $city,
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $data_arr
+        );
+
+        return response()->json($response);
+    }
 }

@@ -5,7 +5,7 @@
 				<div class="modal__title">Перелет (редактирование)</div>
 				<button class="modal__close" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
 			</div>
-			<form action="{{route('flight.update')}}" method="post" id="formFlightsUpdate" class="form">
+			<form action="{{route('flight.update')}}" method="post" id="formFlightsUpdate-{{$flight->id}}" class="form">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="flights">

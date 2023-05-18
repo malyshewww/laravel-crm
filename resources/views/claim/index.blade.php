@@ -12,20 +12,21 @@
 			</div>
 		</div>
 		<div class="filters">
-			<form action="" class="form">
+			<form action="{{route('getClaims')}}" method="get" class="form">
+				@csrf
 				<div class="filters__top">
 					<div class="filters__column">
 						<div class="filters__row field-group" style="--col: 3">
 							<div class="field-group__item">
 								<label class="field-group__label">ФИО ТУРИСТА</label>
 								<div class="field-group__box">
-								<input class="field-group__input" type="text" name="fio">
+									<input class="field-group__input" id="fio" type="text" name="fio">
 								</div>
 							</div>
 							<div class="field-group__item">
 								<label class="field-group__label">НАЧАЛО ТУРА (ОТ)</label>
 								<div class="field-group__box">
-									<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="date_start">
+									<input class="field-group__input" id="tour_start" type="text" data-name="date_start" data-format="date" name="date_start">
 									<div class="field-group__trigger">
 										<i class="fa-regular fa-calendar-days calendar-icon"></i>
 										<input class="input-trigger" type="text" data-trigger="date_start">
@@ -35,7 +36,7 @@
 							<div class="field-group__item">
 								<label class="field-group__label">НАЧАЛО ТУРА (ДО)</label>
 								<div class="field-group__box">
-									<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="date_end">
+									<input class="field-group__input" id="tour_end" type="text" data-name="date_end" data-format="date" name="date_end">
 									<div class="field-group__trigger">
 										<i class="fa-regular fa-calendar-days calendar-icon"></i>
 										<input class="input-trigger" type="text" data-trigger="date_end">
@@ -47,13 +48,13 @@
 					<div class="filters__column">
 						<div class="filters__buttons">
 							<div class="filters__button">
-								<button class="btn btn-reset" type="button">
+								<button class="btn btn-reset" type="reset">
 									<i class="fa-solid fa-xmark"></i>
 									Сброс
 								</button>
 							</div>
 							<div class="filters__button">
-								<button class="btn btn-search" type="button">
+								<button class="btn btn-search" type="submit">
 									<i class="fa-solid fa-binoculars"></i>
 									Поиск
 								</button>
@@ -202,6 +203,14 @@
 @section('page-modal')
 	@include('claim.indexmodals.createclaim')
 	@include('claim.showmodals.delete_record')
+@endsection
+@section('page-script')
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
+	<script src="{{asset('scripts/tables.js')}}"></script>
 @endsection
 {{-- @section('page-script')
 @endsection --}}

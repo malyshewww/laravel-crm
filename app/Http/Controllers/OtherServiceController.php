@@ -37,4 +37,12 @@ class OtherServiceController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $otherservice = OtherService::findOrFail($id);
+        $otherservice->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

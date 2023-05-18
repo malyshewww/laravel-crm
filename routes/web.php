@@ -15,6 +15,7 @@ use App\Http\Controllers\FinancePaymentInvoiceController;
 use App\Http\Controllers\FinancePrepaymentController;
 use App\Http\Controllers\FlightController;
 use App\Http\Controllers\FuelSurchangeController;
+use App\Http\Controllers\GenerateDocController;
 use App\Http\Controllers\HabitationController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\OtherServiceController;
@@ -48,9 +49,7 @@ Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.sho
 Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
 Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
 Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
-
-// Route::get('/comment/{id}', [ClaimController::class, 'get_comment'])->name('data');
-// Route::get('/claims/{claim}', [ClaimController::class, 'data'])->name('claim.data');
+Route::get('/claims/getClaims', [ClaimController::class, 'getClaims'])->name('getClaims');
 
 // Информация о туроператоре
 Route::post('/touroperators', [TourOperatorController::class, 'store'])->name('touroperator.store');
@@ -74,41 +73,48 @@ Route::patch('/tourists/update/{tourist}', [TouristController::class, 'update'])
 // Услуга Перелет
 Route::post('/flights', [FlightController::class, 'store'])->name('flight.store');
 Route::patch('/flights/update', [FlightController::class, 'update'])->name('flight.update');
+Route::delete('/flights/{flight}/delete', [FlightController::class, 'destroy'])->name('flight.destroy');
 
 // Услуга Страховка
 Route::post('/insurances', [InsuranceController::class, 'store'])->name('insurance.store');
 Route::patch('/insurances/update', [InsuranceController::class, 'update'])->name('insurance.update');
+Route::delete('/insurances/{insurance}/delete', [InsuranceController::class, 'destroy'])->name('insurance.destroy');
 
 // Услуга Трансфер
 Route::post('/transfers', [TransferController::class, 'store'])->name('transfer.store');
 Route::patch('/transfers/update', [TransferController::class, 'update'])->name('transfer.update');
+Route::delete('/transfers/{transfer}/delete', [TransferController::class, 'destroy'])->name('transfer.destroy');
 
 // Услуга виза
 Route::post('/visas', [VisaController::class, 'store'])->name('visa.store');
 Route::patch('/visas/update', [VisaController::class, 'update'])->name('visa.update');
+Route::delete('/visas/{visa}/delete', [VisaController::class, 'destroy'])->name('visa.destroy');
 
 // Услуга Проживание
 Route::post('/habitations', [HabitationController::class, 'store'])->name('habitation.store');
 Route::patch('/habitations/update', [HabitationController::class, 'update'])->name('habitation.update');
+Route::delete('/habitations/{habitation}/delete', [HabitationController::class, 'destroy'])->name('habitation.destroy');
 
 // Услуга Топливный сбор
 Route::post('/fuelsurchanges', [FuelSurchangeController::class, 'store'])->name('fuelsurchange.store');
 Route::patch('/fuelsurchanges/update', [FuelSurchangeController::class, 'update'])->name('fuelsurchange.update');
+Route::delete('/fuelsurchanges/{fuelsurchange}/delete', [FuelSurchangeController::class, 'destroy'])->name('fuelsurchange.destroy');
 
 // Услуга Экскурсионная программа
 Route::post('/excursions', [ExcursionController::class, 'store'])->name('excursion.store');
 Route::patch('/excursions/update', [ExcursionController::class, 'update'])->name('excursion.update');
+Route::delete('/excursions/{excursion}/delete', [ExcursionController::class, 'destroy'])->name('excursion.destroy');
 
 // Услуга  "Другая услуга"
 Route::post('/otherservices', [OtherServiceController::class, 'store'])->name('otherservice.store');
 Route::patch('/otherservices/update', [OtherServiceController::class, 'update'])->name('otherservice.update');
+Route::delete('/otherservices/{otherservice}/delete', [OtherServiceController::class, 'destroy'])->name('otherservice.destroy');
 
 // Добавление/Удаление файлов
 Route::post('/files', [FileController::class, 'store'])->name('file.store');
 Route::delete('/files/{file}/delete', [FileController::class, 'destroy'])->name('file.destroy');
 
 // Финансы
-
 // Параметры предоплаты
 Route::post('/prepayments', [FinancePrepaymentController::class, 'store'])->name('prepayment.store');
 
@@ -118,6 +124,10 @@ Route::post('/payments', [FinancePaymentController::class, 'store'])->name('paym
 // Выставление счета туристу
 Route::post('/payment_invoices', [FinancePaymentInvoiceController::class, 'store'])->name('payment_invoice.store');
 Route::patch('/payment_invoices/update', [FinancePaymentInvoiceController::class, 'update'])->name('payment_invoice.update');
+Route::delete('/payment_invoices/{payment_invoice}/delete', [FinancePaymentInvoiceController::class, 'destroy'])->name('payment_invoice.destroy');
+
+// Формирование договора
+Route::post('/docs', [GenerateDocController::class, 'docExport'])->name('docExport');
 
 // Сотрудники
 Route::get('/employee', 'EmployeeController@index')->name('employee.index');

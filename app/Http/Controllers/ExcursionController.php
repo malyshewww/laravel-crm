@@ -39,4 +39,12 @@ class ExcursionController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $excursion = Excursion::findOrFail($id);
+        $excursion->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

@@ -7,7 +7,7 @@
 				<i class="fa-solid fa-xmark"></i>
 			</button>
 		</div>
-		<form action="{{route('visa.update')}}" method="post" id="formVisaUpdate" class="form">
+		<form action="{{route('visa.update')}}" method="post" id="formVisaUpdate-{{$visa->id}}" class="form">
 			@csrf
 			@method('patch')
 			<input type="hidden" name="type" value="visa">

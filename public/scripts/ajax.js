@@ -237,32 +237,35 @@ async function elementUpdate(selector) {
 }
 
 const modalDelete = document.getElementById('deleteRecord');
-
-modalDelete.addEventListener('show.bs.modal', (event) => {
-	const thisModal = event.target;
-	const modalTitle = thisModal.querySelector('.modal__title');
-	const form = thisModal.querySelector('form');
-	const btn = event.relatedTarget;
-	const currentTable = btn.closest('table');
-	const tableId = currentTable.getAttribute('id');
-	const dataUrl = btn.dataset.url;
-	const dataId = btn.dataset.id;
-	form.setAttribute('action', dataUrl);
-	const titles = {
-		'table-id': `Вы действительно хотите удалить заявку № ${dataId}`,
-	};
-	modalTitle.textContent = getTitle(tableId, titles);
-})
-
-function getTitle(tableId, obj) {
+if (modalDelete) {
+	modalDelete.addEventListener('show.bs.modal', (event) => {
+		const thisModal = event.target;
+		const modalTitle = thisModal.querySelector('.modal__title');
+		const form = thisModal.querySelector('form');
+		const btn = event.relatedTarget;
+		const currentTable = btn.closest('table');
+		const tableId = currentTable.getAttribute('id');
+		const dataUrl = btn.dataset.url;
+		const dataId = btn.dataset.id;
+		const dataNumber = btn.dataset.number;
+		form.setAttribute('action', dataUrl);
+		const titles = {
+			'table-id': `Вы действительно хотите удалить заявку № ${dataId}?`,
+			'table-detailtour': 'Вы действительно хотите удалить услугу?',
+			'table-file': 'Вы действительно хотите удалить файл?',
+			'table-finance': `Вы действительно хотите удалить счёт № ${dataNumber}`,
+		};
+		modalTitle.textContent = getModalTitle(tableId, titles);
+	})
+}
+function getModalTitle(tableId, obj) {
 	for (const [key, value] of Object.entries(obj)) {
 		if (key == tableId) return value;
 	}
 }
-
 function deleteRecord() {
-	const form = modalDelete.querySelector('form');
-	if (form) {
+	if (modalDelete) {
+		const form = modalDelete.querySelector('form');
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
 			const thisForm = event.target;

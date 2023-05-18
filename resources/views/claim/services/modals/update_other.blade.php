@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('otherservice.update')}}" method="post" id="formOtherServiceUpdate" class="form">
+			<form action="{{route('otherservice.update')}}" method="post" id="formOtherServiceUpdate-{{$other->id}}" class="form">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="other">

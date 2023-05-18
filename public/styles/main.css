@@ -20556,6 +20556,16 @@ table.dataTable.no-footer {
   border-bottom: none;
 }
 
+div.dt-buttons {
+  float: none;
+  width: 100%;
+}
+
+div.dt-buttons button {
+  width: 100%;
+  margin: 0;
+}
+
 .modal {
   z-index: 10;
 }

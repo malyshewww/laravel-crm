@@ -16,7 +16,7 @@
 		</div>
 		@if (count($claim->file) > 0)
 			<div class="table-responsive">
-				<table class="documents-table table">
+				<table class="documents-table table" id="table-file">
 					<thead> 
 						<th style="width: 15%;">Дата добавления</th>
 						<th style="width: 50%;">Название файла</th>
@@ -45,20 +45,11 @@
 											<a href="{{url('storage/' . $fileItem->file_name)}}" download>
 												<i class="fa-solid fa-download"></i>
 											</a>
-											{{-- <button class="btn-download-doc" type="submit">
-												<i class="fa-solid fa-download"></i>
-											</button> --}}
 										</div>
 										<div class="table__button-item" data-bs-toggle="tooltip" title="Удалить файл" data-bs-trigger="hover">
-											<form action="{{route('file.destroy', $fileItem->id)}}" method="post" id="formFileDelete" class="form">
-												@csrf
-												@method('delete')
-												<input type="hidden" name="claim_id" value="{{$claim->id}}">
-												<input type="hidden" name="file_name" value="{{url('storage/' . $fileItem->file_name)}}">
-												<button class="btn-trash" type="submit">
-													<i class="fa-solid fa-trash-can"></i>
-												</button>
-											</form>
+											<button class="btn-trash" type="button" data-type="delete" data-id="{{$fileItem->id}}" data-url="{{route('file.destroy', $fileItem->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
+												<i class="fa-solid fa-trash-can"></i>
+											</button>
 										</div>
 									</div>
 								</td>

@@ -37,4 +37,12 @@ class FuelSurchangeController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $fuelSurchange = FuelSurchange::findOrFail($id);
+        $fuelSurchange->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('fuelsurchange.update')}}" method="post" id="formFuelSurchangeUpdate" class="form">
+			<form action="{{route('fuelsurchange.update')}}" method="post" id="formFuelSurchangeUpdate-{{$fs->id}}" class="form">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="fuel_surchange">

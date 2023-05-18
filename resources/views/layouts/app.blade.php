@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/base.min.css"> --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="{{asset('styles/main.min.css')}}">
     <script>
         var BASE_URL = '{{ url("/") }}';
@@ -26,9 +26,9 @@
         @include('layouts.modals')
         @yield('page-modal')
     </div>
-	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="{{asset('scripts/main.min.js?v27042023_3')}}" defer></script>
-    <script src="{{asset('scripts/ajax.js')}}"></script>
     @yield('page-script')
+	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="{{asset('scripts/ajax.js')}}"></script>
+    <script src="{{asset('scripts/main.min.js?v27042023_3')}}" defer></script>
 </body>
 </html>

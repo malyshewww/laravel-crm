@@ -288,8 +288,13 @@
 											<div class="area-group__header"> 
 												<h3 class="area-group__title">УСЛУГИ В ТУРПАКЕТЕ</h3>
 											</div>
+										</div>
+										@if (count($claim->serviceFlight) > 0 || count($claim->serviceInsurance) > 0 
+											|| count($claim->serviceTransfer) > 0 || count($claim->serviceVisa) > 0 
+											|| count($claim->serviceHabitation) > 0 || count($claim->serviceFuelSurchange) > 0
+											|| count($claim->serviceExcursion) > 0 || count($claim->serviceOther) > 0)
 											<div class="table-responsive">
-												<table class="detailtour-table table">
+												<table class="detailtour-table table" id="table-detailtour">
 													<thead> 
 														<th style="width: 160px;">Услуга</th>
 														<th style="width: 40px;"></th>
@@ -310,7 +315,11 @@
 													</tbody>
 												</table>
 											</div>
-										</div>
+										@else
+											<div class="area-group__empty">
+												Услуги не указаны
+											</div>
+										@endif
 									</div>
 								</div>
 								{{-- @include('claim.blocks.block_docstouroperator') --}}
@@ -444,7 +453,7 @@
 													</div>
 													@if (count($claim->paymentInvoices) > 0)
 													<div class="table-responsive">
-														<table class="table finance-table" hidden>
+														<table class="table finance-table" id="table-finance" hidden>
 															<thead> 
 																<th style="width: 60px;">
 																	<th style="width: 110px;">ДАТА</th>
@@ -489,7 +498,7 @@
 																						</button>
 																					</div>
 																					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить счет">
-																						<button class="btn-trash" type="button">
+																						<button class="btn-trash" type="button" data-type="delete" data-number="{{$claim->id}}-{{$itemInvoice->id}}" data-id="{{$itemInvoice->id}}" data-url="{{route('payment_invoice.destroy', $itemInvoice->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
 																							<i class="fa-solid fa-trash-can"></i>
 																						</button>
 																					</div>
@@ -508,10 +517,18 @@
 																	</td>
 																	<td> 
 																		<div class="table__actions"> 
-																		<div class="table__buttons">
-																				<button class="btn-pen" type="button" data-bs-toggle="tooltip" title="Редактировать счет"><i class="fa-solid fa-pen"></i></button>
-																				<button class="btn-trash" type="button" data-bs-toggle="tooltip" title="Удалить счет"><i class="fa-solid fa-trash-can"></i></button>
-																		</div>
+																			<div class="table__buttons">
+																				<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать платеж">
+																					<button class="btn-pen" type="button">
+																						<i class="fa-solid fa-pen"></i>
+																					</button>
+																				</div>
+																				<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить платеж">
+																					<button class="btn-trash" type="button">
+																						<i class="fa-solid fa-trash-can"></i>
+																					</button>
+																				</div>
+																			</div>
 																		</div>
 																	</td>
 																</tr>
@@ -668,20 +685,24 @@
 								<div class="data-claim__group">
 									<div class="row"> 
 										<div class="col col-lg-4 col-12">
-											<div class="field-group__item">
-												<label class="field-group__label">Выберите тип договора</label>
-												<select class="select-choices" name="choice_type_doc" id="choiceTypeDoc">
-													<option value="" selected></option>
-													<option value="doc_avia">Авиатуры</option>
-													<option value="doc_bus">Автобусные туры</option>
-												</select>
-											</div>
-											<div class="geneator-button-wrapper mt-3">
-												<button class="btn btn-blue btn-primary btn-sm" type="button">
-													<i class="btn-generator-doc"></i>
-													Сформировать договор
-												</button>
-											</div>
+											<form action="{{route('docExport')}}" method="post">
+												@csrf
+												<div class="field-group__item">
+													<label class="field-group__label">Выберите тип договора</label>
+													<select class="select-choices" name="doc_type" id="choiceTypeDoc">
+														<option value="" selected></option>
+														<option value="doc_avia">Авиатуры</option>
+														<option value="doc_bus">Автобусные туры</option>
+													</select>
+												</div>
+												<div class="geneator-button-wrapper mt-3">
+													<button class="btn btn-blue btn-primary btn-sm" type="submit">
+														<i class="btn-generator-doc"></i>
+														Сформировать договор
+													</button>
+												</div>
+											</form>
+											{{-- <a href="{{url('docs/doc-export/' . $claim->id)}}">Doc Export</a> --}}
 										</div>
 									</div>
 								</div>
@@ -716,6 +737,7 @@
 	@include('claim.finance.modals.payment')
 	@include('claim.finance.modals.payment_invoice')
 
+	@include('claim.showmodals.delete_record')
 @endsection
 @section('page-script')
 @endsection
