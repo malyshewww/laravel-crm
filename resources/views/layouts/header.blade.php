@@ -4,10 +4,23 @@
 			<div class="menu-header__options"> 
 			<div class="menu-header__name">
 				@if (Auth::check())
-					{{ Auth::user()->email }} 
+					<div class="text-primary">
+						@if (Auth::user()->email == 'test@mail.ru')
+							Алексей
+						@elseif (Auth::user()->email == 'tch.sezona@yandex.ru')
+							Канатова И.
+						@elseif (Auth::user()->email == 'info@4sezonatravel.ru')
+							Тихановская И.
+						@endif
+					</div>
 				@endif
 			</div>
-			<a href="{{route('user.logout')}}">Выйти</a>
+			<div class="header__actions">
+				<form action="{{route('user.logout')}}" id="formLogout">
+					@csrf
+					<button type="submit">Выйти</button>
+				</form>
+			</div>
 		</div>
 	</div>
 </header>

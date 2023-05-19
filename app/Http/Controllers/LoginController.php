@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    protected $maxAttempts = 3; // default is 5
+    protected $decayMinutes = 2; // default is 1
     public function login(Request $request)
     {
         if (Auth::check()) {
@@ -17,7 +19,7 @@ class LoginController extends Controller
         // $request->only - вытащить из запроса только те поля, которые мы передадим в качестве параметров
         $formFields = $request->only(['email', 'password']);
         if (Auth::attempt($formFields)) {
-            $request->session()->regenerate();
+            // $request->session()->regenerate();
             return redirect()->intended(route('claim.index'));
         }
         return redirect(route('user.login'))->withErrors([
@@ -29,6 +31,6 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('user.login');
+        return redirect(route('user.login'));
     }
 }

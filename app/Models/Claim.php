@@ -15,9 +15,10 @@ class Claim extends Model
     protected $casts = [
         'date_start' => 'date:d.m.Y', // Свой формат
         'date_end' => 'date:d.m.Y',
+        'created_at' => 'date:d.m.Y',
     ];
-    protected $dates = ['date_start', 'date_end'];
-    protected $fillable = ['date_start', 'date_end', 'comment'];
+    protected $dates = ['date_start', 'date_end', 'created_at'];
+    protected $fillable = ['date_start', 'date_end', 'comment', 'manager'];
     // protected $dateFormat = 'd.m.Y';
     // public function setDateStartAttribute($value)
     // {

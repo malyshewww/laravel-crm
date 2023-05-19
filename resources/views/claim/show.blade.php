@@ -16,7 +16,23 @@
 						</h1>
 						<button class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
 						<div class="claim__subtitle">
-							Тихановская Ирина Викторовна создана: {{$claim->created_at}} МСК.</div>
+							<div>
+								@if ($claim->manager)
+									<div>
+										@if ($claim->manager == 'test@mail.ru')
+											<strong>Алексей</strong>
+										@elseif ($claim->manager == 'tch.sezona@yandex.ru')
+											<strong>Канатова И.</strong>
+										@elseif ($claim->manager == 'info@4sezonatravel.ru')
+											<strong>Тихановская И.</strong>
+										@endif
+										создана: {{$claim->created_at->format('d.m.Y H:i:s')}} МСК.
+									</div>
+								@else
+									<div class="font-weight-bold">Менеджер не указан</div>
+								@endif
+							</div>
+						</div>
 					</div>
 					<div class="claim__comment comment-claim">
 						<div class="comment-claim__box">
@@ -50,279 +66,15 @@
 										</div>
 									</div>
 								</div>
+								{{-- Блок с данными о заказчике --}}
 								@include('claim.blocks.block_customers')
-								<div class="data-claim__group group-data" id="groupDataTourist">
-									<header class="group-data__header">
-										<h2 class="group-data__title">Туристы</h2>
-										<div class="group-data__buttons">
-											{{-- <button class="btn btn-blue btn-primary" type="button">
-												Отправить ссылку на заполнение данных
-											</button> --}}
-											<button class="btn btn-blue btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addTourist">
-												<i class="fa-regular fa-plus"></i>
-												Добавить туриста
-											</button>
-										</div>
-									</header>
-									<div class="group-data__subheader">
-										<i>Для граждан РФ при бронировании направления Россия заселение в отель и авиаперевозка производится 
-											<strong>только по паспорту гражданина РФ</strong>
-										</i>
-										<br>
-										<i>
-											<strong>Важно!</strong>Замена данных в заявке с заграничного паспорта на российский и наоборот 
-											<strong>является перебронированием.</strong>
-										</i>
-										<br>
-										<i>
-											<strong>Внимание!</strong> 
-											Паспортные данные граждан СНГ и иностранных граждан других государств вносятся латиницей как в паспорте.	
-										</i>
-									</div>
-									<div class="group-data__area area-group">
-										<div class="area-group__body">
-											@if ($claim->tourist && count($claim->tourist) > 0)
-											<div class="table-responsive">
-												<table class="tourist-table table" id="touristTable"> 
-													<thead> 
-														<th style="width: 20%">Фио туриста</th>
-														<th style="width: 5%">Пол</th>
-														<th style="width: 15%">Дата рождения</th>
-														<th style="width: 20%">Паспортные данные / Св-во о рождении</th>
-														<th style="width: 20%">Контакты</th>
-														<th style="width: 15%">Виза</th>
-														<th style="width: 5%">Действия</th>
-													</thead>
-													<tbody>
-															@foreach ($claim->tourist as $key => $tourist)
-																<tr>
-																	<td class="tourist-table__name">
-																		{{$tourist->tourist_surname}}
-																		{{$tourist->tourist_name}}
-																		{{$tourist->tourist_patronymic ?: ''}}
-																	</td>
-																	<td class="tourist-table__gender">
-																		{{$tourist->common->tourist_gender === 'male' ? 'М' : 'Ж'}}
-																	</td>
-																	<td class="tourist-table__date">
-																		{{$tourist->common->tourist_birthday ?: ''}}
-																	</td>
-																	<td class="tourist-table__passport">
-																		@if ($tourist->passport || $tourist->certificate)
-																			<ul>
-																				@if ($tourist->passport)
-																					<li>
-																						<span>РФ:</span>
-																						<span>
-																							{{$tourist->passport->tourist_passport_series ?: '-'}} 
-																							{{$tourist->passport->tourist_passport_number ?: '-'}}
-																						</span>
-																					</li>
-																				@endif
-																				@if ($tourist->certificate)
-																					<li>
-																						<span>Св-во:</span>
-																						<span>
-																							{{$tourist->certificate->tourist_certificate_series ?: '-'}}
-																							{{$tourist->certificate->tourist_certificate_number ?: '-'}}
-																						</span>
-																					</li>
-																				@endif
-																			</ul>
-																		@else
-																			Не указаны	
-																		@endif
-																	</td>
-																	<td class="tourist-table__contacts">
-																		@if ($tourist->common && $tourist->common->tourist_phone || $tourist->common->tourist_email)
-																			<ul>
-																				@if ($tourist->common->tourist_phone)
-																					<li>
-																						<span>Тел:</span>
-																						@php
-																							$phone = preg_replace('/[^0-9]/', '', $tourist->common->tourist_phone);
-																						@endphp
-																						<span>
-																							<a href="tel:{{$phone}}">{{$phone}}</a>
-																						</span>
-																					</li>
-																				@endif
-																				@if ($tourist->common->tourist_email)
-																					<li>
-																						<span>Email:</span>
-																						<span>
-																							<a href="mailto:{{$tourist->common->tourist_email}}">
-																								{{$tourist->common->tourist_email}}
-																							</a>
-																						</span>
-																					</li>
-																				@endif
-																			</ul>
-																		@else
-																			Не указаны
-																		@endif
-																	</td>
-																	<td class="tourist-table__visa">
-																		@php
-																			$cities = TouristHelper::city();
-																		@endphp
-																		<ul>
-																			<li>
-																				<span>{{$tourist->common->visa_info == 'not' ? 'не требуется' : 'надо оформить визу'}}</span>
-																			</li>
-																			@if ($tourist->common && $tourist->common->visa_info == 'yes' )
-																				<li>
-																					<span>
-																						@foreach ($cities as $key => $city)
-																							{{$key == $tourist->common->visa_city ? $city['name'] : ''}}
-																						@endforeach
-																					</span>
-																				</li>
-																			@endif
-																		</ul>
-																	</td>
-																	<td class="tourist-table__actions">
-																		<div class="table__buttons">
-																			<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать данные о туристе">
-																				<button class="btn-gear" type="button" data-id="{{$tourist->id}}" data-bs-toggle="modal" data-bs-target="#updateTourist-{{$tourist->id}}">
-																					<i class="fa-solid fa-gear"></i>
-																				</button>
-																			</div>
-																			<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить туриста">
-																				<button class="btn-trash" type="button" >
-																					<i class="fa-solid fa-trash-can"></i>
-																				</button>
-																			</div>
-																			{{-- <div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Добавить во все услуги заявки">
-																				<button class="btn-linkify" type="button">
-																					<i class="fa-solid fa-link"></i>
-																				</button>
-																			</div> --}}
-																		</div>
-																		@include('claim.tourists.modals.update_tourist', ['tourist' => $tourist])
-																	</td>
-																</tr>
-																<tr class="join">
-																	<td class="tourist-table__name">
-																		<span>
-																			{{$tourist->common && $tourist->common->tourist_surname_lat ? $tourist->common->tourist_surname_lat : ''}}
-																			{{$tourist->common && $tourist->common->tourist_name_lat ? $tourist->common->tourist_name_lat : ''}}
-																		</span>
-																	</td>
-																	<td class="tourist-table__gender"></td>
-																	<td class="tourist-table__date"></td>
-																	<td class="tourist-table__passport">
-																		@if ($tourist->internationalPassport)
-																			<ul>	
-																				<li> 
-																					<span>ЗГРН:</span>
-																					<span>
-																						{{$tourist->internationalPassport 
-																							&& $tourist->internationalPassport->tourist_international_passport_series
-																							? $tourist->internationalPassport->tourist_international_passport_series : '-'}}
-																						-
-																						{{$tourist->internationalPassport 
-																							&& $tourist->internationalPassport->tourist_international_passport_number
-																							? $tourist->internationalPassport->tourist_international_passport_number : '-'}}
-																					</span>
-																				</li>
-																			</ul>
-																		@endif
-																	</td>
-																	<td class="tourist-table__contacts"></td>
-																	<td class="ourist-table__visa"></td>
-																	<td class="tourist-table__actions"></td>
-																</tr>
-															@endforeach
-														</tbody>
-													</table>
-												</div>
-											@else
-												<div class="area-group__empty">
-													Туристы не указаны
-												</div>
-											@endif
-										</div>
-									</div>
-								</div>
-								<div class="data-claim__group group-data">
-									<header class="group-data__header">
-										<h1 class="group-data__title">Детали тура</h1>
-										<div class="group-data__buttons">
-											<button class="btn btn-blue btn-primary" type="button">
-												Создать заявку на доп.услугу
-											</button>
-											<div class="dropdown">
-												<button class="btn btn-blue btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-plus"> </i>Добавить услугу</button>
-												<ul class="dropdown-menu dropdown__menu">
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addFlight">Перелёт</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addInsurance">Страховка</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addTransfer">Трансфер</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addVisa">Виза</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addHabitation">Проживание</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addFuelSurcharge">Топливный сбор</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addExcursionProgram">Экскурсионная программа</button>
-													</li>
-													<li class="dropdown-menu__item">
-														<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addOtherService">Другая услуга</button>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</header>
-									<div class="group-data__area area-group">
-										<div class="area-group__body">
-											<div class="area-group__header"> 
-												<h3 class="area-group__title">УСЛУГИ В ТУРПАКЕТЕ</h3>
-											</div>
-										</div>
-										@if (count($claim->serviceFlight) > 0 || count($claim->serviceInsurance) > 0 
-											|| count($claim->serviceTransfer) > 0 || count($claim->serviceVisa) > 0 
-											|| count($claim->serviceHabitation) > 0 || count($claim->serviceFuelSurchange) > 0
-											|| count($claim->serviceExcursion) > 0 || count($claim->serviceOther) > 0)
-											<div class="table-responsive">
-												<table class="detailtour-table table" id="table-detailtour">
-													<thead> 
-														<th style="width: 160px;">Услуга</th>
-														<th style="width: 40px;"></th>
-														<th style="width: auto;">Описание</th>
-														<th style="width: 270px;">Даты</th>
-														<th style="width: 100px;">Туристы</th>
-														<th style="width: 80px;">Действия</th>
-													</thead>
-													<tbody>
-														@include('claim.services.outputs.output_flight')
-														@include('claim.services.outputs.output_insurance')
-														@include('claim.services.outputs.output_transfer')
-														@include('claim.services.outputs.output_visa')
-														@include('claim.services.outputs.output_habitation')
-														@include('claim.services.outputs.output_fuel_surchange')
-														@include('claim.services.outputs.output_excursion')
-														@include('claim.services.outputs.output_other')
-													</tbody>
-												</table>
-											</div>
-										@else
-											<div class="area-group__empty">
-												Услуги не указаны
-											</div>
-										@endif
-									</div>
-								</div>
+								{{-- Блок с данными о туристах --}}
+								@include('claim.blocks.block_tourists')
+								{{-- Блок с данными об услугах --}}
+								@include('claim.blocks.block_services')
 								{{-- @include('claim.blocks.block_docstouroperator') --}}
+
+								{{-- Блок с данными о добавленных файлах --}}
 								@include('claim.blocks.block_file')
 							</div>
 						</div>
@@ -356,7 +108,7 @@
 																</button>
 															</div>
 															<div class="item-group__prices">
-																@if ($claim->payment && $claim->payment->tour_price)
+																{{-- @if ($claim->payment && $claim->payment->tour_price)
 																	@switch($claim->payment->currency)
 																		@case('USD')
 																			<span class="item-group__price">{{$claim->payment->tour_price}} $</span>
@@ -367,7 +119,8 @@
 																		@default
 																			<span class="item-group__price">{{$claim->payment->tour_price}} ₽</span>
 																	@endswitch
-																@endif
+																@endif --}}
+																стоимость с учетом курса
 																{{-- <span class="item-group__price">151 300,28 ₽</span>
 																<span>/</span>
 																<span class="item-group__price">1 939,25 $</span> --}}
@@ -419,58 +172,74 @@
 																		@endif
 																	</div>
 																</li>
-																{{-- <li>
-																	<div class="list__label">— НЕКОМИССИОННАЯ</div>
-																	<div class="list__value">0,00 ₽</div>
-																</li> --}}
-																{{-- <li>
-																	<div class="list__label">CТОИМОСТЬ ДОПОЛНИТЕЛЬНЫХ УСЛУГ</div>
-																	<div class="list__value">0,00 ₽</div>
-																</li>
-																<li>
-																	<div class="list__label">— КОМИССИОННАЯ</div>
-																	<div class="list__value">0,00 ₽</div>
-																</li>
-																<li>
-																	<div class="list__label">— НЕКОМИССИОННАЯ</div>
-																	<div class="list__value">0,00 ₽</div>
-																</li> --}}
 															</ul>
 														</div>
 													</div>
 												</div>
+												@if (count($claim->paymentInvoices) > 0)
 												<div class="item-group__box">
 													<div class="item-group__heading">
 														<div class="item-group__button">
 															<span class="text-label">ОПЛАЧЕНО ТУРИСТОМ</span>
-															<button class="btn-blue btn-redact" type="button" id="history-price">ИСТОРИЯ ОПЛАТ
+															<button class="btn-blue btn-redact" type="button" id="history-price">
+																ИСТОРИЯ ОПЛАТ
 																<i class="fa-solid fa-chevron-down icon-arrow"></i>
 															</button>
 														</div>
 														<div class="item-group__prices">
-															<span class="item-group__price">сумма платежей ₽</span>
+															@php
+																if (count($claim->paymentInvoices) > 0) {
+																	$currencyRUB = [];
+																	$currencyUSD = [];
+																	$currencyEUR = [];
+																	foreach ($claim->paymentInvoices as $key => $item) {
+																		if ($item->currency === 'RUB') {
+																			$currencyRUB[] = $item->sum;
+																		} 
+																		if ($item->currency === 'USD') {
+																			$currencyUSD[] = $item->sum;
+																		} 
+																		if ($item->currency === 'EUR') {
+																			$currencyEUR[] = $item->sum;
+																		}
+																	}
+																}
+																$resultSumRUB = array_sum($currencyRUB);
+																$resultSumUSD = array_sum($currencyUSD);
+																$resultSumEUR = array_sum($currencyEUR);
+															@endphp
+															<span class="item-group__price">
+																@if ($resultSumRUB > 0)
+																	<strong>{{$resultSumRUB}} ₽</strong>
+																@endif
+																@if ($resultSumUSD > 0)
+																	/ {{$resultSumUSD}} $
+																@endif
+																@if ($resultSumEUR > 0)
+																	/ {{$resultSumEUR}} €
+																@endif
+															</span>
 														</div>
 													</div>
-													@if (count($claim->paymentInvoices) > 0)
 													<div class="table-responsive">
 														<table class="table finance-table" id="table-finance" hidden>
 															<thead> 
-																<th style="width: 60px;">
+																<tr>
+																	<th></th>
 																	<th style="width: 110px;">ДАТА</th>
-																	<th style="width: auto;">НОМЕР СЧЁТА</th>
+																	<th style="width: 110px;">НОМЕР СЧЁТА</th>
 																	<th style="width: auto;">СУММА</th>
-																	<th style="width: 80px;">ДОЛГ</th>
-																</th>
-																<th style="width: 50px;"></th>
+																	<th style="width: 60px;"></th>
+																</tr>
 															</thead>
 															<tbody>
-																@foreach ($claim->paymentInvoices as $itemInvoice)
+																@foreach ($claim->paymentInvoices as $key => $itemInvoice)
 																	<tr> 
 																		<td>cчет</td>
 																		<td>
 																			{{$itemInvoice->date_invoices ? $itemInvoice->date_invoices->format('d.m.Y H:i') : ''}}
 																		</td>
-																		<td>№ {{$claim->id}}-{{$itemInvoice->id}}</td>
+																		<td>№ {{$claim->id}}-{{$key+1}}</td>
 																		<td>
 																			{{$itemInvoice->sum ?: ''}}
 																			@switch($itemInvoice->currency)
@@ -483,9 +252,6 @@
 																				@default
 																					₽
 																			@endswitch
-																		</td>
-																		<td> 
-																			{{-- <span class="text-success">Оплачено</span> --}}
 																		</td>
 																		<td> 
 																			<div class="table__actions"> 
@@ -508,13 +274,11 @@
 																		</td>
 																	</tr>
 																@endforeach
-																<tr> 
+																{{-- <tr> 
 																	<td>- оплата</td>
 																	<td>16.03.2023 в 18:27</td>
 																	<td></td>
 																	<td>+ 151 300,00 ₽ / 1 939,25 $</td>
-																	<td> 
-																	</td>
 																	<td> 
 																		<div class="table__actions"> 
 																			<div class="table__buttons">
@@ -531,13 +295,13 @@
 																			</div>
 																		</div>
 																	</td>
-																</tr>
+																</tr> --}}
 															</tbody>
 														</table>
 													</div>
-													@endif
 												</div>
-												<div class="item-group__box">
+												@endif
+												{{-- <div class="item-group__box">
 													<div class="item-group__row"> 
 														<div class="item-group__col">
 															<div class="text-label">
@@ -557,7 +321,7 @@
 															<span class="fw-700" style="color: #659f13;">0,28 ₽</span>
 														</div>
 													</div>
-												</div>
+												</div> --}}
 												<div class="item-group__footer">
 													<button class="btn btn-blue btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addPayTourist">
 														<i class="fa-regular fa-plus"></i>
@@ -587,17 +351,37 @@
 																</div>
 															</div>
 															<div class="item-group__prices">
-																<span class="item-group__price fw-700">Не указана</span>
+																@php
+																	$arrPayment = [];
+																	if ($claim->payment) {
+																		$arrPayment[] = $claim->payment->tour_price ?: 0;
+																		$arrPayment[] = $claim->payment->comission_price ?: 0;
+																	}
+																	$resultPaymentSum = array_sum($arrPayment);
+																@endphp
+																<span class="item-group__price fw-700">
+																	@if ($claim->payment)
+																			{{$claim->payment->tour_price ?: '0'}}
+																			@switch($claim->payment->currency)
+																				@case('USD')
+																					$
+																					@break
+																				@case('EUR')
+																					€
+																					@break
+																				@default
+																					₽
+																			@endswitch
+																		@else
+																			Цена не указана
+																		@endif
+																</span>
 																{{-- <span>/</span>
 																<span class="item-group__price">0,00 $</span> --}}
 															</div>
 														</div>
 														<div class="finance-price-content">
 															<ul class="item-group__list list">
-																{{-- <li>
-																	<div class="list__label">КОМИССИЯ ТА, %</div>
-																	<div class="list__value">7,00 %</div>
-																</li> --}}
 																<li>
 																	<div class="list__label">СТОИМОСТЬ ТУРПАКЕТА ДЛЯ ТА</div>
 																	<div class="list__value">
@@ -658,18 +442,6 @@
 																		@endif
 																	</div>
 																</li>
-																{{-- <li>
-																	<div class="list__label">- НЕКОМИССИОННАЯ</div>
-																	<div class="list__value">0,00 $</div>
-																</li> --}}
-																{{-- <li>
-																	<div class="list__label">СТОИМОСТЬ ДОПОЛНИТЕЛЬНЫХ УСЛУГ</div>
-																	<div class="list__value">0,00 $</div>
-																</li>
-																<li>
-																	<div class="list__label">ОПЛАЧЕНО ПОСТАВЩИКУ</div>
-																	<div class="list__value">0,00 ₽</div>
-																</li> --}}
 															</ul>
 														</div>
 													</div>
@@ -687,6 +459,7 @@
 										<div class="col col-lg-4 col-12">
 											<form action="{{route('docExport')}}" method="post">
 												@csrf
+												<input type="hidden" name="id" value="{{$claim->id}}">
 												<div class="field-group__item">
 													<label class="field-group__label">Выберите тип договора</label>
 													<select class="select-choices" name="doc_type" id="choiceTypeDoc">

@@ -172,9 +172,21 @@
 							<td></td>
 							<td></td>
 							<td class="tour-table__manager">
-								<div> 
-									<a class="tour-table__link" href="#">Тихановская И. В.</a>
-									<div>{{$claim->created_at}}</div>
+								<div>
+									@if ($claim->manager)
+										<div class="text-primary">
+											@if ($claim->manager == 'test@mail.ru')
+												Алексей
+											@elseif ($claim->manager == 'tch.sezona@yandex.ru')
+												Канатова И.
+											@elseif ($claim->manager == 'info@4sezonatravel.ru')
+												Тихановская И.
+											@endif
+										</div>
+									@else
+										<div class="text-danger">Менеджер не указан</div>
+									@endif
+									<div>{{$claim->created_at->format('d.m.Y H:i:s')}}</div>
 								</div>
 							</td>
 							<td>

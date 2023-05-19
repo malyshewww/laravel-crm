@@ -26,6 +26,7 @@ use App\Http\Controllers\TourPackageController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\VisaController;
 use App\Models\FinancePrepayment;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,9 +44,9 @@ Route::get('/', function () {
 });
 
 // Заявка
-Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
+Route::get('/claims', [ClaimController::class, 'index'])->middleware('auth')->name('claim.index');
 Route::get('/claims/create/{id}', [ClaimController::class, 'create'])->name('claim.create');
-Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
+Route::get('/claims/{claim}', [ClaimController::class, 'show'])->middleware('auth')->name('claim.show');
 Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
 Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
 Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
@@ -135,6 +136,11 @@ Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('e
 Route::post('/employee', [EmployeeController::class, 'store'])->name('employee.store');
 Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
+// Storage:link
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
+
 // Авторизация
 // Route::name('user.')->group(function () {
 Route::view('/private', 'private')->middleware('auth')->name('private');
@@ -148,6 +154,7 @@ Route::get('/login', function () {
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/registration', function () {
     if (Auth::check()) {
@@ -156,5 +163,5 @@ Route::get('/registration', function () {
     return view('registration');
 })->name('user.registration');
 
-Route::post('/registration', [RegisterController::class, 'save']);
+Route::post('/registration', [RegisterController::class, 'save'])->name('registration');
 // });

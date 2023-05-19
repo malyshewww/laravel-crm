@@ -12,6 +12,7 @@ use App\Models\TourPackage;
 use App\Models\Transfer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,12 +24,15 @@ class ClaimController extends Controller
         // $claims =  Claim::with('latestClaim')->get()->sortByDesc('latestClaim.created_at');
         // $claims =  Claim::with('latestClaim')->get()->sortByDesc('latestClaim.created_at');
         // $claims = Claim::paginate(5);
-        $claims = Claim::get();
-        DB::table('claims')
-            ->where('id', $claim->id)
-            ->update(['deleted_at' => null]);
-        $tourpackages = TourPackage::get();
-        return view('claim.index', compact('claims', 'tourpackages'));
+        if (Auth::check()) {
+            $claims = Claim::get();
+            DB::table('claims')
+                ->where('id', $claim->id)
+                ->update(['deleted_at' => null]);
+            $tourpackages = TourPackage::get();
+            return view('claim.index', compact('claims', 'tourpackages'));
+        }
+        return redirect()->route('user.login');
     }
     public function get_comment(Request $request, $id)
     {
@@ -43,24 +47,46 @@ class ClaimController extends Controller
     }
     public function show(Claim $claim)
     {
-        $tourpackages = TourPackage::all();
-        $tourists = DB::table('tourists')
-            ->join('tourist_data_commons', 'tourists.id', '=', 'tourist_data_commons.tourist_id')
-            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
-            ->where('tourists.claim_id', '=', 'claims.id')
-            ->select(
-                'tourists.*',
-                'tourist_data_commons.tourist_gender',
-                'tourist_data_commons.tourist_surname_lat',
-                'tourist_data_commons.tourist_name_lat',
-                'tourist_data_commons.tourist_nationality',
-                'tourist_data_commons.tourist_birthday',
-                'tourist_data_commons.tourist_address',
-                'tourist_data_commons.tourist_phone',
-                'tourist_data_commons.tourist_email'
-            )
-            ->get();
-        return view('claim.show', compact('claim', 'tourpackages'));
+        if (Auth::check()) {
+            $tourpackages = TourPackage::all();
+            $tourists = DB::table('tourists')
+                ->join('tourist_data_commons', 'tourists.id', '=', 'tourist_data_commons.tourist_id')
+                ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+                ->where('tourists.claim_id', '=', 'claims.id')
+                ->select(
+                    'tourists.*',
+                    'tourist_data_commons.tourist_gender',
+                    'tourist_data_commons.tourist_surname_lat',
+                    'tourist_data_commons.tourist_name_lat',
+                    'tourist_data_commons.tourist_nationality',
+                    'tourist_data_commons.tourist_birthday',
+                    'tourist_data_commons.tourist_address',
+                    'tourist_data_commons.tourist_phone',
+                    'tourist_data_commons.tourist_email'
+                )
+                ->get();
+            if (count($claim->paymentInvoices) > 0) {
+                $currencyRUB = [];
+                $currencyUSD = [];
+                $currencyEUR = [];
+                foreach ($claim->paymentInvoices as $key => $item) {
+                    if ($item->currency === 'RUB') {
+                        $currencyRUB[] = $item->sum('sum');
+                    }
+                    if ($item->currency === 'USD') {
+                        $currencyUSD[] = $item->sum('sum');
+                    }
+                    if ($item->currency === 'EUR') {
+                        $currencyEUR[] = $item->sum('sum');
+                    }
+                }
+            }
+            $resultSumRUB = array_sum($currencyRUB);
+            $resultSumUSD = array_sum($currencyUSD);
+            $resultSumEUR = array_sum($currencyEUR);
+            return view('claim.show', compact('claim', 'tourpackages'));
+        }
+        return redirect()->route('user.login');
     }
     public function store(Request $request)
     {
@@ -71,7 +97,8 @@ class ClaimController extends Controller
         $data = [
             'date_start' => $request->date_start,
             'date_end' => $request->date_end,
-            'comment' => $request->comment
+            'comment' => $request->comment,
+            'manager' => $request->manager
         ];
         $json = [];
         $errors = $validator->errors();

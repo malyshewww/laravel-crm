@@ -4,6 +4,7 @@
 			<form action="{{route('claim.store')}}" method="POST" id="formCreateClaim" class="form">
 				@csrf
 				<input type="hidden" name="id" value="{{count($claims) > 0 ? count($claims) + 1 : 1}}">
+				<input type="hidden" name="manager" value="{{Auth::user()->email}}">
 				<div class="modal__header">
 					<div class="modal__title"> Заявка от {{ date('d.m.Y') }}</div>
 					<button class="modal__close" type="button" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>

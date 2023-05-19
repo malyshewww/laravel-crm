@@ -8,6 +8,7 @@
 			<div class="auth__body"> 
 				<h1 class="auth__title">Регистрация</h1>
 				<form class="auth__from form-auth" action="{{route('user.registration')}}" method="post" id="formRegistration">
+					@csrf
 					<div class="field-group">
 						<div class="field-group__items"> 
 							<div class="field-group__item">

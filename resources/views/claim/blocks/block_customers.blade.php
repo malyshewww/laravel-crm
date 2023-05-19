@@ -66,22 +66,27 @@
 							<li>
 								<div class="list__label">СЕРИЯ И НОМЕР:</div>
 								<div class="list__value">
-									{{$claim->customer->person->passport ? $claim->customer->person->passport->person_passport_series : 'Не указано'}}
+									{{$claim->customer->person->passport && $claim->customer->person->passport->person_passport_series 
+									? $claim->customer->person->passport->person_passport_series : 'Не указано'}}
 									-
-									{{$claim->customer->person->passport ? $claim->customer->person->passport->person_passport_number : 'Не указано'}}
+									{{$claim->customer->person->passport && $claim->customer->person->passport->person_passport_number 
+									? $claim->customer->person->passport->person_passport_number : 'Не указано'}}
 								</div>
 							</li>
 							<li> 
 								<div class="list__label">КЕМ ВЫДАН:</div>
-								<div class="list__value">{{$claim->customer->person->passport ? $claim->customer->person->passport->person_passport_issued : 'Не указано'}}</div>
+								<div class="list__value">{{$claim->customer->person->passport && $claim->customer->person->passport->person_passport_issued
+								? $claim->customer->person->passport->person_passport_issued : 'Не указано'}}</div>
 							</li>
 							<li> 
 								<div class="list__label">КОД ПОДРАЗДЕЛЕНИЯ:</div>
-								<div class="list__value">{{$claim->customer->person->passport ? $claim->customer->person->passport->person_passport_code : 'Не указано'}}</div>
+								<div class="list__value">{{$claim->customer->person->passport && $claim->customer->person->passport->person_passport_code 
+								? $claim->customer->person->passport->person_passport_code : 'Не указано'}}</div>
 							</li>
 							<li> 
 								<div class="list__label">АДРЕС:</div>
-								<div class="list__value">{{$claim->customer->person->passport ? $claim->customer->person->passport->person_passport_address : 'Не указано'}}</div>
+								<div class="list__value">{{$claim->customer->person->passport && $claim->customer->person->passport->person_passport_address 
+								? $claim->customer->person->passport->person_passport_address : 'Не указано'}}</div>
 							</li>
 						</ul>
 					</div>
