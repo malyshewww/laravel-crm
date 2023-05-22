@@ -34,7 +34,8 @@
 							<div class="field-group__item">
 								<label class="field-group__label">Начало действия</label>
 								<div class="field-group__box">
-									<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="datevisa_start">
+									<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="datevisa_start"
+									value=" ">
 									<div class="field-group__trigger">
 										<i class="fa-regular fa-calendar-days calendar-icon"></i>
 										<input class="input-trigger" type="text" data-trigger="date_start">
@@ -44,9 +45,10 @@
 						</div>
 						<div class="col-lg-3">
 							<div class="field-group__item">
-								<label class="field-group__label">Окончани действия</label>
+								<label class="field-group__label">Окончание действия</label>
 								<div class="field-group__box">
-									<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="datevisa_end">
+									<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="datevisa_end"
+									value=" ">
 									<div class="field-group__trigger">
 										<i class="fa-regular fa-calendar-days calendar-icon"></i>
 										<input class="input-trigger" type="text" data-trigger="date_end">

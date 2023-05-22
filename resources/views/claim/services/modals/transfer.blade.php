@@ -34,7 +34,8 @@
 								<div class="field-group__item">
 									<label class="field-group__label">Начало</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="datetransfer_start">
+										<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="datetransfer_start"
+										>
 										<div class="field-group__trigger">
 											<i class="fa-regular fa-calendar-days calendar-icon"></i>
 											<input class="input-trigger" type="text" data-trigger="date_start">
@@ -46,7 +47,8 @@
 								<div class="field-group__item">
 									<label class="field-group__label">Окончание</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="datetransfer_end">
+										<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="datetransfer_end"
+										>
 										<div class="field-group__trigger">
 											<i class="fa-regular fa-calendar-days calendar-icon"></i>
 											<input class="input-trigger" type="text" data-trigger="date_end">

@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('tourpackage.store', $claim->id)}}" method="post" id="formTourpackage" class="form">
+			<form action="{{route('tourpackage.store')}}" method="post" id="formTourpackage" class="form">
 				@csrf
 				<input type="hidden" name="id" value="{{$claim->id}}">
 				<div class="modal__body">

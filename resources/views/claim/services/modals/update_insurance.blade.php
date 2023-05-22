@@ -51,7 +51,7 @@
 										@endforeach
 									</select>
 								</div>
-								<div class="field-group__item mt-3">
+								<div class="field-group__item mt-3" {{$insurance->insurance_type !== 'other' ? 'hidden' : ''}}>
 									<label class="field-group__label">Тип страховки (заполняется вручную)</label>
 									<div class="field-group__box">
 										<input class="field-group__input" type="text" data-name="insurance_type_other" 

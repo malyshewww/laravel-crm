@@ -101,7 +101,7 @@
 										<input class="field-group__input" type="text" 
 										data-name="date_start" data-format="datetime"
 										name="datehabitation_start"
-										value="{{$date_start_format}}">
+										value="{{$start_ts ? $date_start_format : ''}}">
 										<div class="field-group__trigger">
 											<i class="fa-regular fa-calendar-days calendar-icon"></i>
 											<input class="input-trigger" type="text" data-trigger="date_start">
@@ -116,7 +116,7 @@
 										<input class="field-group__input" type="text" 
 										data-name="date_end" data-format="datetime"
 										name="datehabitation_end"
-										value="{{$date_end_format}}">
+										value="{{$end_ts ? $date_end_format : ''}}">
 										<div class="field-group__trigger">
 											<i class="fa-regular fa-calendar-days calendar-icon"></i>
 											<input class="input-trigger" type="text" data-trigger="date_end">
