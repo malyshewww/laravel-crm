@@ -1,6 +1,7 @@
 const mainTable = document.getElementById('table-id');
 let table = new DataTable(mainTable, {
 	ordering: true,
+	sorting: false,
 	responsive: true,
 	searching: false,
 	"language": {
@@ -45,16 +46,6 @@ let table = new DataTable(mainTable, {
 	},
 	// "processing": true,
 	// "serverSide": true,
-	// ajax: {
-	// 	url: "claims/getClaims",
-	// 	data: function (data) {
-	// 		console.log(data);
-	// 		data.searchCity = $('#fio').val();
-	// 		data.searchGender = $('#tour_start').val();
-	// 		data.searchName = $('#tour_end').val();
-	// 	}
-	// },
-
 	"dom": 'lBfrtip',
 	buttons: [
 		{
@@ -64,9 +55,6 @@ let table = new DataTable(mainTable, {
 		},
 	]
 });
-// $('#fio, #tour_start, #tour_end').on('change', function () {
-// 	table.draw();
-// })
 
 const tableBottom = document.querySelector('.table-bottom');
 const filtersButtons = document.querySelector('.filters__buttons');
@@ -83,4 +71,119 @@ if (tableBottom) {
 	pagination.insertAdjacentElement("afterbegin", tableInfo);
 	pagination.insertAdjacentElement("beforeend", tablePaginate);
 	sortBlock.append(tableLength);
+}
+const testTable = document.getElementById('test-table');
+function fetchTable(std, res) {
+	// let data = {
+	// 	std,
+	// 	res
+	// };
+	const formFilter = document.getElementById('formFilter');
+	formFilter.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const thisForm = event.target;
+		const formData = new FormData(thisForm);
+		const inputFio = thisForm.fio;
+		const inputDateStart = thisForm.date_start;
+		const inputDateEnd = thisForm.date_end;
+		const token = thisForm._token;
+		fetch('/claims/records', {
+			headers: {
+				"X-CSRF-Token": token,
+			},
+			method: 'POST',
+			body: formData
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				var i = 1;
+				new DataTable(testTable, {
+					"data": data.students,
+					"columns": [
+						{
+							"data": "id",
+							"render": function (data, type, row, meta) {
+								return i++;
+							}
+						},
+						{
+							"data": "Начало тура",
+							"render": function (data, type, row, meta) {
+								return `${row.date_start}`;
+							}
+						},
+						{
+							"data": "Cтраны назначения"
+						},
+						{
+							"data": "Заказчик, туристы"
+						},
+						{
+							"data": " "
+						},
+						{
+							"data": " "
+						},
+						{
+							"data": "Менеджер"
+						},
+						{
+							"data": " "
+						},
+					]
+				});
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+	})
+}
+fetchTable();
+function f(std, res) {
+	$.ajax({
+		url: '/claims/records',
+		method: 'get',
+		dataType: 'json',
+		data: {
+			std,
+			res
+		},
+		success: function (data) {
+			$('#test-table').DataTable({
+				"responsive": true,
+				"data": data.students,
+				"columns": [{
+					"data": "id",
+					"render": function (data, type, row, meta) {
+						return i++;
+					}
+				},
+				{
+					"data": "Начало тура",
+					"render": function (data, type, row, meta) {
+						return `${row.date_start}`;
+					}
+				},
+				{
+					"data": "Cтраны назначения"
+				},
+				{
+					"data": "Заказчик, туристы"
+				},
+				{
+					"data": ""
+				},
+				{
+					"data": ""
+				},
+				{
+					"data": "Менеджер"
+				},
+				{
+					"data": ""
+				},
+				]
+			});
+		}
+	});
 }

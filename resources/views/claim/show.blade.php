@@ -203,10 +203,10 @@
 																			$currencyEUR[] = $item->sum;
 																		}
 																	}
+																	$resultSumRUB = array_sum($currencyRUB);
+																	$resultSumUSD = array_sum($currencyUSD);
+																	$resultSumEUR = array_sum($currencyEUR);
 																}
-																$resultSumRUB = array_sum($currencyRUB);
-																$resultSumUSD = array_sum($currencyUSD);
-																$resultSumEUR = array_sum($currencyEUR);
 															@endphp
 															<span class="item-group__price">
 																@if ($resultSumRUB > 0)

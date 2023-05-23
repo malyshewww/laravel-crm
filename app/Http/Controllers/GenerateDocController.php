@@ -6,6 +6,11 @@ use App\Models\Claim;
 use Illuminate\Http\Request;
 use App\Helpers\ServiceHelper;
 use App\Helpers\TouristHelper;
+use PhpOffice\PhpWord\ComplexType\TblWidth;
+use PhpOffice\PhpWord\Element\Table;
+use PhpOffice\PhpWord\Element\TextRun;
+use PhpOffice\PhpWord\SimpleType\TblWidth as SimpleTypeTblWidth;
+
 // use PhpOffice\PhpWord\PhpWord;
 // use PhpOffice\PhpWord\Writer\Word2007;
 
@@ -27,6 +32,7 @@ class GenerateDocController extends Controller
         $claimId = $request->id;
         $claim = Claim::find($claimId);
         $contractData['claimId'] = $claim->id;
+
         $contractData['claimDate'] = $claim->date_start->format('d.m.Y');
         // Общие данные по заявке, когда заказчик - ФИЗ. ЛИЦО
         if ($claim->customer && $claim->customer->type === 'person') {
@@ -34,14 +40,23 @@ class GenerateDocController extends Controller
                 $contractData['personSurname'] = $claim->customer->person->person_surname ?: 'Фамилия';
                 $contractData['personName'] = $claim->customer->person->person_name ?: 'Имя';
                 $contractData['personPatronymic'] = $claim->customer->person->person_patronymic ?: 'Отчество';
-                $contractData['personPassportSeries'] = $claim->customer->person->passport->person_passport_series ?: '-';
-                $contractData['personPassportNumber'] = $claim->customer->person->passport->person_passport_number ?: '-';
-                $contractData['personPassportIssued'] = $claim->customer->person->passport->person_passport_issued ?: '-';
-                $contractData['personPassportDate'] = $claim->customer->person->passport->person_passport_date ?: '-';
-                $contractData['personPassportAddress'] = $claim->customer->person->passport->person_passport_address ?: '-';
-                $contractData['personAddress'] = $claim->customer->person->commons->person_address ?: '-';
-                $contractData['personPhone'] = $claim->customer->person->commons->person_phone ?: '-';
-                $contractData['personEmail'] = $claim->customer->person->commons->person_email ?: '-';
+                $contractData['personPassportSeries'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_series
+                    ? $claim->customer->person->passport->person_passport_series : '-';
+                $contractData['personPassportNumber'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_number
+                    ? $claim->customer->person->passport->person_passport_number : '-';
+                $contractData['personPassportIssued'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_issued
+                    ? $claim->customer->person->passport->person_passport_issued : '-';
+                $contractData['personPassportDate'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_date
+                    ? $claim->customer->person->passport->person_passport_date : '-';
+                $contractData['personPassportAddress'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_address
+                    ? $claim->customer->person->passport->person_passport_address : '-';
+                $contractData['personAddress'] = $claim->customer->person->commons && $claim->customer->person->commons->person_address
+                    ? $claim->customer->person->commons->person_address  : '-';
+                $contractData['personPhone'] = $claim->customer->person->commons && $claim->customer->person->commons->person_phone
+                    ? $claim->customer->person->commons->person_phone : '-';
+                $contractData['personEmail'] = $claim->customer->person->commons && $claim->customer->person->commons->person_email
+                    ? $claim->customer->person->commons->person_email : '-';
+                $phpWord->setValues($contractData);
             }
         }
         $arrTourist = [];
@@ -124,16 +139,16 @@ class GenerateDocController extends Controller
             }
         }
         // Услуга "Трансфер"
-        $transferTableData = [];
-        $serviceTransferHelperType = ServiceHelper::transferType();
-        if (count($claim->serviceTransfer) > 0) {
-            foreach ($claim->serviceTransfer as $item) {
-                $transferTableData[] = [
-                    'transferName' => 'Трансфер',
-                    'transferDescr' => $item->transfer_route_start . ',' . $item->transfer_route_end,
-                ];
-            }
-        }
+        // $transferTableData = [];
+        // $serviceTransferHelperType = ServiceHelper::transferType();
+        // if (count($claim->serviceTransfer) > 0) {
+        //     foreach ($claim->serviceTransfer as $item) {
+        //         $transferTableData[] = [
+        //             'transferName' => 'Трансфер',
+        //             'transferDescr' => $item->transfer_route_start . ',' . $item->transfer_route_end,
+        //         ];
+        //     }
+        // }
         // Услуга "Топливный сбор"
         $fuelSurchangeTableData = [];
         if (count($claim->serviceFuelSurchange) > 0) {
@@ -175,6 +190,25 @@ class GenerateDocController extends Controller
                 ];
             }
         }
+        $transferTableData = [];
+        $transferTypes = ServiceHelper::transferType();
+        if (count($claim->serviceTransfer) > 0) {
+            $transferTypeStr = '';
+            foreach ($claim->serviceTransfer as $key => $item) {
+                foreach ($transferTypes as $transferType) {
+                    if ($transferType['value'] == $item->transfer_type) {
+                        $transferTypeStr = $transferType['title'];
+                    }
+                }
+                $transferTableData[] = [
+                    'transferId' => $key + 1,
+                    'transferRoute' => $item->transfer_route ?: '',
+                    'transferType' => $transferTypeStr ?: '',
+                    'transferTransport' => $item->transfer_transport ?: '',
+                    'touristList' => $touristList ?: '',
+                ];
+            }
+        }
         // dd($visaTableData);
         // Данные о туристах
         $touristTableData = [];
@@ -188,16 +222,19 @@ class GenerateDocController extends Controller
                     }
                 }
                 $touristTableData[] = [
-                    'touristSurname' => $tourist->tourist_surname,
-                    'touristName' => $tourist->tourist_name,
-                    'touristPatronymic' => $tourist->tourist_patronymic,
+                    'touristSurname' => $tourist->tourist_surname ?: '',
+                    'touristName' => $tourist->tourist_name ?: '',
+                    'touristPatronymic' => $tourist->tourist_patronymic ?: '',
                     'touristSurnameLat' => $tourist->common && $tourist->common->tourist_surname_lat ? $tourist->common->tourist_surname_lat : '',
                     'touristNameLat' => $tourist->common && $tourist->common->tourist_name_lat ? $tourist->common->tourist_name_lat : '',
                     'touristGender' => $genderStr,
                     'touristBirthday' => $tourist->common && $tourist->common->tourist_birthday ? $tourist->common->tourist_birthday : '',
-                    'touristPassportSeries' => $tourist->passport && $tourist->passport->tourist_passport_series ? $tourist->passport->tourist_passport_series : '',
-                    'touristPassportNumber' => $tourist->passport && $tourist->passport->tourist_passport_number ? $tourist->passport->tourist_passport_number : '',
-                    'touristPassportDate' => $tourist->passport && $tourist->passport->tourist_passport_date ? $tourist->passport->tourist_passport_date : '',
+                    'touristPassportSeries' => $tourist->passport && $tourist->passport->tourist_passport_series
+                        ? $tourist->passport->tourist_passport_series : '',
+                    'touristPassportNumber' => $tourist->passport && $tourist->passport->tourist_passport_number
+                        ? $tourist->passport->tourist_passport_number : '',
+                    'touristPassportDate' => $tourist->passport && $tourist->passport->tourist_passport_date
+                        ? $tourist->passport->tourist_passport_date : '',
                     'touristInternationalPassportSeries' => $tourist->internationalPassport && $tourist->internationalPassport->tourist_international_passport_series
                         ? $tourist->internationalPassport->tourist_international_passport_series : '',
                     'touristInternationalPassportNumber' => $tourist->internationalPassport && $tourist->internationalPassport->tourist_international_passport_number
@@ -207,6 +244,14 @@ class GenerateDocController extends Controller
                     'touristInternationalPassportPeriod' => $tourist->internationalPassport && $tourist->internationalPassport->tourist_international_passport_period
                         ? $tourist->internationalPassport->tourist_international_passport_period->format('d.m.Y') : '',
                 ];
+                // $phpWord->cloneBlock('block_ipassport', 1, true, true);
+                // $phpWord->cloneBlock('block_passport', 1, true, true);
+                // if ($tourist->internationalPassport == null) {
+                //     $phpWord->deleteBlock('block_ipassport');
+                // }
+                // if ($tourist->passport->tourist_passport_series == null) {
+                //     $phpWord->deleteBlock('block_passport');
+                // }
             }
         }
         // dd($otherServiceTableData);
@@ -221,15 +266,18 @@ class GenerateDocController extends Controller
         $phpWord->cloneRowAndSetValues('habitationHotel', $habitationTableData);
         $phpWord->cloneRowAndSetValues('insuranceCompany', $insuranceTableData);
         $phpWord->cloneRowAndSetValues('flightFrom', $flightTableData);
-        $phpWord->cloneRowAndSetValues('transferName', $transferTableData);
         $phpWord->cloneRowAndSetValues('fuelsurchangeName', $fuelSurchangeTableData);
         $phpWord->cloneRowAndSetValues('otherServiceName', $otherServiceTableData);
         $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
         $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
+        $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
+
+        // $inline = new TextRun();
+        // $inline->addText('by a red italic text', array('italic' => true, 'color' => 'red'));
+        // $phpWord->setComplexValue('inline', $inline);
 
         $phpWord->setValues($tourPackageTableData);
 
-        $phpWord->setValues($contractData);
         $phpWord->saveAs($fileName . '.docx');
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }

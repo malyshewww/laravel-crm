@@ -16,17 +16,9 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="field-group__item">
-									<label class="field-group__label">Маршрут (туда)</label>
+									<label class="field-group__label">Маршрут</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_route_start">
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="field-group__item">
-									<label class="field-group__label">Маршрут (обратно)</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_route_end">
+										<input class="field-group__input" type="text" name="transfer_route">
 									</div>
 								</div>
 							</div>
@@ -75,17 +67,9 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="field-group__item">
-									<label class="field-group__label">Вид транспорта (туда)</label>
+									<label class="field-group__label">Вид транспорта</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_transport_start">
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="field-group__item">
-									<label class="field-group__label">Вид транспорта (обратно)</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_transport_end">
+										<input class="field-group__input" type="text" name="transfer_transport">
 									</div>
 								</div>
 							</div>

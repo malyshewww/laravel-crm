@@ -30,7 +30,7 @@
 		<div class="area-group__body">
 			@if ($claim->tourist && count($claim->tourist) > 0)
 			<div class="table-responsive">
-				<table class="tourist-table table" id="touristTable"> 
+				<table class="tourist-table table" id="tourist-table"> 
 					<thead> 
 						<th style="width: 20%">Фио туриста</th>
 						<th style="width: 5%">Пол</th>
@@ -49,7 +49,7 @@
 										{{$tourist->tourist_patronymic ?: ''}}
 									</td>
 									<td class="tourist-table__gender">
-										{{$tourist->common->tourist_gender === 'male' ? 'М' : 'Ж'}}
+										{{$tourist->common->tourist_gender == 'male' ? 'М' : 'Ж'}}
 									</td>
 									<td class="tourist-table__date">
 										{{$tourist->common->tourist_birthday ?: ''}}
@@ -136,7 +136,7 @@
 												</button>
 											</div>
 											<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить туриста">
-												<button class="btn-trash" type="button" >
+												<button class="btn-trash" type="button" data-type="delete" data-id="{{$tourist->id}}" data-url="{{route('tourist.destroy', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
 													<i class="fa-solid fa-trash-can"></i>
 												</button>
 											</div>

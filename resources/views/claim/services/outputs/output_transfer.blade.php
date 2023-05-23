@@ -4,9 +4,7 @@
 			<td><strong>ТРАНСФЕР</strong></td>
 			<td>% </td>
 			<td>
-				{{$transfer->transfer_route_start ?: 'Не указан'}}
-				- 
-				{{$transfer->transfer_route_end ?: 'Не указан'}}
+				{{$transfer->transfer_route}}
 			</td>
 			<td>
 				@if ($transfer->datetransfer_start || $transfer->datetransfer_end)

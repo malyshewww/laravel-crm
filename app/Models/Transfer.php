@@ -13,13 +13,11 @@ class Transfer extends Model
     protected $table = 'transfers';
     protected $fillable = [
         'type',
-        'transfer_route_start',
-        'transfer_route_end',
+        'transfer_route',
         'datetransfer_start',
         'datetransfer_end',
         'transfer_type',
-        'transfer_transport_start',
-        'transfer_transport_end',
+        'transfer_transport',
         'claim_id',
     ];
     protected $casts = [

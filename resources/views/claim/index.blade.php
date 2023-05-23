@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<div class="filters">
-			<form action="{{route('getClaims')}}" method="get" class="form">
+			<form action="{{route('claim.records')}}" id="formFilter">
 				@csrf
 				<div class="filters__top">
 					<div class="filters__column">
@@ -64,6 +64,7 @@
 				</div>
 			</form>
 		</div>
+		<table id="test-table"></table>
 		<div class="table-responsive">
 			<table class="tour-table table" id="table-id">
 				<thead> 

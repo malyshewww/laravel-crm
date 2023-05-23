@@ -49,42 +49,24 @@ class ClaimController extends Controller
     {
         if (Auth::check()) {
             $tourpackages = TourPackage::all();
-            $tourists = DB::table('tourists')
-                ->join('tourist_data_commons', 'tourists.id', '=', 'tourist_data_commons.tourist_id')
-                ->join('claims', 'tourists.claim_id', '=', 'claims.id')
-                ->where('tourists.claim_id', '=', 'claims.id')
-                ->select(
-                    'tourists.*',
-                    'tourist_data_commons.tourist_gender',
-                    'tourist_data_commons.tourist_surname_lat',
-                    'tourist_data_commons.tourist_name_lat',
-                    'tourist_data_commons.tourist_nationality',
-                    'tourist_data_commons.tourist_birthday',
-                    'tourist_data_commons.tourist_address',
-                    'tourist_data_commons.tourist_phone',
-                    'tourist_data_commons.tourist_email'
-                )
-                ->get();
-            if (count($claim->paymentInvoices) > 0) {
-                $currencyRUB = [];
-                $currencyUSD = [];
-                $currencyEUR = [];
-                foreach ($claim->paymentInvoices as $key => $item) {
-                    if ($item->currency === 'RUB') {
-                        $currencyRUB[] = $item->sum('sum');
-                    }
-                    if ($item->currency === 'USD') {
-                        $currencyUSD[] = $item->sum('sum');
-                    }
-                    if ($item->currency === 'EUR') {
-                        $currencyEUR[] = $item->sum('sum');
-                    }
-                }
-            }
-            $resultSumRUB = array_sum($currencyRUB);
-            $resultSumUSD = array_sum($currencyUSD);
-            $resultSumEUR = array_sum($currencyEUR);
-            return view('claim.show', compact('claim', 'tourpackages'));
+            // $tourists = DB::table('tourists')
+            //     ->join('tourist_data_commons', 'tourists.id', '=', 'tourist_data_commons.tourist_id')
+            //     ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            //     ->where('tourists.claim_id', '=', 'claims.id')
+            //     ->select(
+            //         'tourists.*',
+            //         'tourist_data_commons.tourist_gender',
+            //         'tourist_data_commons.tourist_surname_lat',
+            //         'tourist_data_commons.tourist_name_lat',
+            //         'tourist_data_commons.tourist_nationality',
+            //         'tourist_data_commons.tourist_birthday',
+            //         'tourist_data_commons.tourist_address',
+            //         'tourist_data_commons.tourist_phone',
+            //         'tourist_data_commons.tourist_email'
+            //     )
+            //     ->get();
+            $tourists = Tourist::get();
+            return view('claim.show', compact('claim', 'tourpackages', 'tourists'));
         }
         return redirect()->route('user.login');
     }
@@ -137,6 +119,17 @@ class ClaimController extends Controller
     }
 
     // Fetch DataTable data
+    public function records(Request $request)
+    {
+        $claims = Claim::all();
+        return response()->json([
+            'students' => $claims
+        ]);
+        if ($request->ajax()) {
+        } else {
+            abort(403);
+        }
+    }
     public function getClaims(Request $request)
     {
         return response()->json([

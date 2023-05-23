@@ -17,13 +17,11 @@ class CreateTransfersTable extends Migration
             $table->id();
 
             $table->string('type');
-            $table->string('transfer_route_start')->nullable(true);
-            $table->string('transfer_route_end')->nullable(true);
+            $table->string('transfer_route')->nullable(true);
             $table->datetime('datetransfer_start')->nullable(true);
             $table->datetime('datetransfer_end')->nullable(true);
             $table->string('transfer_type')->nullable(true);
-            $table->string('transfer_transport_start')->nullable(true);
-            $table->string('transfer_transport_end')->nullable(true);
+            $table->string('transfer_transport')->nullable(true);
 
             $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
             $table->timestamps();

@@ -18,28 +18,13 @@
 						<div class="row">
 							<div class="col-lg-6">
 								<div class="field-group__item">
-									<label class="field-group__label">Маршрут (туда)</label>
+									<label class="field-group__label">Маршрут</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_route_start"
-										value="{{$transfer->transfer_route_start ?: ''}}">
+										<input class="field-group__input" type="text" name="transfer_route"
+										value="{{$transfer->transfer_route ?: ''}}">
 									</div>
 								</div>
 							</div>
-							<div class="col-lg-6">
-								<div class="field-group__item">
-									<label class="field-group__label">Маршрут (обратно)</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_route_end"
-										value="{{$transfer->transfer_route_end ?: ''}}">
-									</div>
-								</div>
-							</div>
-							{{-- @php
-								$start_ts = strtotime($transfer->datetransfer_start ? $transfer->datetransfer_start : '');
-								$end_ts = strtotime($transfer->datetransfer_end ? $transfer->datetransfer_end : '');
-								$date_start_format = date('Y-m-d H:i', $start_ts);
-								$date_end_format = date('Y-m-d H:i', $end_ts);
-							@endphp --}}
 							<div class="col-lg-3">
 								<div class="field-group__item">
 									<label class="field-group__label">Начало</label>
@@ -90,19 +75,10 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="field-group__item">
-									<label class="field-group__label">Вид транспорта (туда)</label>
+									<label class="field-group__label">Вид транспорта</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_transport_start"
-										value="{{$transfer->transfer_transport_start ?: ''}}">
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="field-group__item">
-									<label class="field-group__label">Вид транспорта (обратно)</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="transfer_transport_end"
-										value="{{$transfer->transfer_transport_end ?: ''}}">
+										<input class="field-group__input" type="text" name="transfer_transport"
+										value="{{$transfer->transfer_transport ?: ''}}">
 									</div>
 								</div>
 							</div>

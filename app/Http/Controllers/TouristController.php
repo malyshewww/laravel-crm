@@ -204,4 +204,12 @@ class TouristController extends Controller
             'status' => 'success'
         ]);
     }
+    public function destroy($id)
+    {
+        $claim = Tourist::findOrFail($id);
+        $claim->delete();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
 }

@@ -50,7 +50,7 @@ Route::get('/claims/{claim}', [ClaimController::class, 'show'])->middleware('aut
 Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
 Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
 Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
-Route::get('/claims/getClaims', [ClaimController::class, 'getClaims'])->name('getClaims');
+Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
 
 // Информация о туроператоре
 Route::post('/touroperators', [TourOperatorController::class, 'store'])->name('touroperator.store');
@@ -68,7 +68,7 @@ Route::post('/customers/{customer}', [CustomerController::class, 'store'])->name
 // Данные о туристе
 Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');
 Route::patch('/tourists/update/{tourist}', [TouristController::class, 'update'])->name('tourist.update');
-
+Route::delete('/tourists/{tourist}/delete', [TouristController::class, 'destroy'])->name('tourist.destroy');
 // Данные об услугах
 
 // Услуга Перелет

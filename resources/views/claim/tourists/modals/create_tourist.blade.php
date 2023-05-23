@@ -19,7 +19,7 @@
 			<form action="{{route('tourist.store', $claim->id)}}" method="post" id="formTourist" class="form">
 				@csrf
 				<input type="hidden" name="claim_id" value="{{$claim->id}}">
-				<input type="hidden" name="tourist_id" value="{{$claim->tourist && count($claim->tourist) > 0 ? count($claim->tourist) + 1 : 1}}">
+				<input type="hidden" name="tourist_id" value="{{count($tourists) > 0 ? count($tourists) + 1 : 1}}">
 				<div class="modal__body">
 					<div class="field-group">
 						<div class="row">

@@ -11,13 +11,11 @@ class TransferController extends Controller
     {
         $data = [
             'type' => $request->type,
-            'transfer_route_start' => $request->transfer_route_start,
-            'transfer_route_end' => $request->transfer_route_end,
+            'transfer_route' => $request->transfer_route,
             'datetransfer_start' => $request->datetransfer_start,
             'datetransfer_end' => $request->datetransfer_end,
             'transfer_type' => $request->transfer_type,
-            'transfer_transport_start' => $request->transfer_transport_start,
-            'transfer_transport_end' => $request->transfer_transport_end,
+            'transfer_transport' => $request->transfer_transport,
             'claim_id' => $request->claim_id,
         ];
         Transfer::create($data);
@@ -29,13 +27,11 @@ class TransferController extends Controller
     {
         $data = [
             'type' => $request->type,
-            'transfer_route_start' => $request->transfer_route_start,
-            'transfer_route_end' => $request->transfer_route_end,
+            'transfer_route' => $request->transfer_route,
             'datetransfer_start' => $request->datetransfer_start,
             'datetransfer_end' => $request->datetransfer_end,
             'transfer_type' => $request->transfer_type,
-            'transfer_transport_start' => $request->transfer_transport_start,
-            'transfer_transport_end' => $request->transfer_transport_end,
+            'transfer_transport' => $request->transfer_transport,
             'claim_id' => $request->claim_id,
         ];
         Transfer::updateOrCreate([

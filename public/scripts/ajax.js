@@ -21,6 +21,7 @@ function formData() {
 				const selectGender = formId == 'formCustomer' ? thisForm.person_gender : thisForm.tourist_gender;
 				const selectNationality = formId == 'formCustomer' ? thisForm.person_nationality : thisForm.tourist_nationality;
 				const inputBirthday = formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
+				const selectVisa = thisForm.visa_info;
 				const token = thisForm._token;
 				const inputId = thisForm.id?.value;
 				const formInputs = formGroup?.querySelectorAll('input');
@@ -73,25 +74,28 @@ function formData() {
 							// elementUpdate('#groupDataCustomer')
 						} else {
 							if (result.date_start) {
-								inputDateStart.classList.add('error')
+								inputDateStart.classList.add('error');
 							}
 							if (result.date_end) {
-								inputDateEnd.classList.add('error')
+								inputDateEnd.classList.add('error');
 							}
 							if (result.person_surname || result.tourist_surname) {
-								inputSurname.classList.add('error')
+								inputSurname.classList.add('error');
 							}
 							if (result.person_name || result.tourist_name) {
-								inputName.classList.add('error')
+								inputName.classList.add('error');
 							}
 							if (result.person_gender || result.tourist_gender) {
-								selectGender.parentNode.classList.add('error')
+								selectGender.parentNode.classList.add('error');
 							}
 							if (result.person_nationality || result.tourist_nationality) {
-								selectNationality.parentNode.classList.add('error')
+								selectNationality.parentNode.classList.add('error');
 							}
 							if (result.person_birthday || result.tourist_birthday) {
-								inputBirthday.classList.add('error')
+								inputBirthday.classList.add('error');
+							}
+							if (result.visa_info) {
+								selectVisa.parentNode.classList.add('error');
 							}
 						}
 						buttonSubmit.removeAttribute('disabled');
@@ -254,6 +258,7 @@ if (modalDelete) {
 			'table-detailtour': 'Вы действительно хотите удалить услугу?',
 			'table-file': 'Вы действительно хотите удалить файл?',
 			'table-finance': `Вы действительно хотите удалить счёт № ${dataNumber}`,
+			'tourist-table': `Вы действительно хотите удалить туриста?`,
 		};
 		modalTitle.textContent = getModalTitle(tableId, titles);
 	})
