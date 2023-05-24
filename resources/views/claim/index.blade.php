@@ -12,8 +12,8 @@
 			</div>
 		</div>
 		<div class="filters">
-			<form action="{{route('claim.records')}}" id="formFilter">
-				@csrf
+			<form action="{{route('claim.records')}}" id="formFilter" class="form-filter">
+				{{-- @csrf --}}
 				<div class="filters__top">
 					<div class="filters__column">
 						<div class="filters__row field-group" style="--col: 3">
@@ -69,20 +69,28 @@
 			<table class="tour-table table" id="table-id">
 				<thead> 
 					<tr>
-						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
+						{{-- <th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Начало тура</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Cтраны назначения</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, туристы</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Поставщик, стоимость у ТО и оплата ТА</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, стоимость и долг заказчика</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Менеджер</th>
-						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
+						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th> --}}
 						{{-- <th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th> --}}
 					</tr>
 				</thead>
 				<tbody>
-					
+					{{-- @foreach ($claims as $item)
+						{{$item}}
+					@endforeach --}}
+					{{-- @foreach ($claims as $claim)
+						<tr>
+							<td>{{$claim->id}}</td>
+						</tr>
+					@endforeach --}}
 					@foreach ($claims as $claim)
+						
 						@php
 							$start_ts = strtotime($claim->date_start);
 							$end_ts = strtotime($claim->date_end); 
@@ -197,11 +205,6 @@
 									</button>
 								</div>
 							</td>
-							{{-- <td>
-								<button class="btn-copy" type="button" data-bs-toggle="tooltip" aria-label="Клонировать заявку" data-bs-original-title="Клонировать заявку">
-									<i class="fa-solid fa-copy"></i>
-								</button>
-							</td> --}}
 						</tr>
 					@endforeach
 				</tbody>
@@ -214,8 +217,8 @@
 	</div>
 @endsection
 @section('page-modal')
-	@include('claim.indexmodals.createclaim')
-	@include('claim.showmodals.delete_record')
+	{{-- @include('claim.indexmodals.createclaim')
+	@include('claim.showmodals.delete_record') --}}
 @endsection
 @section('page-script')
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>

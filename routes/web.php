@@ -69,6 +69,7 @@ Route::post('/customers/{customer}', [CustomerController::class, 'store'])->name
 Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');
 Route::patch('/tourists/update/{tourist}', [TouristController::class, 'update'])->name('tourist.update');
 Route::delete('/tourists/{tourist}/delete', [TouristController::class, 'destroy'])->name('tourist.destroy');
+Route::get('/tourists/{tourist}/data', [TouristController::class, 'touristData'])->name('tourist.data');
 // Данные об услугах
 
 // Услуга Перелет

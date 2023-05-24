@@ -19,18 +19,33 @@ use Illuminate\Support\Facades\Validator;
 
 class ClaimController extends Controller
 {
-    public function index(Claim $claim)
+    public function index(Request $request, Claim $claim)
     {
-        // $claims =  Claim::with('latestClaim')->get()->sortByDesc('latestClaim.created_at');
-        // $claims =  Claim::with('latestClaim')->get()->sortByDesc('latestClaim.created_at');
-        // $claims = Claim::paginate(5);
+        $data['q'] = $request->query('fio');
+        $query = DB::table('customers')
+            ->join('claims', 'customers.claim_id', '=', 'claims.id')
+            ->join('tourists', 'tourists.claim_id', '=', 'claims.id')
+            ->join('persons', 'persons.customer_id', '=', 'customers.id')
+            ->join('companies', 'companies.customer_id', '=', 'customers.id')
+            ->join('tour_packages', 'tour_packages.claim_id', '=', 'claims.id')
+            ->where('customers.claim_id', '=', 'claims.id')
+            ->select(
+                'claims.*',
+                'tourists.*',
+                'customers.*',
+                'persons.*',
+                'companies.*',
+                'tour_packages.*',
+            )
+            // ->where('tourists.claim_id', '=', 'claims.id')
+            // ->Orwhere('persons.customer_id', '=', 'customers.id')
+            ->get();
+        $claims = Claim::get();
+        // dd($query);
+        $data['claims'] = $query;
         if (Auth::check()) {
-            $claims = Claim::get();
-            DB::table('claims')
-                ->where('id', $claim->id)
-                ->update(['deleted_at' => null]);
             $tourpackages = TourPackage::get();
-            return view('claim.index', compact('claims', 'tourpackages'));
+            return view('claim.index', compact('claims'));
         }
         return redirect()->route('user.login');
     }
@@ -121,11 +136,11 @@ class ClaimController extends Controller
     // Fetch DataTable data
     public function records(Request $request)
     {
-        $claims = Claim::all();
-        return response()->json([
-            'students' => $claims
-        ]);
+        $claims = Claim::get();
         if ($request->ajax()) {
+            return response()->json([
+                'students' => $claims
+            ]);
         } else {
             abort(403);
         }

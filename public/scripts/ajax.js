@@ -226,6 +226,399 @@ function updateModalFields(modalId) {
 }
 updateModalFields('addCustomer');
 
+const modalUpdateTourist = document.getElementById('updateTourist');
+modalUpdateTourist.addEventListener('show.bs.modal', (event) => {
+	const thisModal = event.target;
+	const form = thisModal.querySelector('form');
+	const modalBody = form.querySelector('.modal__body');
+	const btn = event.relatedTarget;
+	const dataId = btn.dataset.id;
+	const dataClaimId = btn.dataset.claimId;
+	const dataUrl = btn.dataset.url;
+	const inputClaimId = form.claim_id;
+	const inputTouristId = form.tourist_id;
+	form.setAttribute('action', dataUrl);
+	inputClaimId.value = dataClaimId;
+	inputTouristId.value = dataId;
+	fetch(`/tourists/${dataId}/data`)
+		.then(response => response.status === 200 ? response.json() : console.log('Подключения к сети нет '))
+		.then((data) => {
+			const choiceConfig = {
+				searchEnabled: false,
+				noResultsText: "Ничего не найдено",
+				itemSelectText: "",
+				searchPlaceholderValue: "Поиск",
+				placeholder: false,
+				allowHTML: true,
+				removeItemButton: true,
+				searchResultLimit: 8,
+				shouldSort: false,
+			};
+			let newArrGender = data.genders.map((gender, index) => {
+				return {
+					label: gender.title,
+					value: gender.value,
+					id: index + 1,
+					selected: gender.value == data.common.tourist_gender ? true : false,
+				}
+			})
+			let newArrNationality = data.nationalities.map((nationality, index) => {
+				return {
+					label: nationality.title,
+					value: nationality.value,
+					id: index + 1,
+					selected: nationality.value == data.common.tourist_nationality ? true : false,
+				}
+			})
+			let newArrVisa = data.visaOpts.map((visa, index) => {
+				return {
+					label: visa.title,
+					value: visa.value,
+					id: index + 1,
+					selected: visa.value == data.common.visa_info ? true : false,
+				}
+			})
+			let newArrCities = data.cities.map((city, index) => {
+				return {
+					label: city.name,
+					value: index,
+					id: index,
+					selected: index == data.common.visa_city ? true : false,
+				}
+			})
+			setTimeout(() => {
+				const selectTouristGender = form.querySelectorAll('[data-gender]');
+				[...selectTouristGender].forEach((select) => {
+					let choices = new Choices(select, choiceConfig);
+					choices.setChoices(newArrGender, 'value', 'label');
+				})
+				const selectTouristNatinality = form.querySelectorAll('[data-nationality]');
+				[...selectTouristNatinality].forEach((select) => {
+					let choices = new Choices(select, choiceConfig);
+					choices.setChoices(newArrNationality, 'value', 'label');
+				})
+				const selectTouristVisa = form.querySelectorAll('[data-visas]');
+				[...selectTouristVisa].forEach((select) => {
+					let choices = new Choices(select, choiceConfig);
+					choices.setChoices(newArrVisa, 'value', 'label');
+				})
+				const selectTouristCities = form.querySelectorAll('[data-cities]');
+				[...selectTouristCities].forEach((select) => {
+					let choices = new Choices(select, choiceConfig);
+					choices.setChoices(newArrCities, 'value', 'label');
+				})
+			}, 100)
+			formBody = `
+				<div class="field-group">
+					<div class="row">
+						<div class="col-12">
+							<div class="checkbox">
+								<label>
+									<input class="checkbox__input" type="checkbox" data-trigger="translit" name="translit_tourist">
+									<span class="checkbox__label">
+										Включить транслитерацию по госту 2016
+									</span>
+								</label>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label required">Фамилия</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" data-name="surname" name="tourist_surname" required
+									value="${data.tourist.tourist_surname}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label required">Имя</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" data-name="name" name="tourist_name" required
+									value="${data.tourist.tourist_name}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Отчество</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="tourist_patronymic"
+									value="${data.tourist.tourist_patronymic ? data.tourist.tourist_patronymic : ''}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label required">Пол</label>
+								<select name="tourist_gender" required data-gender="tourist_gender"></select>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Фамилия (LAT)</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" data-name="surname_lat" name="tourist_surname_lat"
+									value="${data.common.tourist_surname_lat ? data.common.tourist_surname_lat : ''}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Имя (LAT)</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" data-name="name_lat" name="tourist_name_lat"
+									value="${data.common.tourist_name_lat ? data.common.tourist_name_lat : ''}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label required">Гражданство</label>
+								<select name="tourist_nationality" required data-nationality>
+								</select>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label required">Дата рождения</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="tourist_birthday" required
+									value="${data.common.tourist_birthday ? data.common.tourist_birthday : ''}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Фактический адрес</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="tourist_address"
+									value="${data.common.tourist_address ? data.common.tourist_address : ''}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Телефон</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="tel" name="tourist_phone"
+									value="${data.common.tourist_phone ? data.common.tourist_phone : ''}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Email</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="email" name="tourist_email"
+									value="${data.common.tourist_email ? data.common.tourist_email : ''}">
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
+						<div class="row"> 
+							<div class="col-lg-4">
+								<div class="text-label text-center mb-2">Национальный паспорт</div>
+								<div class="row"> 
+									<div class="col-sm-3">
+										<div class="field-group__item">
+											<label class="field-group__label">Серия</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="number" name="tourist_passport_series"
+												value="${data.passport.tourist_passport_series ? data.passport.tourist_passport_series : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-3">
+										<div class="field-group__item">
+											<label class="field-group__label">Номер</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="number" name="tourist_passport_number"
+												value="${data.passport.tourist_passport_number ? data.passport.tourist_passport_number : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="field-group__item">
+											<label class="field-group__label">Дата выдачи</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_passport_date"
+												value="${data.passport.tourist_passport_date ? data.passport.tourist_passport_date : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-8">
+										<div class="field-group__item">
+											<label class="field-group__label">Кем выдан</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_passport_issued"
+												value="${data.passport.tourist_passport_issued ? data.passport.tourist_passport_issued : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="field-group__item">
+											<label class="field-group__label">Код</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_passport_code"
+												value="${data.passport.tourist_passport_code ? data.passport.tourist_passport_code : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="field-group__item">
+											<label class="field-group__label">Адрес регистрации</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_passport_address"
+												value="${data.passport.tourist_passport_address ? data.passport.tourist_passport_address : ''}">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="text-label text-center mb-2">Свидетельство о рождении</div>
+								<div class="row"> 
+									<div class="col-sm-4">
+										<div class="field-group__item">
+											<label class="field-group__label">Серия</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_certificate_series"
+												value="${data.certificate.tourist_certificate_series ? data.certificate.tourist_certificate_series : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-8">
+										<div class="field-group__item">
+											<label class="field-group__label">Номер</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_certificate_number"
+												value="${data.certificate.tourist_certificate_number ? data.certificate.tourist_certificate_number : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="field-group__item">
+											<label class="field-group__label">Дата выдачи</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" data-name="date" data-format="date" name="tourist_certificate_date"
+												value="${data.certificate.tourist_certificate_date ? data.certificate.tourist_certificate_date : ''}">
+												<div class="field-group__trigger">
+													<i class="fa-regular fa-calendar-days calendar-icon"></i>
+													<input class="input-trigger" type="text" data-trigger="date">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="field-group__item">
+											<label class="field-group__label">Кем выдан</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_certificate_issued"
+												value="${data.certificate.tourist_certificate_issued ? data.certificate.tourist_certificate_issued : ''}">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<div class="text-label text-center mb-2">Заграничный паспорт</div>
+								<div class="row"> 
+									<div class="col-sm-4">
+										<div class="field-group__item">
+											<label class="field-group__label">Серия</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_international_passport_series"
+												value="${data.internationalPassport.tourist_international_passport_series ? data.internationalPassport.tourist_international_passport_series : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-8">
+										<div class="field-group__item">
+											<label class="field-group__label">Номер</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_international_passport_number"
+												value="${data.internationalPassport.tourist_international_passport_number ? data.internationalPassport.tourist_international_passport_number : ''}">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="field-group__item">
+											<label class="field-group__label">Дата выдачи</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" data-name="date" data-format="date" name="tourist_international_passport_date"
+												value="${data.internationalPassport.tourist_international_passport_date ? data.internationalPassport.tourist_international_passport_date : ''}">
+												<div class="field-group__trigger">
+													<i class="fa-regular fa-calendar-days calendar-icon"></i>
+													<input class="input-trigger" type="text" data-trigger="date">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="field-group__item">
+											<label class="field-group__label">Срок действия</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" data-name="date" data-format="date" name="tourist_international_passport_period"
+												value="${data.internationalPassport.tourist_international_passport_period ? data.internationalPassport.tourist_international_passport_period : ''}">
+												<div class="field-group__trigger">
+													<i class="fa-regular fa-calendar-days calendar-icon"></i>
+													<input class="input-trigger" type="text" data-trigger="date">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-12">
+										<div class="field-group__item">
+											<label class="field-group__label">Кем выдан</label>
+											<div class="field-group__box">
+												<input class="field-group__input" type="text" name="tourist_international_passport_issued"
+												value="${data.internationalPassport.tourist_international_passport_issued ? data.internationalPassport.tourist_international_passport_issued : ''}">
+											</div>
+										</div>
+										<div class="text-label mt-2">Пример: UFMS-12</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row"> 
+							<div class="col-lg-4">
+								<div class="text-label mb-2">Информация и визе</div>
+								<div class="select-items">
+									<div class="field-group__item">
+										<label class="field-group__label required">Необходимость визы</label>
+										<select name="visa_info" id="visaInfo" required data-visas>
+											<option value=""></option>
+										</select>
+									</div>
+									<div class="field-group__item">
+										<label class="field-group__label">Город подачи визы</label>
+										<select name="visa_city" data-cities ${data.common.visa_info === "not" ? " disabled" : ""}>
+											<option value=""></option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			`
+			modalBody.innerHTML = formBody;
+			console.log(data);
+			// var doc = parser.parseFromString(result, "text/html");
+			// console.log(doc.querySelector('h1').innerHTML);
+		});
+})
+modalUpdateTourist.addEventListener('hidden.bs.modal', (event) => {
+	const thisModal = event.target;
+	const form = thisModal.querySelector('form');
+	const modalBody = form.querySelector('.modal__body');
+	setTimeout(() => {
+		modalBody.innerHTML = '';
+	}, 200)
+});
+
 async function elementUpdate(selector) {
 	try {
 		var html = await (await fetch(location.href)).text();

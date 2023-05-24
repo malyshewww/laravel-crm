@@ -131,7 +131,7 @@
 									<td class="tourist-table__actions">
 										<div class="table__buttons">
 											<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать данные о туристе">
-												<button class="btn-gear" type="button" data-id="{{$tourist->id}}" data-bs-toggle="modal" data-bs-target="#updateTourist-{{$tourist->id}}">
+												<button class="btn-gear" type="button" data-claim-id="{{$claim->id}}" data-id="{{$tourist->id}}" data-url="{{route('tourist.update', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#updateTourist">
 													<i class="fa-solid fa-gear"></i>
 												</button>
 											</div>
@@ -146,7 +146,6 @@
 												</button>
 											</div> --}}
 										</div>
-										@include('claim.tourists.modals.update_tourist', ['tourist' => $tourist])
 									</td>
 								</tr>
 								<tr class="join">

@@ -30,22 +30,54 @@ let table = new DataTable(mainTable, {
 	"aLengthMenu": [[1, 5, 10, 15, 25, 50, 100, 200 - 1], [1, 5, 10, 15, 25, 50, 100, 200, "All"]],
 	"iDisplayLength": 5,
 	order: [[0, 'desc']],
-	initComplete: function () {
-		this.api().columns().every(function () {
-			var column = this;
-			var search = $(`<input class="form-control form-control-sm" type="text" placeholder="Search">`)
-				.appendTo($(column.footer()).empty())
-				.on('change input', function () {
-					var val = $(this).val()
-					column
-						.search(val ? val : '', true, false)
-						.draw();
-				});
-
-		});
-	},
 	// "processing": true,
 	// "serverSide": true,
+	// "ajax": {
+	// 	"url": "/claims/records",
+	// 	"data": function (data) {
+	// 		console.log(data);
+	// 	},
+	// },
+	// columns: [
+	// 	{
+	// 		title: 'Номер',
+	// 		name: 'id',
+	// 		render: 'Aidu'
+	// 	},
+	// 	{
+	// 		title: 'Начало тура',
+	// 		name: 'tour',
+	// 	},
+	// 	{
+	// 		title: 'Страны назначения',
+	// 		data: 'Страны назначения',
+	// 		name: 'countries',
+	// 	},
+	// 	{
+	// 		title: 'Заказчик, туристы',
+	// 		data: 'Заказчик, туристы',
+	// 		name: 'customer_tourists',
+	// 	},
+	// 	{
+	// 		title: 'Поставщик, стоимость у ТО и оплата ТА',
+	// 		data: 'Поставщик',
+	// 		name: 'provider'
+	// 	},
+	// 	{
+	// 		title: 'Заказчик, стоимость и долг заказчика',
+	// 		data: 'Заказчик',
+	// 		name: 'customer_cost',
+	// 	},
+	// 	{
+	// 		title: 'Менеджер',
+	// 		data: 'Менеджер',
+	// 		name: 'manager',
+	// 	},
+	// 	{
+	// 		data: 'Действия',
+	// 		name: 'actions',
+	// 	}
+	// ],
 	"dom": 'lBfrtip',
 	buttons: [
 		{
@@ -87,67 +119,64 @@ function fetchTable(std, res) {
 		const inputDateStart = thisForm.date_start;
 		const inputDateEnd = thisForm.date_end;
 		const token = thisForm._token;
-		fetch('/claims/records', {
-			headers: {
-				"X-CSRF-Token": token,
-			},
-			method: 'POST',
-			body: formData
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				var i = 1;
-				new DataTable(testTable, {
-					"data": data.students,
-					"columns": [
-						{
-							"data": "id",
-							"render": function (data, type, row, meta) {
-								return i++;
-							}
-						},
-						{
-							"data": "Начало тура",
-							"render": function (data, type, row, meta) {
-								return `${row.date_start}`;
-							}
-						},
-						{
-							"data": "Cтраны назначения"
-						},
-						{
-							"data": "Заказчик, туристы"
-						},
-						{
-							"data": " "
-						},
-						{
-							"data": " "
-						},
-						{
-							"data": "Менеджер"
-						},
-						{
-							"data": " "
-						},
-					]
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			})
+		f(inputFio.value, inputDateStart.value, inputDateEnd.value)
+		// fetch('/claims/records', {
+		// 	headers: {
+		// 		"X-CSRF-Token": token,
+		// 	},
+		// 	method: 'POST',
+		// 	body: formData
+		// })
+		// 	.then((response) => response.json())
+		// 	.then((data) => {
+		// 		var i = 1;
+		// 		new DataTable(testTable, {
+		// 			"data": data.students,
+		// 			"columns": [
+		// 				{
+		// 					"data": "id",
+		// 					"render": function (data, type, row, meta) {
+		// 						return i++;
+		// 					}
+		// 				},
+		// 				{
+		// 					"data": "Начало тура",
+		// 					"render": function (data, type, row, meta) {
+		// 						return `${row.date_start}`;
+		// 					}
+		// 				},
+		// 				{
+		// 					"data": "Cтраны назначения"
+		// 				},
+		// 				{
+		// 					"data": "Заказчик, туристы"
+		// 				},
+		// 				{
+		// 					"data": " "
+		// 				},
+		// 				{
+		// 					"data": " "
+		// 				},
+		// 				{
+		// 					"data": "Менеджер"
+		// 				},
+		// 				{
+		// 					"data": " "
+		// 				},
+		// 			]
+		// 		});
+		// 	})
+		// 	.catch((error) => {
+		// 		console.log(error);
+		// 	})
 	})
 }
-fetchTable();
-function f(std, res) {
+// fetchTable();
+function testFetch() {
 	$.ajax({
 		url: '/claims/records',
-		method: 'get',
+		method: 'post',
 		dataType: 'json',
-		data: {
-			std,
-			res
-		},
 		success: function (data) {
 			$('#test-table').DataTable({
 				"responsive": true,
@@ -187,3 +216,54 @@ function f(std, res) {
 		}
 	});
 }
+// testFetch();
+function f(fio, dateStart, dateEnd) {
+	$.ajax({
+		url: '/claims/records',
+		method: 'GET',
+		dataType: 'json',
+		data: {
+			fio,
+			dateStart,
+			dateEnd,
+		},
+		success: function (data) {
+			$('#test-table').DataTable({
+				"responsive": true,
+				"data": data.students,
+				"columns": [{
+					"data": "id",
+					"render": function (data, type, row, meta) {
+						return `${row.id}`;
+					}
+				},
+				{
+					"data": "Начало тура",
+					"render": function (data, type, row, meta) {
+						return `${row.date_start}`;
+					}
+				},
+				{
+					"data": "Cтраны назначения"
+				},
+				{
+					"data": "Заказчик, туристы"
+				},
+				{
+					"data": ""
+				},
+				{
+					"data": ""
+				},
+				{
+					"data": "Менеджер"
+				},
+				{
+					"data": ""
+				},
+				]
+			});
+		}
+	});
+}
+// f();

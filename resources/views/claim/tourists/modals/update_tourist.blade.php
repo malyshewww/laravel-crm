@@ -1,4 +1,4 @@
-<div class="modal fade modal-extended" id="updateTourist-{{$tourist->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade modal-extended" id="updateTourist" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content modal__content">
 			<div class="modal__header">
@@ -7,13 +7,13 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('tourist.update', $tourist->id)}}" method="post" id="formTouristUpdate" class="form">
+			<form action="" method="post" id="formTouristUpdate" class="form">
 				@csrf
 				@method('patch')
-				<input type="hidden" name="claim_id" value="{{$claim->id}}">
-				<input type="hidden" name="tourist_id" value="{{$tourist->id}}">
+				<input type="hidden" name="claim_id" value="">
+				<input type="hidden" name="tourist_id" value="">
 				<div class="modal__body">
-					<div class="field-group"> 
+					{{-- <div class="field-group"> 
 						<div class="row">
 							<div class="col-12">
 								<div class="checkbox">
@@ -355,7 +355,7 @@
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> --}}
 				</div>
 				<div class="modal__footer">
 					<div class="modal__buttons">

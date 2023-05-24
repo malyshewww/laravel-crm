@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\TouristHelper;
 use App\Models\Tourist;
 use App\Models\TouristDataCertificate;
 use App\Models\TouristDataCommons;
@@ -210,6 +211,25 @@ class TouristController extends Controller
         $claim->delete();
         return response()->json([
             'status' => 'success'
+        ]);
+    }
+    public function touristData($id)
+    {
+        $tourist = Tourist::find($id);
+        $touristGenders = TouristHelper::gender();
+        $touristNationalities = TouristHelper::nationality();
+        $touristVisas = TouristHelper::visa();
+        $cities = TouristHelper::city();
+        return response()->json([
+            'tourist' => $tourist,
+            'common' => $tourist->common,
+            'passport' => $tourist->passport,
+            'certificate' => $tourist->certificate,
+            'internationalPassport' => $tourist->internationalPassport,
+            'genders' => $touristGenders,
+            'nationalities' => $touristNationalities,
+            'visaOpts' => $touristVisas,
+            'cities' => $cities,
         ]);
     }
 }

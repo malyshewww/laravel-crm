@@ -45,6 +45,7 @@
 						</div>
 					</div>
 				</div>
+				{{$claim->tourist}}
 				<div class="claim__tabs tabs-claim">
 					<nav class="tabs-claim__navigation"> 
 						<ul class="tabs-claim__list"> 
@@ -496,6 +497,7 @@
 	@include('claim.showmodals.file')
 
 	@include('claim.tourists.modals.create_tourist')
+	@include('claim.tourists.modals.update_tourist')
 
 	@include('claim.services.modals.flights')
 	@include('claim.services.modals.insurance')
