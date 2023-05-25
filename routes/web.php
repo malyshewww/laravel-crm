@@ -67,9 +67,10 @@ Route::post('/customers/{customer}', [CustomerController::class, 'store'])->name
 
 // Данные о туристе
 Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');
-Route::patch('/tourists/update/{tourist}', [TouristController::class, 'update'])->name('tourist.update');
+Route::patch('/tourists/{tourist}/update', [TouristController::class, 'update'])->name('tourist.update');
 Route::delete('/tourists/{tourist}/delete', [TouristController::class, 'destroy'])->name('tourist.destroy');
 Route::get('/tourists/{tourist}/data', [TouristController::class, 'touristData'])->name('tourist.data');
+Route::get('/tourists/{tourist}/load-{action}', [TouristController::class, 'loadModal']);
 // Данные об услугах
 
 // Услуга Перелет

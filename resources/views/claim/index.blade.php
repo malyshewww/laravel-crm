@@ -69,14 +69,14 @@
 			<table class="tour-table table" id="table-id">
 				<thead> 
 					<tr>
-						{{-- <th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
+						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Начало тура</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Cтраны назначения</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, туристы</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Поставщик, стоимость у ТО и оплата ТА</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, стоимость и долг заказчика</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Менеджер</th>
-						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th> --}}
+						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
 						{{-- <th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th> --}}
 					</tr>
 				</thead>

@@ -45,7 +45,6 @@
 						</div>
 					</div>
 				</div>
-				{{$claim->tourist}}
 				<div class="claim__tabs tabs-claim">
 					<nav class="tabs-claim__navigation"> 
 						<ul class="tabs-claim__list"> 
@@ -515,4 +514,5 @@
 	@include('claim.showmodals.delete_record')
 @endsection
 @section('page-script')
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 @endsection

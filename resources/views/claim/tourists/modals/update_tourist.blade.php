@@ -9,7 +9,7 @@
 			</div>
 			<form action="" method="post" id="formTouristUpdate" class="form">
 				@csrf
-				@method('patch')
+				@method('PATCH')
 				<input type="hidden" name="claim_id" value="">
 				<input type="hidden" name="tourist_id" value="">
 				<div class="modal__body">

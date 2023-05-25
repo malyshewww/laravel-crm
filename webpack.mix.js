@@ -1,4 +1,9 @@
 const mix = require('laravel-mix');
+var LiveReloadPlugin = require('webpack-livereload-plugin');
+
+mix.webpackConfig({
+    plugins: [new LiveReloadPlugin()]
+});
 
 /*
  |--------------------------------------------------------------------------
@@ -12,10 +17,10 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css').options({
-        processCssUrls: false
-    })
-    .copy('resources/fonts/**/*', 'public/fonts')
-    .copy('resources/images/', 'public/images/', false)
-    .sourceMaps()
-    .version()
+    // .sass('resources/sass/app.scss', 'public/css').options({
+    //     processCssUrls: false
+    // })
+    // .copy('resources/fonts/**/*', 'public/fonts')
+    // .copy('resources/images/', 'public/images/', false)
+    // .sourceMaps()
+    // .version()
