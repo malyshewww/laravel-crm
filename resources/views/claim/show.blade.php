@@ -222,7 +222,7 @@
 														</div>
 													</div>
 													<div class="table-responsive">
-														<table class="table finance-table" id="table-finance" hidden>
+														<table class="table finance-table" id="table-finance" {{count($claim->paymentInvoices) > 0 ? '' : 'hidden'}}>
 															<thead> 
 																<tr>
 																	<th></th>
@@ -258,18 +258,26 @@
 																				<div class="table__buttons">
 																					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать счет">
 																						<button class="btn-pen" type="button" 
-																						data-bs-toggle="modal" 
-																						data-bs-target="#updatePaymentInvoice-{{$itemInvoice->id}}">
+																							data-bs-toggle="modal" data-bs-target="#updatePaymentInvoice"
+																							data-id="{{$itemInvoice->id}}" 
+																							data-type="update"
+																							data-claim-id="{{$claim->id}}"
+																							data-url="{{route('payment_invoice.update', $itemInvoice->id)}}"
+																							data-path="{{route('payment_invoice.loadModal', [$itemInvoice->id, 'update'])}}">
 																							<i class="fa-solid fa-pen"></i>
 																						</button>
 																					</div>
 																					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить счет">
-																						<button class="btn-trash" type="button" data-type="delete" data-number="{{$claim->id}}-{{$itemInvoice->id}}" data-id="{{$itemInvoice->id}}" data-url="{{route('payment_invoice.destroy', $itemInvoice->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
+																						<button class="btn-trash" type="button" 
+																							data-bs-toggle="modal" data-bs-target="#deleteRecord"
+																							data-type="delete" 
+																							data-id="{{$itemInvoice->id}}" 
+																							data-url="{{route('payment_invoice.destroy', $itemInvoice->id)}}" 
+																							data-title="Вы действительно хотите удалить счёт № {{$claim->id}}-{{$itemInvoice->id}}?">
 																							<i class="fa-solid fa-trash-can"></i>
 																						</button>
 																					</div>
 																				</div>
-																				@include('claim.finance.modals.update_payment_invoice', ['invoice' => $itemInvoice])
 																			</div>
 																		</td>
 																	</tr>
@@ -489,11 +497,12 @@
 @endsection
 @section('page-modal')
 	@include('claim.showmodals.comment')
-	@include('claim.showmodals.touroperator')
-	@include('claim.showmodals.tourpackage')
-	@include('claim.showmodals.contract')
 	@include('claim.showmodals.customer')
 	@include('claim.showmodals.file')
+
+	@include('claim.contract.modals.contract')
+	@include('claim.touroperator.modals.touroperator')
+	@include('claim.tourpackage.modals.tourpackage')
 
 	@include('claim.tourists.modals.create_tourist')
 	@include('claim.tourists.modals.update_tourist')
@@ -510,6 +519,7 @@
 	@include('claim.finance.modals.prepayment')
 	@include('claim.finance.modals.payment')
 	@include('claim.finance.modals.payment_invoice')
+	@include('claim.finance.modals.update_payment_invoice')
 
 	@include('claim.showmodals.delete_record')
 @endsection

@@ -20,12 +20,22 @@
 			<td class="table__actions">
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
-						<button class="btn-gear" type="button" data-id="{{$visa->id}}" data-bs-toggle="modal" data-bs-target="#updateVisa-{{$visa->id}}">
+						<button class="btn-gear" type="button" 
+							data-bs-toggle="modal" data-bs-target="#updateVisa"
+							data-id="{{$visa->id}}" 
+							data-type="update"
+							data-claim-id="{{$claim->id}}"
+							data-url="{{route('visa.update', $visa->id)}}"
+							data-path="{{route('visa.loadModal', [$visa->id, 'update'])}}">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить услугу">
-						<button class="btn-trash" type="button" data-type="delete" data-id="{{$visa->id}}" data-url="{{route('visa.destroy', $visa->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
+						<button class="btn-trash" type="button" 
+							data-bs-toggle="modal" data-bs-target="#deleteRecord"
+							data-type="delete" 
+							data-id="{{$visa->id}}" data-url="{{route('visa.destroy', $visa->id)}}" 
+							data-title="Вы действительно хотите удалить услугу?">
 							<i class="fa-solid fa-trash-can"></i>
 						</button>
 					</div>

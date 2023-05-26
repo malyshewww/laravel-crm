@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FinancePaymentInvoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FinancePaymentInvoiceController extends Controller
 {
@@ -31,7 +32,7 @@ class FinancePaymentInvoiceController extends Controller
             'claim_id' => $request->claim_id
         ];
         FinancePaymentInvoice::updateOrCreate([
-            'id' => $request->invoice_id
+            'id' => $request->record_id
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -44,5 +45,10 @@ class FinancePaymentInvoiceController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $itemInvoice = FinancePaymentInvoice::findOrFail($id);
+        return view('claim.finance.modals.modal_update_invoice', compact('itemInvoice'))->render();
     }
 }

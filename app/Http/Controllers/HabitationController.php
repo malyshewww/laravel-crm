@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Habitation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HabitationController extends Controller
 {
@@ -43,7 +44,7 @@ class HabitationController extends Controller
             'claim_id' => $request->claim_id,
         ];
         Habitation::updateOrCreate([
-            'id'  => $request->habitation_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -56,5 +57,14 @@ class HabitationController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $habitation = Habitation::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_habitation', compact('habitation', 'tourists'))->render();
     }
 }

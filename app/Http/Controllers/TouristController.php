@@ -250,6 +250,6 @@ class TouristController extends Controller
     public function loadModal($id, $action)
     {
         $tourist = Tourist::findOrFail($id);
-        return view('claim.tourists.modals.modal_update', compact('tourist'));
+        return view('claim.tourists.modals.modal_update', compact('tourist'))->render();
     }
 }

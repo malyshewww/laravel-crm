@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Insurance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InsuranceController extends Controller
 {
@@ -39,7 +40,7 @@ class InsuranceController extends Controller
             'claim_id' => $request->claim_id,
         ];
         Insurance::updateOrCreate([
-            'id'  => $request->insurance_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -52,5 +53,14 @@ class InsuranceController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $insurance = Insurance::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_insurance', compact('insurance', 'tourists'))->render();
     }
 }

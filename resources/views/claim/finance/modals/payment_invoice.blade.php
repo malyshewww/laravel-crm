@@ -61,7 +61,7 @@
 								<div class="field-group__item">
 									<label class="field-group__label">Дата и время счёта</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" data-format="datetime" name="date_invoices">
+										<input class="field-group__input" type="text" data-name="date" data-format="datetime" name="date_invoices">
 										<div class="field-group__trigger">
 											<i class="fa-regular fa-calendar-days calendar-icon"></i>
 											<input class="input-trigger" type="text" data-trigger="date">

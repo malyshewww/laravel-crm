@@ -172,98 +172,71 @@ function fetchTable(std, res) {
 	})
 }
 // fetchTable();
-function testFetch() {
-	$.ajax({
-		url: '/claims/records',
-		method: 'post',
-		dataType: 'json',
-		success: function (data) {
-			$('#test-table').DataTable({
-				"responsive": true,
-				"data": data.students,
-				"columns": [{
-					"data": "id",
-					"render": function (data, type, row, meta) {
-						return i++;
-					}
-				},
-				{
-					"data": "Начало тура",
-					"render": function (data, type, row, meta) {
-						return `${row.date_start}`;
-					}
-				},
-				{
-					"data": "Cтраны назначения"
-				},
-				{
-					"data": "Заказчик, туристы"
-				},
-				{
-					"data": ""
-				},
-				{
-					"data": ""
-				},
-				{
-					"data": "Менеджер"
-				},
-				{
-					"data": ""
-				},
-				]
-			});
-		}
-	});
-}
-// testFetch();
-function f(fio, dateStart, dateEnd) {
-	$.ajax({
-		url: '/claims/records',
-		method: 'GET',
-		dataType: 'json',
-		data: {
-			fio,
-			dateStart,
-			dateEnd,
+function testFetch(fio, date_start, date_end) {
+	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	let data = {
+		fio,
+		date_start,
+		date_end,
+	};
+	fetch('/claims/records', {
+		headers: {
+			"X-CSRF-Token": token
 		},
-		success: function (data) {
-			$('#test-table').DataTable({
-				"responsive": true,
-				"data": data.students,
-				"columns": [{
-					"data": "id",
-					"render": function (data, type, row, meta) {
-						return `${row.id}`;
-					}
-				},
-				{
-					"data": "Начало тура",
-					"render": function (data, type, row, meta) {
-						return `${row.date_start}`;
-					}
-				},
-				{
-					"data": "Cтраны назначения"
-				},
-				{
-					"data": "Заказчик, туристы"
-				},
-				{
-					"data": ""
-				},
-				{
-					"data": ""
-				},
-				{
-					"data": "Менеджер"
-				},
-				{
-					"data": ""
-				},
+		method: 'POST',
+		body: data,
+	})
+		.then(response => response.status == 200 ? response.json() : console.log('status error'))
+		.then((data) => {
+			console.log(data);
+			let table = new DataTable(testTable, {
+				"processing": true,
+				"data": data,
+				"columns": [
+					{
+						"data": "number",
+						"render": function (data, type, row, meta) {
+							return `${row.id}`;
+						}
+					},
+					{
+						"data": "date_start",
+						"render": function (data, type, row, meta) {
+							return moment(row.date_start).format('DD.MM.YYYY');
+						}
+					},
+					{
+						"data": null
+					},
+					{
+						"data": null
+					},
+					{
+						"data": null
+					},
+					{
+						"data": null
+					},
+					{
+						"data": null
+					},
+					{
+						"data": null
+					},
 				]
-			});
-		}
-	});
+			})
+		})
 }
-// f();
+testFetch();
+function filter() {
+	const formFilter = document.getElementById('formFilter');
+	formFilter.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const thisForm = event.target;
+		const formData = new FormData(thisForm)
+		const inputFio = thisForm.querySelector('#fio').value
+		const inputDateStart = thisForm.querySelector('#tour_start').value
+		const inputDateEnd = thisForm.querySelector('#tour_end').value
+	})
+}
+filter();

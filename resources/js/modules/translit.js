@@ -6,7 +6,7 @@ import { translit } from 'gost-transliteration';
 	-	значения атрибутов у селекторов (input) - откуда брать значение / куда записывать результат 
 */
 export function getTranslitValues() {
-	let forms = document.querySelectorAll('.form');
+	let forms = document.querySelectorAll('form');
 	forms.forEach((form) => {
 		if (form) {
 			const inputSurName = form.querySelector('[data-name="surname"]');

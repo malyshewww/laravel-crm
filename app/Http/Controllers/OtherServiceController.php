@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OtherService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OtherServiceController extends Controller
 {
@@ -31,7 +32,7 @@ class OtherServiceController extends Controller
             'claim_id' => $request->claim_id,
         ];
         OtherService::updateOrCreate([
-            'id'  => $request->other_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -44,5 +45,14 @@ class OtherServiceController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $other = OtherService::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_other', compact('other', 'tourists'))->render();
     }
 }

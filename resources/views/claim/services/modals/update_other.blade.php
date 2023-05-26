@@ -1,4 +1,4 @@
-<div class="modal fade modal-extended" id="updateOtherService-{{$other->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade modal-extended" id="updateOtherService" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content modal__content">
 			<div class="modal__header">
@@ -7,59 +7,14 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('otherservice.update')}}" method="post" id="formOtherServiceUpdate-{{$other->id}}" class="form">
+			<form action="" method="post" id="formOtherServiceUpdate">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="other">
-				<input type="hidden" name="claim_id" value="{{$claim->id}}">
-				<input type="hidden" name="other_id" value="{{$other->id}}">
+				<input type="hidden" name="claim_id" value="">
+				<input type="hidden" name="record_id" value="">
 				<div class="modal__body">
-					<div class="field-group"> 
-						<div class="row">
-							<div class="col-12"> 
-								<div class="field-group__item">
-									<label class="field-group__label">Название</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="other_service_name"
-										value="{{$other->other_service_name ?: ''}}">
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="field-group__item">
-									<label class="field-group__label">Начало</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" 
-										data-name="date_start" data-format="date"
-										name="otherservice_date_start"
-										value="{{$other->otherservice_date_start ? $other->otherservice_date_start->format('Y-m-d') : ''}}">
-										<div class="field-group__trigger">
-											<i class="fa-regular fa-calendar-days calendar-icon"></i>
-											<input class="input-trigger" type="text" data-trigger="date_start">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="field-group__item">
-									<label class="field-group__label">Окончание</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" 
-										data-name="date_end" data-format="date"
-										name="otherservice_date_end"
-										value="{{$other->otherservice_date_end ? $other->otherservice_date_end->format('Y-m-d') : ''}}">
-										<div class="field-group__trigger">
-											<i class="fa-regular fa-calendar-days calendar-icon"></i>
-											<input class="input-trigger" type="text" data-trigger="date_end">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								@include('claim.tourists.list_tourists')
-							</div>
-						</div>
-					</div>
+					{{-- Разметка с данными из шаблона modal_update_other --}}
 				</div>
 				<div class="modal__footer">
 					<div class="modal__buttons">

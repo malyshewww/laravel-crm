@@ -1,7 +1,13 @@
 <div class="group-data__item item-group">
 	<div class="item-group__top"> 
 		<div class="item-group__title">ДАННЫЕ ДОГОВОРА И БРОНИРОВАНИЯ</div>
-		<button class="item-group__button btn-blue btn-redact" type="button" data-bs-toggle="modal" data-bs-target="#contractModal">
+		<button class="item-group__button btn-blue btn-redact" type="button" 
+			data-bs-toggle="modal" data-bs-target="#contractModal"
+			data-id="{{$claim->id}}" 
+			data-type="update"
+			data-claim-id="{{$claim->id}}"
+			data-url="{{route('contract.store', $claim->id)}}"
+			data-path="{{route('contract.loadModal', [$claim->id, 'update'])}}">
 			[изменить]
 		</button>
 	</div>

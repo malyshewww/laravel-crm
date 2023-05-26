@@ -97,7 +97,7 @@ export function initDatePicker(type) {
 			}
 		}
 	}
-	let forms = document.querySelectorAll('.form, .form-filter');
+	let forms = document.querySelectorAll('form');
 	[...forms].forEach((form) => {
 		let inputTriggerStart = form.querySelector('[data-trigger="date_start"]');
 		let inputTriggerEnd = form.querySelector('[data-trigger="date_end"]');
@@ -121,8 +121,8 @@ export function initDatePicker(type) {
 				...rangeDateConfig,
 				...settings,
 				autoClose: true,
-				dateFormat: inputAltFieldStartFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-				altFieldDateFormat: inputAltFieldStartFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
+				dateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+				altFieldDateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
 				timepicker: inputAltFieldStartFormat == 'datetime' ? true : false,
 				onSelect: ({ date, datepicker }) => {
 					datepickerEnd.update({
@@ -137,8 +137,8 @@ export function initDatePicker(type) {
 				...rangeDateConfig,
 				...settings,
 				autoClose: true,
-				dateFormat: inputAltFieldEndFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-				altFieldDateFormat: inputAltFieldEndFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
+				dateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+				altFieldDateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
 				timepicker: inputAltFieldEndFormat == 'datetime' ? true : false,
 				onSelect: ({ date, datepicker }) => {
 					datepickerStart.update({
@@ -154,31 +154,32 @@ export function initDatePicker(type) {
 		const inputTriggerDates = document.querySelectorAll('[data-trigger="date"]');
 		[...inputTriggerDates].forEach((item) => {
 			const parent = item.closest('.field-group__box');
-			const altFieldDate = parent.querySelector('.field-group__input')
-			let altFieldDateFormat = altFieldDate.dataset.format;
-			let dateFormat = "dd/MM/yyyy";
-			if (altFieldDate.value != "") {
-				singleDateConfig = {
-					selectedDates: [altFieldDate.value]
+			const altFieldDate = parent.querySelector('[data-name="date"]');
+			if (altFieldDate) {
+				let altFieldDateFormat = altFieldDate?.dataset.format;
+				if (altFieldDate.value != "") {
+					singleDateConfig = {
+						selectedDates: [altFieldDate.value]
+					}
 				}
+				let datepicker = new AirDatepicker(item, {
+					...settings,
+					dateSeparator: "",
+					position: "bottom right",
+					autoClose: true,
+					dateFormat: altFieldDateFormat == "datetime" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+					altField: altFieldDate,
+					altFieldDateFormat: altFieldDateFormat == "datetime" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+					buttons: ['today', 'clear'],
+					timepicker: altFieldDateFormat == "datetime" ? true : false,
+					timeFormat: 'HH:mm',
+					// navTitles: {
+					// 	days: '<strong>yyyy</strong> <i>MMMM</i>',
+					// 	months: 'Выберите месяц в  <strong>yyyy</strong>'
+					// },
+					...singleDateConfig
+				})
 			}
-			let datepicker = new AirDatepicker(item, {
-				...settings,
-				dateSeparator: "",
-				position: "bottom right",
-				autoClose: false,
-				dateFormat: altFieldDateFormat == "datetime" ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-				altField: altFieldDate,
-				altFieldDateFormat: altFieldDateFormat == "datetime" ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-				buttons: ['today', 'clear'],
-				timepicker: altFieldDateFormat == "datetime" ? true : false,
-				timeFormat: 'HH:mm',
-				// navTitles: {
-				// 	days: '<strong>yyyy</strong> <i>MMMM</i>',
-				// 	months: 'Выберите месяц в  <strong>yyyy</strong>'
-				// },
-				...singleDateConfig
-			})
 		});
 	}
 	singleDates();

@@ -6773,7 +6773,7 @@ function getRoute(formId, obj) {
 }
 formData();
 function formUpdate(formId) {
-  var form = document.querySelector(formId);
+  var form = document.getElementById(formId);
   if (form) {
     var _formId = form.getAttribute('id');
     var route = form.getAttribute('action');
@@ -6846,58 +6846,116 @@ function formUpdate(formId) {
     });
   }
 }
-var tableButtons = document.querySelectorAll('.table__buttons button');
-var modalUpdateTourist = document.getElementById('updateTourist');
-_toConsumableArray(tableButtons).forEach(function (button) {
-  button.addEventListener('click', function (event) {
-    var thisButton = event.currentTarget;
-    var dataId = thisButton.dataset.id;
-    var dataAction = thisButton.dataset.action;
-    var dataClaimId = thisButton.dataset.claimId;
-    var dataUrl = thisButton.dataset.url;
-    var pageUrl = BASE_URL;
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    if (dataAction == 'update') {
-      fetch("".concat(pageUrl, "/tourists/").concat(dataId, "/load-").concat(dataAction), {
+function modalUpdate(modalUpdateId, formId) {
+  var modal = document.getElementById(modalUpdateId);
+  if (modal) {
+    modal.addEventListener('shown.bs.modal', function (event) {
+      var thisModal = event.target;
+      var thisButton = event.relatedTarget;
+      var dataId = thisButton.dataset.id;
+      var dataClaimId = thisButton.dataset.claimId;
+      var dataUrl = thisButton.dataset.url;
+      var dataPath = thisButton.dataset.path;
+      var modalBody = thisModal.querySelector('.modal__body');
+      var form = thisModal.querySelector('form');
+      var inputClaimId = form.claim_id;
+      var inputTouristId = form.tourist_id;
+      var inputRecordId = form.record_id;
+      var token = form._token;
+      form.setAttribute('action', dataUrl);
+      inputClaimId.value = dataClaimId;
+      inputTouristId ? inputTouristId.value = dataId : null;
+      inputRecordId ? inputRecordId.value = dataId : null;
+      fetch("".concat(dataPath), {
         headers: {
           "X-CSRF-Token": token
         },
         method: 'GET'
       }).then(function (response) {
-        return response.text();
+        return response.status == 200 ? response.text() : console.log('status error');
       }).then(function (text) {
-        if (modalUpdateTourist) {
-          modalUpdateTourist.addEventListener('shown.bs.modal', function (event) {
-            var thisModal = event.target;
-            var modalBody = thisModal.querySelector('.modal__body');
-            var form = thisModal.querySelector('form');
-            var inputClaimId = form.claim_id;
-            var inputTouristId = form.tourist_id;
-            form.setAttribute('action', dataUrl);
-            inputClaimId.value = dataClaimId;
-            inputTouristId.value = dataId;
-            modalBody.innerHTML = text;
-            formUpdate('#formTouristUpdate');
-            (0,_translit_js__WEBPACK_IMPORTED_MODULE_0__.getTranslitValues)();
-            var selects = document.querySelectorAll('[data-select]');
-            _toConsumableArray(selects).forEach(function (select) {
-              if (select) {
-                var choices = new Choices(select, _choices_js__WEBPACK_IMPORTED_MODULE_1__.choiceConfig);
-              }
-            });
-            (0,_calendar_js__WEBPACK_IMPORTED_MODULE_2__.initDatePicker)();
-          });
-          modalUpdateTourist.addEventListener('hidden.bs.modal', function (event) {
-            var thisModal = event.target;
-            var form = thisModal.querySelector('form');
-            var modalBody = form.querySelector('.modal__body');
-            modalBody.innerHTML = '';
-          });
-        }
+        modalBody.innerHTML = text;
+        formUpdate(formId);
+        (0,_translit_js__WEBPACK_IMPORTED_MODULE_0__.getTranslitValues)();
+        var selects = document.querySelectorAll('[data-select]');
+        _toConsumableArray(selects).forEach(function (select) {
+          if (select) {
+            var choices = new Choices(select, _choices_js__WEBPACK_IMPORTED_MODULE_1__.choiceConfig);
+          }
+        });
+        (0,_calendar_js__WEBPACK_IMPORTED_MODULE_2__.initDatePicker)();
+      })["catch"](function (error) {
+        console.log(error);
+        ;
       });
-    }
+    });
+    modal.addEventListener('hidden.bs.modal', function (event) {
+      var thisModal = event.target;
+      var form = thisModal.querySelector('form');
+      var modalBody = form.querySelector('.modal__body');
+      modalBody.innerHTML = '';
+    });
+  }
+}
+modalUpdate('updateTourist', 'formTouristUpdate');
+modalUpdate('updateTransfer', 'formTransferUpdate');
+modalUpdate('updateInsurance', 'formInsuranceUpdate');
+modalUpdate('updateFlight', 'formFlightUpdate');
+modalUpdate('updateVisa', 'formVisaUpdate');
+modalUpdate('updateHabitation', 'formHabitationUpdate');
+modalUpdate('updateFuelSurchange', 'formFuelSurchangeUpdate');
+modalUpdate('updateExcursionProgramm', 'formExcursionUpdate');
+modalUpdate('updateOtherService', 'formOtherServiceUpdate');
+modalUpdate('updatePaymentInvoice', 'formPaymentInvoiceUpdate');
+modalUpdate('contractModal', 'formContract');
+modalUpdate('touroperatorModal', 'formTouroperator');
+modalUpdate('tourpackageModal', 'formTourpackage');
+var modalDelete = document.getElementById('deleteRecord');
+if (modalDelete) {
+  modalDelete.addEventListener('show.bs.modal', function (event) {
+    var thisModal = event.target;
+    var modalTitle = thisModal.querySelector('.modal__title');
+    var form = thisModal.querySelector('form');
+    var btn = event.relatedTarget;
+    var dataUrl = btn.dataset.url;
+    var dataTitle = btn.dataset.title;
+    form.setAttribute('action', dataUrl);
+    modalTitle.textContent = dataTitle !== "" ? dataTitle : "Вы действительно хотите удалить запись?";
   });
-});
+}
+function deleteRecord() {
+  if (modalDelete) {
+    var form = modalDelete.querySelector('form');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var thisForm = event.target;
+      var formData = new FormData(thisForm);
+      var currentModal = thisForm.closest('.modal');
+      var buttonSubmit = thisForm.querySelector('button[type="submit"]');
+      buttonSubmit.setAttribute('disabled', 'true');
+      var route = thisForm.getAttribute('action');
+      var token = thisForm._token;
+      fetch(route, {
+        headers: {
+          "X-CSRF-Token": token
+        },
+        method: 'POST',
+        body: formData
+      }).then(function (response) {
+        return response.json();
+      }).then(function (result) {
+        if (result.status === 'success') {
+          $(currentModal).modal('hide');
+        }
+        buttonSubmit.removeAttribute('disabled');
+      })["catch"](function (error) {
+        console.log(error);
+        buttonSubmit.removeAttribute('disabled');
+      });
+    });
+  }
+}
+deleteRecord();
 function elementUpdate(_x2) {
   return _elementUpdate.apply(this, arguments);
 }
@@ -6933,70 +6991,6 @@ function _elementUpdate() {
   }));
   return _elementUpdate.apply(this, arguments);
 }
-var modalDelete = document.getElementById('deleteRecord');
-if (modalDelete) {
-  modalDelete.addEventListener('show.bs.modal', function (event) {
-    var thisModal = event.target;
-    var modalTitle = thisModal.querySelector('.modal__title');
-    var form = thisModal.querySelector('form');
-    var btn = event.relatedTarget;
-    var currentTable = btn.closest('table');
-    var tableId = currentTable.getAttribute('id');
-    var dataUrl = btn.dataset.url;
-    var dataId = btn.dataset.id;
-    var dataNumber = btn.dataset.number;
-    form.setAttribute('action', dataUrl);
-    var titles = {
-      'table-id': "\u0412\u044B \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0437\u0430\u044F\u0432\u043A\u0443 \u2116 ".concat(dataId, "?"),
-      'table-detailtour': 'Вы действительно хотите удалить услугу?',
-      'table-file': 'Вы действительно хотите удалить файл?',
-      'table-finance': "\u0412\u044B \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0441\u0447\u0451\u0442 \u2116 ".concat(dataNumber),
-      'tourist-table': "\u0412\u044B \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u043E \u0445\u043E\u0442\u0438\u0442\u0435 \u0443\u0434\u0430\u043B\u0438\u0442\u044C \u0442\u0443\u0440\u0438\u0441\u0442\u0430?"
-    };
-    modalTitle.textContent = getModalTitle(tableId, titles);
-  });
-}
-function getModalTitle(tableId, obj) {
-  for (var _i2 = 0, _Object$entries2 = Object.entries(obj); _i2 < _Object$entries2.length; _i2++) {
-    var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
-      key = _Object$entries2$_i[0],
-      value = _Object$entries2$_i[1];
-    if (key == tableId) return value;
-  }
-}
-function deleteRecord() {
-  if (modalDelete) {
-    var form = modalDelete.querySelector('form');
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      var thisForm = event.target;
-      var currentModal = thisForm.closest('.modal');
-      var formData = new FormData(thisForm);
-      var buttonSubmit = thisForm.querySelector('button[type="submit"]');
-      buttonSubmit.setAttribute('disabled', 'true');
-      var route = thisForm.getAttribute('action');
-      var token = form._token;
-      fetch(route, {
-        headers: {
-          "X-CSRF-Token": token
-        },
-        method: 'POST',
-        body: formData
-      }).then(function (response) {
-        return response.json();
-      }).then(function (result) {
-        if (result.status === 'success') {
-          $(currentModal).modal('hide');
-        }
-        buttonSubmit.removeAttribute('disabled');
-      })["catch"](function (error) {
-        console.log(error);
-        buttonSubmit.removeAttribute('disabled');
-      });
-    });
-  }
-}
-deleteRecord();
 
 /***/ }),
 
@@ -7141,7 +7135,7 @@ function initDatePicker(type) {
       }
     };
   }
-  var forms = document.querySelectorAll('.form, .form-filter');
+  var forms = document.querySelectorAll('form');
   _toConsumableArray(forms).forEach(function (form) {
     var inputTriggerStart = form.querySelector('[data-trigger="date_start"]');
     var inputTriggerEnd = form.querySelector('[data-trigger="date_end"]');
@@ -7164,8 +7158,8 @@ function initDatePicker(type) {
         altField: inputAltFieldStart
       }, rangeDateConfig), settings), {}, {
         autoClose: true,
-        dateFormat: inputAltFieldStartFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-        altFieldDateFormat: inputAltFieldStartFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
+        dateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+        altFieldDateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
         timepicker: inputAltFieldStartFormat == 'datetime' ? true : false,
         onSelect: function onSelect(_ref2) {
           var date = _ref2.date,
@@ -7179,8 +7173,8 @@ function initDatePicker(type) {
         altField: inputAltFieldEnd
       }, rangeDateConfig), settings), {}, {
         autoClose: true,
-        dateFormat: inputAltFieldEndFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-        altFieldDateFormat: inputAltFieldEndFormat == 'datetime' ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
+        dateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+        altFieldDateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
         timepicker: inputAltFieldEndFormat == 'datetime' ? true : false,
         onSelect: function onSelect(_ref3) {
           var date = _ref3.date,
@@ -7196,25 +7190,26 @@ function initDatePicker(type) {
     var inputTriggerDates = document.querySelectorAll('[data-trigger="date"]');
     _toConsumableArray(inputTriggerDates).forEach(function (item) {
       var parent = item.closest('.field-group__box');
-      var altFieldDate = parent.querySelector('.field-group__input');
-      var altFieldDateFormat = altFieldDate.dataset.format;
-      var dateFormat = "dd/MM/yyyy";
-      if (altFieldDate.value != "") {
-        singleDateConfig = {
-          selectedDates: [altFieldDate.value]
-        };
+      var altFieldDate = parent.querySelector('[data-name="date"]');
+      if (altFieldDate) {
+        var altFieldDateFormat = altFieldDate === null || altFieldDate === void 0 ? void 0 : altFieldDate.dataset.format;
+        if (altFieldDate.value != "") {
+          singleDateConfig = {
+            selectedDates: [altFieldDate.value]
+          };
+        }
+        var datepicker = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](item, _objectSpread(_objectSpread({}, settings), {}, {
+          dateSeparator: "",
+          position: "bottom right",
+          autoClose: true,
+          dateFormat: altFieldDateFormat == "datetime" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+          altField: altFieldDate,
+          altFieldDateFormat: altFieldDateFormat == "datetime" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
+          buttons: ['today', 'clear'],
+          timepicker: altFieldDateFormat == "datetime" ? true : false,
+          timeFormat: 'HH:mm'
+        }, singleDateConfig));
       }
-      var datepicker = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](item, _objectSpread(_objectSpread({}, settings), {}, {
-        dateSeparator: "",
-        position: "bottom right",
-        autoClose: false,
-        dateFormat: altFieldDateFormat == "datetime" ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-        altField: altFieldDate,
-        altFieldDateFormat: altFieldDateFormat == "datetime" ? "dd.MM.yyyy HH:mm" : "dd.MM.yyyy",
-        buttons: ['today', 'clear'],
-        timepicker: altFieldDateFormat == "datetime" ? true : false,
-        timeFormat: 'HH:mm'
-      }, singleDateConfig));
     });
   }
   singleDates();
@@ -7289,7 +7284,7 @@ function initChoices() {
   });
 }
 initChoices();
-var forms = document.querySelectorAll('.form');
+var forms = document.querySelectorAll('form');
 _toConsumableArray(forms).forEach(function (form) {
   var selectVisaCity = form.querySelector('[data-name="visaCity"]');
   var selectVisaInfo = form.querySelector('[data-name="visaInfo"]');
@@ -7398,7 +7393,7 @@ __webpack_require__.r(__webpack_exports__);
 	-	значения атрибутов у селекторов (input) - откуда брать значение / куда записывать результат 
 */
 function getTranslitValues() {
-  var forms = document.querySelectorAll('.form');
+  var forms = document.querySelectorAll('form');
   forms.forEach(function (form) {
     if (form) {
       var inputSurName = form.querySelector('[data-name="surname"]');
@@ -54110,6 +54105,38 @@ console.log('hello from app.js');
 
 
 
+document.addEventListener('click', documentActions);
+function documentActions(event) {
+  var target = event.target;
+  if (target.closest('#passport-data')) {
+    showHide("#passport-data", ".customer-passport");
+  }
+  if (target.closest('#tourist-price')) {
+    showHide("#tourist-price", ".tourist-price-content");
+  }
+  if (target.closest('#finance-price')) {
+    showHide("#finance-price", ".finance-price-content");
+  }
+  if (target.closest('#history-price')) {
+    showHide("#history-price", ".finance-table");
+  }
+}
+function showHide(target, contentBlock) {
+  var btn = document.querySelector(target);
+  var content = document.querySelector(contentBlock);
+  btn.classList.toggle('isActive');
+  if (content) {
+    content.hasAttribute('hidden') ? content.removeAttribute('hidden') : content.setAttribute('hidden', 'true');
+  }
+}
+var btnCopy = document.getElementById('btn-copy');
+if (btnCopy) {
+  var claimNumber = document.querySelector('.claim-number');
+  btnCopy.addEventListener('click', function () {
+    navigator.clipboard.writeText(claimNumber.textContent);
+    btnCopy.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
+  });
+}
 })();
 
 /******/ })()

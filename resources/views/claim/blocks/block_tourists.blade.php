@@ -131,12 +131,20 @@
 									<td class="tourist-table__actions">
 										<div class="table__buttons">
 											<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать данные о туристе">
-												<button class="btn-gear" type="button" data-claim-id="{{$claim->id}}" data-id="{{$tourist->id}}" data-action="update" data-url="{{route('tourist.update', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#updateTourist">
+												<button class="btn-gear" type="button" 
+													data-bs-toggle="modal" data-bs-target="#updateTourist"
+													data-id="{{$tourist->id}}" 
+													data-type="update"
+													data-claim-id="{{$claim->id}}"
+													data-url="{{route('tourist.update', $tourist->id)}}"
+													data-path="{{route('tourist.loadModal', [$tourist->id, 'update'])}}">
 													<i class="fa-solid fa-gear"></i>
 												</button>
 											</div>
 											<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить туриста">
-												<button class="btn-trash" type="button" data-type="delete" data-id="{{$tourist->id}}" data-url="{{route('tourist.destroy', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
+												<button class="btn-trash" type="button" data-type="delete" data-id="{{$tourist->id}}" 
+													data-url="{{route('tourist.destroy', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord"
+													data-title="Вы действительно хотите удалить туриста?">
 													<i class="fa-solid fa-trash-can"></i>
 												</button>
 											</div>

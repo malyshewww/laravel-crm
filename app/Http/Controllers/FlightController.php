@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Flight;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FlightController extends Controller
 {
@@ -41,7 +42,7 @@ class FlightController extends Controller
             'claim_id' => $request->claim_id,
         ];
         Flight::updateOrCreate([
-            'id'  => $request->flight_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -54,5 +55,14 @@ class FlightController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $flight = Flight::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_flight', compact('flight', 'tourists'))->render();
     }
 }

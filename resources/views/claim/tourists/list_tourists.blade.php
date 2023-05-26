@@ -1,8 +1,8 @@
 <div class="checkbox-group"> 
 	<div class="checkbox-group__label field-group__label">Туристы</div>
-	@if (count($claim->tourist) > 0)
+	@if (count($tourists) > 0)
 		<div class="checkbox-items">
-			@foreach ($claim->tourist as $tourist)
+			@foreach ($tourists as $tourist)
 				<div class="checkbox">
 					<label>
 						<input class="checkbox__input" type="checkbox" name="tourist" checked>

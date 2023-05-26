@@ -37,15 +37,25 @@ class TourOperatorController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'claim_id' => $request->id,
+            'claim_id' => $request->claim_id,
             'title' => $request->title,
         ];
         Touroperator::updateOrCreate([
-            'claim_id' => $request->id
+            'claim_id' => $request->claim_id
         ], $data);
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $claim = Claim::findOrFail($id);
+        if ($claim->touroperator) {
+            $touroperator = Touroperator::findOrFail($claim->touroperator->id);
+            return view('claim.touroperator.modals.touroperator_update', compact('touroperator'))->render();
+        } else {
+            return view('claim.touroperator.modals.touroperator_create')->render();
+        }
     }
     /**
      * Display the specified resource.

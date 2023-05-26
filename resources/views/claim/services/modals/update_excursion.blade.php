@@ -1,4 +1,4 @@
-<div class="modal fade modal-extended" id="updateExcursionProgramm-{{$excursion->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade modal-extended" id="updateExcursionProgramm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content modal__content">
 			<div class="modal__header">
@@ -7,66 +7,14 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('excursion.update')}}" method="post" id="formExcursionUpdate-{{$excursion->id}}" class="form">
+			<form action="" method="post" id="formExcursionUpdate">
 				@csrf
 				@method('patch')
 				<input type="hidden" name="type" value="excursion">
-				<input type="hidden" name="claim_id" value="{{$claim->id}}">
-				<input type="hidden" name="excursion_id" value="{{$excursion->id}}">
+				<input type="hidden" name="claim_id" value="">
+				<input type="hidden" name="record_id" value="">
 				<div class="modal__body">
-					<div class="field-group"> 
-						<div class="row">
-							<div class="col-12"> 
-								<div class="field-group__item">
-									<label class="field-group__label">Название</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="excursion_name"
-										value="{{$excursion->excursion_name ?: ''}}">
-									</div>
-								</div>
-							</div>
-							<div class="col-12"> 
-								<div class="field-group__item">
-									<label class="field-group__label">Описание</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="excursion_description"
-										value="{{$excursion->excursion_description ?: ''}}">
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="field-group__item">
-									<label class="field-group__label">Начало</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" 
-										data-name="date_start" data-format="date"
-										name="excursion_date_start"
-										value="{{$excursion->excursion_date_start ? $excursion->excursion_date_start->format('Y-m-d') : ''}}">
-										<div class="field-group__trigger"><i class="fa-regular fa-calendar-days calendar-icon"></i>
-											<input class="input-trigger" type="text" data-trigger="date_start">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-3">
-								<div class="field-group__item">
-									<label class="field-group__label">Окончание</label>
-									<div class="field-group__box">
-										<input class="field-group__input" type="text" 
-										data-name="date_end" data-format="date"
-										name="excursion_date_end"
-										value="{{$excursion->excursion_date_end ? $excursion->excursion_date_end->format('Y-m-d') : ''}}">
-										<div class="field-group__trigger"><i class="fa-regular fa-calendar-days calendar-icon"></i>
-											<input class="input-trigger" type="text" data-trigger="date_end">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-12">
-								@include('claim.tourists.list_tourists')
-							</div>
-						</div>
-					</div>
+					{{-- Разметка с данными из шаблона modal_update_excursion --}}
 				</div>
 				<div class="modal__footer">
 					<div class="modal__buttons">

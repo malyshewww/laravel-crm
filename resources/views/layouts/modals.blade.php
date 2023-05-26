@@ -73,9 +73,9 @@
 					<div class="field-group__item">
 						<label class="field-group__label">Дата и время платежа</label>
 						<div class="field-group__box">
-							<input class="field-group__input" type="text" name="pay_date">
+							<input class="field-group__input" type="text" data-name="date" data-format="date" name="pay_date">
 							<div class="field-group__trigger"><i class="fa-regular fa-calendar-days calendar-icon"></i>
-							<input class="input-trigger" type="text" data-id="pay_date">
+							<input class="input-trigger" type="text" data-trigger="date">
 							</div>
 						</div>
 					</div>
@@ -85,7 +85,7 @@
 		</div>
 		<div class="modal__footer">
 			<div class="modal__buttons">
-			<button class="btn btn-create btn-primary" type="button"><i class="fa-solid fa-check"></i>Сохранить</button>
+			<button class="btn btn-create btn-primary" type="submit"><i class="fa-solid fa-check"></i>Сохранить</button>
 			<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
 			</div>
 		</div>

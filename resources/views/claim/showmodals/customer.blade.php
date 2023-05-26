@@ -9,12 +9,12 @@
 			</div>
 			<form action="{{route('customer.store', $claim->id)}}" method="post" id="formCustomer" class="form" data-url="{{route('customer.customerData', $claim->id)}}">
 				@csrf
+				<input type="hidden" name="claim_id" value="{{$claim->id}}">
+				<input type="hidden" name="person_id" value="{{$claim->id}}">
+				<input type="hidden" name="customer_id" value="{{$claim->id}}">
+				<input type="hidden" name="company_id" value="{{$claim->id}}">
 				<div class="modal__body">
 					<div class="field-group">
-						<input type="hidden" name="claim_id" value="{{$claim->id}}">
-						<input type="hidden" name="person_id" value="{{$claim->id}}">
-						<input type="hidden" name="customer_id" value="{{$claim->id}}">
-						<input type="hidden" name="company_id" value="{{$claim->id}}">
 						<div class="row">
 							<div class="col-12">
 								<div class="field-group__item">
@@ -353,7 +353,7 @@
 													<div class="field-group__item">
 														<label class="field-group__label">Дата выдачи</label>
 														<div class="field-group__box">
-															<input class="field-group__input" type="text" data-format="date" name="person_international_passport_date"
+															<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_date"
 																value="{{$claim->customer 
 																&& $claim->customer->person 
 																&& $claim->customer->person->internationalPassport
@@ -371,7 +371,7 @@
 													<div class="field-group__item">
 														<label class="field-group__label">Срок действия</label>
 														<div class="field-group__box">
-															<input class="field-group__input" type="text" data-format="date" name="person_international_passport_period"
+															<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_period"
 															value="{{$claim->customer 
 																&& $claim->customer->person 
 																&& $claim->customer->person->internationalPassport

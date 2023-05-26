@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\Transfer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransferController extends Controller
 {
@@ -35,7 +37,7 @@ class TransferController extends Controller
             'claim_id' => $request->claim_id,
         ];
         Transfer::updateOrCreate([
-            'id'  => $request->transfer_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -48,5 +50,14 @@ class TransferController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $transfer = Transfer::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_transfer', compact('transfer', 'tourists'))->render();
     }
 }

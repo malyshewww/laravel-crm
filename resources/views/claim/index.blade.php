@@ -64,7 +64,20 @@
 				</div>
 			</form>
 		</div>
-		<table id="test-table"></table>
+		<table id="test-table">
+			<thead> 
+				<tr>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Начало тура</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Cтраны назначения</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, туристы</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Поставщик, стоимость у ТО и оплата ТА</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, стоимость и долг заказчика</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Менеджер</th>
+					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
+				</tr>
+			</thead>
+		</table>
 		<div class="table-responsive">
 			<table class="tour-table table" id="table-id">
 				<thead> 
@@ -200,7 +213,8 @@
 							</td>
 							<td>
 								<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
-									<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data-type="delete" data-id="{{$claim->id}}" data-url="{{route('claim.destroy', $claim->id)}}">
+									<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data data-type="delete" data-id="{{$claim->id}}" 
+										data-url="{{route('claim.destroy', $claim->id)}}" data-title="Вы действительно хотите удалить заявку № {{$claim->id}}">
 										<i class="fa-solid fa-box-archive"></i>
 									</button>
 								</div>
@@ -217,8 +231,8 @@
 	</div>
 @endsection
 @section('page-modal')
-	{{-- @include('claim.indexmodals.createclaim')
-	@include('claim.showmodals.delete_record') --}}
+	@include('claim.indexmodals.createclaim')
+	@include('claim.showmodals.delete_record')
 @endsection
 @section('page-script')
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -226,6 +240,7 @@
 	<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 	<script src="{{asset('scripts/tables.js')}}"></script>
 @endsection
 {{-- @section('page-script')

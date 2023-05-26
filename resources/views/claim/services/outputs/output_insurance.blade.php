@@ -20,12 +20,23 @@
 			<td class="table__actions">
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
-						<button class="btn-gear" type="button" data-id="{{$insurance->id}}" data-bs-toggle="modal" data-bs-target="#updateInsurance-{{$insurance->id}}">
+						<button class="btn-gear" type="button" 
+							data-bs-toggle="modal" data-bs-target="#updateInsurance"
+							data-id="{{$insurance->id}}" 
+							data-type="update"
+							data-claim-id="{{$claim->id}}"
+							data-url="{{route('insurance.update', $insurance->id)}}"
+							data-path="{{route('insurance.loadModal', [$insurance->id, 'update'])}}">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить услугу">
-						<button class="btn-trash" type="button" data-type="delete" data-id="{{$insurance->id}}" data-url="{{route('insurance.destroy', $insurance->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord">
+						<button class="btn-trash" type="button" 
+							data-bs-toggle="modal" data-bs-target="#deleteRecord"
+							data-id="{{$insurance->id}}"
+							data-type="delete" 
+							data-url="{{route('insurance.destroy', $insurance->id)}}" 
+							data-title="Вы действительно хотите удалить услугу?">
 							<i class="fa-solid fa-trash-can"></i>
 						</button>
 					</div>

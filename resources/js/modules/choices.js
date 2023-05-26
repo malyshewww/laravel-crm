@@ -22,7 +22,7 @@ export function initChoices() {
 }
 initChoices();
 
-let forms = document.querySelectorAll('.form');
+let forms = document.querySelectorAll('form');
 [...forms].forEach((form) => {
 	const selectVisaCity = form.querySelector('[data-name="visaCity"]');
 	const selectVisaInfo = form.querySelector('[data-name="visaInfo"]');

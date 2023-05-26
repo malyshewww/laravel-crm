@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Excursion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ExcursionController extends Controller
 {
@@ -33,7 +34,7 @@ class ExcursionController extends Controller
             'claim_id' => $request->claim_id,
         ];
         Excursion::updateOrCreate([
-            'id'  => $request->excursion_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -46,5 +47,14 @@ class ExcursionController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $excursion = Excursion::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_excursion', compact('excursion', 'tourists'))->render();
     }
 }

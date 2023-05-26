@@ -136,14 +136,8 @@ class ClaimController extends Controller
     // Fetch DataTable data
     public function records(Request $request)
     {
-        $claims = Claim::get();
-        if ($request->ajax()) {
-            return response()->json([
-                'students' => $claims
-            ]);
-        } else {
-            abort(403);
-        }
+        $claims = Claim::all();
+        return json_encode($claims, true);
     }
     public function getClaims(Request $request)
     {

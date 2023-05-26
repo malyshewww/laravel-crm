@@ -1,7 +1,15 @@
 <div class="group-data__item item-group">
 	<div class="item-group__top">
 		<div class="item-group__title">ИНФОРМАЦИЯ О ТУРПАКЕТЕ</div>
-		<button class="item-group__button btn-blue btn-redact" type="button" data-bs-toggle="modal" data-bs-target="#tourpackageModal">[изменить]</button>
+		<button class="item-group__button btn-blue btn-redact" type="button" 
+			data-bs-toggle="modal" data-bs-target="#tourpackageModal"
+			data-id="{{$claim->id}}" 
+			data-type="update"
+			data-claim-id="{{$claim->id}}"
+			data-url="{{route('tourpackage.store', $claim->id)}}"
+			data-path="{{route('tourpackage.loadModal', [$claim->id, 'update'])}}">
+		[изменить]
+		</button>
 	</div>
 	@php
 		$start_ts = strtotime($claim->date_start);

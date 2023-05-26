@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Visa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VisaController extends Controller
 {
@@ -33,7 +34,7 @@ class VisaController extends Controller
             'claim_id' => $request->claim_id,
         ];
         Visa::updateOrCreate([
-            'id'  => $request->visa_id,
+            'id'  => $request->record_id,
         ], $data);
         return response()->json([
             'status' => 'success'
@@ -46,5 +47,14 @@ class VisaController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $visa = Visa::findOrFail($id);
+        $tourists = DB::table('tourists')
+            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
+            ->select('tourists.*')
+            ->get();
+        return view('claim.services.modals.modal_update_visa', compact('visa', 'tourists'))->render();
     }
 }
