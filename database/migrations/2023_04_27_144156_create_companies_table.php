@@ -18,7 +18,8 @@ class CreateCompaniesTable extends Migration
             $table->string('company_fullname')->nullable(true);
             $table->string('company_shortname')->nullable(true);
 
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->on('customers')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });

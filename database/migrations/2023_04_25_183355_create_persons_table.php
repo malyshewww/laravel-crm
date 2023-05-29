@@ -19,7 +19,8 @@ class CreatePersonsTable extends Migration
             $table->string('person_name')->nullable(false);
             $table->string('person_patronymic')->nullable(true);
 
-            $table->foreignId('customer_id')->onDelete('cascade')->constrained();
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->on('customers')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -142,14 +142,14 @@
 							</td>
 							<td class="tour-table__customer">
 								@if ($claim->customer)
-									@if ($claim->customer->type === 'person')
+									@if ($claim->customer->type === 'person' && $claim->customer->person)
 										<div class="text-clamp fw-600"
-										title="{{$claim->customer->person ? $claim->customer->person->person_surname : ''}} {{$claim->customer->person ? $claim->customer->person->person_name : ''}} {{$claim->customer->person ? $claim->customer->person->person_patronymic : ''}}">
-											{{$claim->customer->person ? $claim->customer->person->person_surname : ''}} 
-											{{$claim->customer->person ? $claim->customer->person->person_name : ''}} 
-											{{$claim->customer->person ? $claim->customer->person->person_patronymic : ''}}
+										title="{{$claim->customer->person->person_surname ?: ''}} {{$claim->customer->person->person_name ?: ''}} {{$claim->customer->person->person_patronymic ?: ''}}">
+											{{$claim->customer->person->person_surname ?: ''}} 
+											{{$claim->customer->person->person_name ?: ''}} 
+											{{$claim->customer->person->person_patronymic ?: ''}}
 										</div>
-									@elseif($claim->customer->type === 'company')
+									@elseif($claim->customer->type === 'company' && $claim->customer->company)
 										<div class="text-clamp fw-600"
 										title="{{$claim->customer->company->company_fullname ?: 'Полное наименование юр. лица не указано'}}">
 											{{$claim->customer->company->company_fullname ?: 'Полное наименование юр. лица не указано'}}
@@ -213,7 +213,7 @@
 							</td>
 							<td>
 								<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
-									<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data data-type="delete" data-id="{{$claim->id}}" 
+									<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data-type="delete" data-id="{{$claim->id}}" 
 										data-url="{{route('claim.destroy', $claim->id)}}" data-title="Вы действительно хотите удалить заявку № {{$claim->id}}">
 										<i class="fa-solid fa-box-archive"></i>
 									</button>

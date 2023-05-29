@@ -104,6 +104,7 @@ if (tableBottom) {
 	pagination.insertAdjacentElement("beforeend", tablePaginate);
 	sortBlock.append(tableLength);
 }
+
 const testTable = document.getElementById('test-table');
 function fetchTable(std, res) {
 	// let data = {
@@ -202,14 +203,20 @@ function testFetch(fio, date_start, date_end) {
 					{
 						"data": "date_start",
 						"render": function (data, type, row, meta) {
-							return moment(row.date_start).format('DD.MM.YYYY');
+							return `${moment(row.date_start).format('DD.MM.YYYY')} (${row.night})`;
 						}
 					},
 					{
-						"data": null
+						"data": null,
+						"render": function (data, type, row, meta) {
+							return `${row.city ? row.city : 'Не указано'} - ${row.country ? row.country : 'Не указано'}`
+						}
 					},
 					{
-						"data": null
+						"data": null,
+						"render": function (data, type, row, meta) {
+							return `${row.tourists ? row.tourists : 'Туристы не указаны'}`;
+						}
 					},
 					{
 						"data": null
@@ -237,6 +244,11 @@ function filter() {
 		const inputFio = thisForm.querySelector('#fio').value
 		const inputDateStart = thisForm.querySelector('#tour_start').value
 		const inputDateEnd = thisForm.querySelector('#tour_end').value
+		if (inputFio == "" || inputDateStart == "" || inputDateEnd == "") {
+			alert('filter fields is required')
+		} else {
+			testFetch(inputFio, inputDateStart, inputDateEnd)
+		}
 	})
 }
 filter();

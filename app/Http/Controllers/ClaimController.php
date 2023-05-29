@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\TourPackageHelper;
 use App\Models\Claim;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Person;
 use App\Models\Tourist;
@@ -14,7 +16,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 
 class ClaimController extends Controller
@@ -81,7 +85,10 @@ class ClaimController extends Controller
             //     )
             //     ->get();
             $tourists = Tourist::get();
-            return view('claim.show', compact('claim', 'tourpackages', 'tourists'));
+            $customers = Customer::get();
+            $persons = Person::get();
+            $companies = Company::get();
+            return view('claim.show', compact('claim', 'tourpackages', 'tourists', 'customers', 'persons', 'companies'));
         }
         return redirect()->route('user.login');
     }
@@ -136,8 +143,120 @@ class ClaimController extends Controller
     // Fetch DataTable data
     public function records(Request $request)
     {
-        $claims = Claim::all();
-        return json_encode($claims, true);
+        // $claims = Claim::all();
+        $dateStart = $request->date_start;
+        $dateEnd = $request->date_end;
+        if (isset($dateStart) && isset($dateEnd)) {
+            echo $dateStart;
+            echo $dateEnd;
+        }
+        // $claims = [
+        //     [
+        //         'id' => 1,
+        //         'date_start' => 20,
+        //         'date_end' => 30,
+        //     ],
+        //     [
+        //         'id' => 2,
+        //         'date_start' => 20,
+        //         'date_end' => 30,
+        //     ],
+        // ];
+        // $claims = Claim::where('date_start', '=', '2023-05-26')->get();
+        // $claims = Claim::join('tourists', 'claims.id', '=', 'tourists.claim_id')
+        //     ->select('claims.*', 'tourists.*')
+        //     ->get();
+        $from = date('2023-05-12');
+        $to = date('2023-05-26');
+        $claims = Claim::join('tourists', 'tourists.claim_id', '=', 'claims.id')
+            ->join('customers', 'customers.claim_id', '=', 'claims.id')
+            // ->join('tour_packages', 'tour_packages.claim_id', '=', 'claims.id')
+            // ->join('persons', 'persons.customer_id', '=', 'customers.id')
+            // ->join('companies', 'companies.customer_id', '=', 'customers.id')
+            // ->where('tourists.tourist_surname', 'LIKE', '%С%')
+            ->select(
+                'tourists.*',
+                'customers.*',
+                // 'tour_packages.*',
+                // 'persons.*',
+                // 'companies.*',
+                // 'claims.*'
+            )
+            // ->where('date_start', '>=', $from)->where('date_end', '<=', $to)
+            ->get();
+        // $claims = Claim::whereHas('tourist', $filter = function ($query) {
+        //     $query->where('claim_id', '=', '2');
+        // })
+        //     ->with(['tourist' => $filter])
+        //     ->get();
+        $clms = Claim::all();
+        $arr = [];
+        foreach ($clms as $claim) {
+            $tourists = [];
+            $stringTourists = '';
+            if (count($claim->tourist) > 0) {
+                foreach ($claim->tourist as $item) {
+                    $currentTourist = [
+                        'surname' => $item->tourist_surname,
+                        'name' => Str::limit($item->tourist_name, 1, '.'),
+                        'patronymic' => Str::limit($item->tourist_patronymic, 1, '.')
+                    ];
+                    array_push($tourists, $currentTourist);
+                }
+                foreach ($tourists as $item) {
+                    $stringTourists .= $item['surname'] . ' ';
+                    $stringTourists .= $item['name'] . ' ';
+                    $stringTourists .= $item['patronymic'];
+                    if (count($tourists) > 1) {
+                        $stringTourists .= ", ";
+                    }
+                }
+            }
+            $start_ts = strtotime($claim->date_start);
+            $end_ts = strtotime($claim->date_end);
+            $diff = $end_ts - $start_ts;
+            $resultDiff = round($diff / 86400);
+            $city = '';
+            $country = '';
+            $customer = '';
+            if ($claim->tourpackage) {
+                $cities = TourPackageHelper::city();
+                $countries = TourPackageHelper::country();
+                foreach ($cities as $keyCity => $c) {
+                    if ($keyCity == $claim->tourpackage->city_id) {
+                        $city = $c['name'];
+                    }
+                }
+                foreach ($countries as $keyCountry => $c) {
+                    if ($keyCountry == $claim->tourpackage->country_id) {
+                        $country = $c['name'];
+                    }
+                }
+            }
+            if ($claim->customer) {
+                $customer = 'person';
+                if ($claim->customer == 'person' && $claim->customer->person) {
+                    // $customer = $claim->customer->person->person_surname . ' ' . $claim->customer->person->person_name . ' ' . $claim->customer->person->person_patronymic;
+                    $customer = 'person';
+                }
+                if ($claim->customer == 'company') {
+                    $customer = 'company';
+                }
+            }
+            $arr[] = [
+                'id' => $claim->id,
+                'date_start' => $claim->date_start,
+                'date_end' => $claim->date_end,
+                'manager' => $claim->manager,
+                'created_at' => $claim->created_at,
+                'tourists' => $stringTourists,
+                'night' => $resultDiff . ' ' . Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru'),
+                'city' => $city,
+                'country' => $country,
+                'customer' => $customer
+            ];
+        }
+        return json_encode($arr, true);
     }
     public function getClaims(Request $request)
     {

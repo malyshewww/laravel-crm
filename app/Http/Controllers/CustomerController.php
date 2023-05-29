@@ -64,7 +64,7 @@ class CustomerController extends Controller
                 'customer_id' => $request->customer_id
             ];
             Person::updateOrCreate([
-                'customer_id' => $request->customer_id
+                'customer_id' => $request->claim_id
             ], $personFields);
             // Общие данные о заказчике
             $personCommonsFields = [
