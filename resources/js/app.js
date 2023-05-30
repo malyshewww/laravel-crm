@@ -46,3 +46,22 @@ if (btnCopy) {
 		btnCopy.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
 	})
 }
+
+// Draggable Modal
+$(".modal__header").on("mousedown", function (mousedownEvt) {
+	var $draggable = $(this);
+	var x = mousedownEvt.pageX - $draggable.offset().left,
+		y = mousedownEvt.pageY - $draggable.offset().top;
+	$("body").on("mousemove.draggable", function (mousemoveEvt) {
+		$draggable.closest(".modal-content").offset({
+			"left": mousemoveEvt.pageX - x,
+			"top": mousemoveEvt.pageY - y
+		});
+	});
+	$("body").one("mouseup", function () {
+		$("body").off("mousemove.draggable");
+	});
+	$draggable.closest(".modal").one("bs.modal.hide", function () {
+		$("body").off("mousemove.draggable");
+	});
+});

@@ -13,7 +13,7 @@ class Claim extends Model
     use SoftDeletes;
     protected $table = 'claims';
     protected $casts = [
-        // 'date_start' => 'date:d.m.Y', // Свой формат
+        'date_start' => 'date:d.m.Y', // Свой формат
         'date_end' => 'date:d.m.Y',
         'created_at' => 'date:d.m.Y',
     ];

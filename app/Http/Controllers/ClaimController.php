@@ -13,6 +13,7 @@ use App\Models\Touroperator;
 use App\Models\TourPackage;
 use App\Models\Transfer;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -143,58 +144,59 @@ class ClaimController extends Controller
     // Fetch DataTable data
     public function records(Request $request)
     {
-        // $claims = Claim::all();
         $dateStart = $request->date_start;
         $dateEnd = $request->date_end;
         if (isset($dateStart) && isset($dateEnd)) {
             echo $dateStart;
             echo $dateEnd;
         }
-        // $claims = [
-        //     [
-        //         'id' => 1,
-        //         'date_start' => 20,
-        //         'date_end' => 30,
-        //     ],
-        //     [
-        //         'id' => 2,
-        //         'date_start' => 20,
-        //         'date_end' => 30,
-        //     ],
-        // ];
-        // $claims = Claim::where('date_start', '=', '2023-05-26')->get();
-        // $claims = Claim::join('tourists', 'claims.id', '=', 'tourists.claim_id')
-        //     ->select('claims.*', 'tourists.*')
-        //     ->get();
-        $from = date('2023-05-12');
-        $to = date('2023-05-26');
-        $claims = Claim::join('tourists', 'tourists.claim_id', '=', 'claims.id')
-            ->join('customers', 'customers.claim_id', '=', 'claims.id')
-            // ->join('tour_packages', 'tour_packages.claim_id', '=', 'claims.id')
-            // ->join('persons', 'persons.customer_id', '=', 'customers.id')
-            // ->join('companies', 'companies.customer_id', '=', 'customers.id')
-            // ->where('tourists.tourist_surname', 'LIKE', '%С%')
-            ->select(
-                'tourists.*',
-                'customers.*',
-                // 'tour_packages.*',
-                // 'persons.*',
-                // 'companies.*',
-                // 'claims.*'
-            )
-            // ->where('date_start', '>=', $from)->where('date_end', '<=', $to)
-            ->get();
+        $from = date('2023-05-10');
+        $to = date('2023-06-01');
+        $fio = 'но';
+        $query = Claim::select('claims.*');
+        $query
+            ->where(function ($query) use ($from, $to) {
+                return $query->where('date_start', '>=', $from)
+                    ->orWhere('date_end', '<=', $to);
+            })
+            ->when(!empty($from), function ($query) use ($from) {
+                return $query->where('date_start', '>=', $from);
+            })
+            ->when(!empty($to), function ($query) use ($to) {
+                return $query->where('date_end', '<=', $to);
+            });
+        if (!empty($fio)) {
+            $query->whereHas('tourist', function ($query) use ($fio) {
+                $query->where('tourist_surname', 'LIKE', '%' . $fio . '%');
+                $query->orWhere('tourist_name', 'LIKE', '%' . $fio . '%');
+                $query->orWhere('tourist_patronymic', 'LIKE', '%' . $fio . '%');
+            });
+        }
+        $result = $query->get();
+        // $query->where(function ($query) use ($from, $to) {
+        //     return $query->where(
+        //         ['date_start', '>=', $from],
+        //         ['date_end', '<=', $to]
+        //     );
+        // });
+        // $query->where(function ($query) use ($from, $to) {
+        //     return $query->where('date_start', '>=', $from)
+        //         ->orWhere('date_end', '<=', $to);
+        //     // ->orWhere('tourists.tourist_surname', 'LIKE', '%' . $fio . '%')
+        //     // ->orWhere('tourists.tourist_name', 'LIKE', '%' . $fio . '%')
+        //     // ->orWhere('tourists.tourist_patronymic', 'LIKE', '%' . $fio . '%');
+        // });
         // $claims = Claim::whereHas('tourist', $filter = function ($query) {
         //     $query->where('claim_id', '=', '2');
         // })
         //     ->with(['tourist' => $filter])
         //     ->get();
-        $clms = Claim::all();
+        $claims = Claim::get();
         $arr = [];
-        foreach ($clms as $claim) {
+        foreach ($result as $claim) {
             $tourists = [];
             $stringTourists = '';
-            if (count($claim->tourist) > 0) {
+            if (isset($claim->tourist) && count($claim->tourist) > 0) {
                 foreach ($claim->tourist as $item) {
                     $currentTourist = [
                         'surname' => $item->tourist_surname,
@@ -219,7 +221,8 @@ class ClaimController extends Controller
             $city = '';
             $country = '';
             $customer = '';
-            if ($claim->tourpackage) {
+            $manager = '';
+            if (isset($claim->tourpackage)) {
                 $cities = TourPackageHelper::city();
                 $countries = TourPackageHelper::country();
                 foreach ($cities as $keyCity => $c) {
@@ -233,14 +236,21 @@ class ClaimController extends Controller
                     }
                 }
             }
-            if ($claim->customer) {
-                $customer = 'person';
-                if ($claim->customer == 'person' && $claim->customer->person) {
+            if (isset($claim->customer)) {
+                if ($claim->customer->type == 'person') {
                     // $customer = $claim->customer->person->person_surname . ' ' . $claim->customer->person->person_name . ' ' . $claim->customer->person->person_patronymic;
                     $customer = 'person';
-                }
-                if ($claim->customer == 'company') {
+                } else if ($claim->customer->type == 'company') {
                     $customer = 'company';
+                }
+            }
+            if (isset($claim->manager)) {
+                if ($claim->manager == 'test@mail.ru') {
+                    $manager = 'Алексей';
+                } else if ($claim->manager == 'tch.sezona@yandex.ru') {
+                    $manager = 'Канатова И.';
+                } else if ($claim->manager == 'info@4sezonatravel.ru') {
+                    $manager = 'Тихановская И.';
                 }
             }
             $arr[] = [
@@ -250,10 +260,12 @@ class ClaimController extends Controller
                 'manager' => $claim->manager,
                 'created_at' => $claim->created_at,
                 'tourists' => $stringTourists,
+                'countTourists' => count($tourists),
                 'night' => $resultDiff . ' ' . Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru'),
                 'city' => $city,
                 'country' => $country,
-                'customer' => $customer
+                'customer' => $customer,
+                'manager' => $manager
             ];
         }
         return json_encode($arr, true);

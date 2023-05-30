@@ -219,16 +219,28 @@ function testFetch(fio, date_start, date_end) {
 						}
 					},
 					{
-						"data": null
+						"data": null,
+						"render": function (data, type, row, meta) {
+							return '';
+						}
 					},
 					{
-						"data": null
+						"data": null,
+						"render": function (data, type, row, meta) {
+							return '';
+						}
 					},
 					{
-						"data": null
+						"data": 'manager',
+						"render": function (data, type, row, meta) {
+							return `${row.manager} ${moment(row.created_at).format('DD.MM.YYYY HH:mm:ss')}`;
+						}
 					},
 					{
-						"data": null
+						"data": null,
+						"render": function (data, type, row, meta) {
+							return `<div class="buttons"><button>перенести в архив</button></div>`;
+						}
 					},
 				]
 			})
