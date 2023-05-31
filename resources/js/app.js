@@ -1,5 +1,5 @@
-require('./bootstrap');
-console.log('hello from app.js');
+// require('./bootstrap');
+console.log('app.js');
 
 import './modules/bootstrapTooltip.js';
 

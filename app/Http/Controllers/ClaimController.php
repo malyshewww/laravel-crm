@@ -144,54 +144,56 @@ class ClaimController extends Controller
     // Fetch DataTable data
     public function records(Request $request)
     {
-        $dateStart = $request->date_start;
-        $dateEnd = $request->date_end;
-        if (isset($dateStart) && isset($dateEnd)) {
-            echo $dateStart;
-            echo $dateEnd;
+
+        $dateStart = $request->input('date_start');
+        $dateEnd = $request->input('date_end');
+        $fioTourist = $request->input('fio');
+        $result = null;
+        if (isset($dateStart) || isset($dateEnd) || isset($fioTourist)) {
+            $from = $dateStart ? date($dateStart) : '';
+            $to = $dateEnd ? date($dateEnd) : '';
+            $fio = $fioTourist ? $fioTourist : '';
+            $query = Claim::select('claims.*');
+            $query
+                ->where(function ($query) use ($from, $to) {
+                    return $query->where('date_start', '>=', $from)
+                        ->orWhere('date_end', '<=', $to);
+                })
+                ->when(!empty($from), function ($query) use ($from) {
+                    return $query->where('date_start', '>=', $from);
+                })
+                ->when(!empty($to), function ($query) use ($to) {
+                    return $query->where('date_end', '<=', $to);
+                });
+            if (!empty($fio)) {
+                $query->whereHas('tourist', function ($query) use ($fio) {
+                    $query->where('tourist_surname', 'LIKE', '%' . $fio . '%');
+                    $query->orWhere('tourist_name', 'LIKE', '%' . $fio . '%');
+                    $query->orWhere('tourist_patronymic', 'LIKE', '%' . $fio . '%');
+                });
+            }
+            $result = $query->get();
+            // $query->where(function ($query) use ($from, $to) {
+            //     return $query->where(
+            //         ['date_start', '>=', $from],
+            //         ['date_end', '<=', $to]
+            //     );
+            // });
+            // $query->where(function ($query) use ($from, $to) {
+            //     return $query->where('date_start', '>=', $from)
+            //         ->orWhere('date_end', '<=', $to);
+            //     // ->orWhere('tourists.tourist_surname', 'LIKE', '%' . $fio . '%')
+            //     // ->orWhere('tourists.tourist_name', 'LIKE', '%' . $fio . '%')
+            //     // ->orWhere('tourists.tourist_patronymic', 'LIKE', '%' . $fio . '%');
+            // });
+            // $claims = Claim::whereHas('tourist', $filter = function ($query) {
+            //     $query->where('claim_id', '=', '2');
+            // })
+            //     ->with(['tourist' => $filter])
+            //     ->get();
+        } else {
+            $result = Claim::get();
         }
-        $from = date('2023-05-10');
-        $to = date('2023-06-01');
-        $fio = 'но';
-        $query = Claim::select('claims.*');
-        $query
-            ->where(function ($query) use ($from, $to) {
-                return $query->where('date_start', '>=', $from)
-                    ->orWhere('date_end', '<=', $to);
-            })
-            ->when(!empty($from), function ($query) use ($from) {
-                return $query->where('date_start', '>=', $from);
-            })
-            ->when(!empty($to), function ($query) use ($to) {
-                return $query->where('date_end', '<=', $to);
-            });
-        if (!empty($fio)) {
-            $query->whereHas('tourist', function ($query) use ($fio) {
-                $query->where('tourist_surname', 'LIKE', '%' . $fio . '%');
-                $query->orWhere('tourist_name', 'LIKE', '%' . $fio . '%');
-                $query->orWhere('tourist_patronymic', 'LIKE', '%' . $fio . '%');
-            });
-        }
-        $result = $query->get();
-        // $query->where(function ($query) use ($from, $to) {
-        //     return $query->where(
-        //         ['date_start', '>=', $from],
-        //         ['date_end', '<=', $to]
-        //     );
-        // });
-        // $query->where(function ($query) use ($from, $to) {
-        //     return $query->where('date_start', '>=', $from)
-        //         ->orWhere('date_end', '<=', $to);
-        //     // ->orWhere('tourists.tourist_surname', 'LIKE', '%' . $fio . '%')
-        //     // ->orWhere('tourists.tourist_name', 'LIKE', '%' . $fio . '%')
-        //     // ->orWhere('tourists.tourist_patronymic', 'LIKE', '%' . $fio . '%');
-        // });
-        // $claims = Claim::whereHas('tourist', $filter = function ($query) {
-        //     $query->where('claim_id', '=', '2');
-        // })
-        //     ->with(['tourist' => $filter])
-        //     ->get();
-        $claims = Claim::get();
         $arr = [];
         foreach ($result as $claim) {
             $tourists = [];

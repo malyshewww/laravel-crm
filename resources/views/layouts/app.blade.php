@@ -23,13 +23,12 @@
             </div>
         </main>
         @include('layouts.footer')
-        @include('layouts.modals')
+        {{-- @include('layouts.modals') --}}
         @yield('page-modal')
     </div>
-    @yield('page-script')
 	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    {{-- <script src="{{asset('scripts/main.min.js?v27042023_4')}}"></script> --}}
     <script src="{{asset('scripts/bootstrap.bundle.min.js')}}"></script>
+    @yield('page-script')
     <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>
