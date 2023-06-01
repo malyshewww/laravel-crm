@@ -15,15 +15,13 @@ class CreateTourPackagesTable extends Migration
     {
         Schema::create('tour_packages', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->date('date_start');
-            $table->date('date_end');
-            // $table->string('city');
-            // $table->string('country');
-            $table->unsignedBigInteger('claim_id');
-            $table->unsignedBigInteger('city_id');
-            $table->unsignedBigInteger('country_id');
+            $table->string('name')->nullable(true);
+            $table->date('date_start')->nullable(true);
+            $table->date('date_end')->nullable(true);
+            $table->unsignedBigInteger('city_id')->nullable(true);
+            $table->unsignedBigInteger('country_id')->nullable(true);
 
+            $table->unsignedBigInteger('claim_id');
             $table->foreign('claim_id')->references('id')->on('claims')->onDelete('cascade');
 
             $table->timestamps();

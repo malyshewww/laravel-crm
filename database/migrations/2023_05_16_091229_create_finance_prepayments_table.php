@@ -15,7 +15,7 @@ class CreateFinancePrepaymentsTable extends Migration
     {
         Schema::create('finance_prepayments', function (Blueprint $table) {
             $table->id();
-            $table->float('percent', 6, 2)->unsigned()->nullable(true);
+            $table->decimal('percent', 6, 2)->unsigned()->nullable(true);
             $table->tinyInteger('days')->unsigned()->nullable(true);
 
             $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');

@@ -22,7 +22,8 @@ class CreatePersonPassportsTable extends Migration
             $table->string('person_passport_code')->nullable(true);
             $table->string('person_passport_address')->nullable(true);
 
-            $table->foreignId('person_id')->constrained('persons');
+            $table->unsignedBigInteger('person_id');
+            $table->foreign('person_id')->on('persons')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });

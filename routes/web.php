@@ -66,7 +66,7 @@ Route::get('/contracts/{contract}/loadModal-{action}', [ContractController::clas
 
 // Данные о заказчике (Физическое|Юридическое лицо)
 Route::get('/customers/{customer}', [CustomerController::class, 'customerData'])->name('customer.customerData');
-Route::post('/customers/{customer}', [CustomerController::class, 'store'])->name('customer.store');
+Route::post('/customers/{customer}/store', [CustomerController::class, 'store'])->name('customer.store');
 
 // Данные о туристе
 Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');

@@ -17,7 +17,7 @@
 								<div class="field-group__item">
 									<label class="field-group__label">Предоплата не менее, %</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="percent"
+										<input class="field-group__input" type="text" name="percent" data-number
 										value="{{$claim->prepayment && $claim->prepayment->percent ? $claim->prepayment->percent : '' }}">
 									</div>
 								</div>

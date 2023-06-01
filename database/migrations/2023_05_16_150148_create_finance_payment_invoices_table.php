@@ -16,7 +16,7 @@ class CreateFinancePaymentInvoicesTable extends Migration
         Schema::create('finance_payment_invoices', function (Blueprint $table) {
             $table->id();
             $table->string('calculate')->nullable(true);
-            $table->float('sum', 11, 2)->unsigned()->nullable(true);
+            $table->decimal('sum', 11, 2)->unsigned()->nullable(true);
             $table->string('currency')->nullable(true);
             $table->datetime('date_invoices')->nullable(true);
 

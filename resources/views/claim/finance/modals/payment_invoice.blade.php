@@ -35,7 +35,7 @@
 								<div class="field-group__item">
 									<label class="field-group__label">Сумма платежа в счете</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="number" data-name="expose_payment_sum" name="sum">
+										<input class="field-group__input" type="text" data-name="expose_payment_sum" name="sum" data-number>
 									</div>
 								</div>
 							</div>

@@ -239,11 +239,12 @@ class ClaimController extends Controller
                 }
             }
             if (isset($claim->customer)) {
-                if ($claim->customer->type == 'person') {
-                    // $customer = $claim->customer->person->person_surname . ' ' . $claim->customer->person->person_name . ' ' . $claim->customer->person->person_patronymic;
-                    $customer = 'person';
-                } else if ($claim->customer->type == 'company') {
-                    $customer = 'company';
+                if ($claim->customer->type == 'person' && $claim->customer->person) {
+                    $customer = $claim->customer->person->person_surname . ' ' . $claim->customer->person->person_name . ' ' . $claim->customer->person->person_patronymic;
+                } else if ($claim->customer->type == 'company' && $claim->customer->company) {
+                    $customer = $claim->customer->company->company_fullname;
+                } else {
+                    $customer = '';
                 }
             }
             if (isset($claim->manager)) {

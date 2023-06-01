@@ -20,7 +20,8 @@ class CreateCompanyDataRegistersTable extends Migration
             $table->string('company_inn')->nullable(true);
             $table->string('company_ogrn')->nullable(true);
 
-            $table->foreignId('company_id')->constrained('companies')->onDelete('cascade');
+            $table->unsignedBigInteger('company_id');
+            $table->foreign('company_id')->on('companies')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });

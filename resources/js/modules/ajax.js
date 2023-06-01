@@ -66,6 +66,7 @@ function formData() {
 							inputDateEnd ? inputDateEnd.value = '' : null;
 							inputComment ? inputComment.value = '' : null;
 							$(currentModal).modal('hide');
+							window.location.reload();
 							if (formId == 'formCreateClaim') {
 								setTimeout(() => {
 									window.location.href = `${url}/claims/${inputId}`;

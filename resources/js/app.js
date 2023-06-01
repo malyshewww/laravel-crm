@@ -5,6 +5,7 @@ import './modules/bootstrapTooltip.js';
 
 import './modules/tabs.js';
 import './modules/calendar.js';
+import './modules/currency.js';
 import './modules/choices.js';
 import './modules/uploadFiles.js';
 
@@ -48,20 +49,44 @@ if (btnCopy) {
 }
 
 // Draggable Modal
-$(".modal__header").on("mousedown", function (mousedownEvt) {
-	var $draggable = $(this);
-	var x = mousedownEvt.pageX - $draggable.offset().left,
-		y = mousedownEvt.pageY - $draggable.offset().top;
-	$("body").on("mousemove.draggable", function (mousemoveEvt) {
-		$draggable.closest(".modal-content").offset({
-			"left": mousemoveEvt.pageX - x,
-			"top": mousemoveEvt.pageY - y
+if ($('.modal__header')) {
+	$(".modal__header").on("mousedown", function (mousedownEvt) {
+		var $draggable = $(this);
+		var x = mousedownEvt.pageX - $draggable.offset().left,
+			y = mousedownEvt.pageY - $draggable.offset().top;
+		$("body").on("mousemove.draggable", function (mousemoveEvt) {
+			$draggable.closest(".modal-content").offset({
+				"left": mousemoveEvt.pageX - x,
+				"top": mousemoveEvt.pageY - y
+			});
+		});
+		$("body").one("mouseup", function () {
+			$("body").off("mousemove.draggable");
+		});
+		$draggable.closest(".modal").one("bs.modal.hide", function () {
+			$("body").off("mousemove.draggable");
 		});
 	});
-	$("body").one("mouseup", function () {
-		$("body").off("mousemove.draggable");
-	});
-	$draggable.closest(".modal").one("bs.modal.hide", function () {
-		$("body").off("mousemove.draggable");
-	});
-});
+}
+
+
+const inputNumbers = document.querySelectorAll('[data-number]');
+[...inputNumbers].forEach((input) => {
+	input.addEventListener('keypress', (event) => {
+		check(event, input.value);
+	})
+	input.addEventListener('blur', (event) => {
+		input.value = parseInt((input.value * 100)) / 100;
+		console.log(input.value);
+		// input.value = input.value.replace(/[^0-9.\d ]/g, "");
+	})
+})
+function check(event, value) {
+	if ((event.charCode >= 48 && event.charCode <= 57) || event.charCode == 46 || event.charCode == 0) {
+		if (value.indexOf('.') > -1) {
+			if (event.charCode == 46)
+				event.preventDefault();
+		}
+	} else
+		event.preventDefault();
+};

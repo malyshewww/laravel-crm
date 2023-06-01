@@ -15,10 +15,10 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
-            $table->bigInteger('number');
-            $table->unsignedBigInteger('claim_id');
+            $table->date('date')->nullable(true);
+            $table->bigInteger('number')->nullable(true);
 
+            $table->unsignedBigInteger('claim_id');
             $table->foreign('claim_id')->references('id')->on('claims')->onDelete('cascade');
 
             $table->timestamps();

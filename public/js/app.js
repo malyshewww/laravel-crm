@@ -4571,106 +4571,105 @@ function formData() {
     if (form) {
       var formId = form.getAttribute('id');
       var route = form.getAttribute('action');
-      if (formId != 'formTouristUpdate') {
-        form.addEventListener('submit', function (event) {
-          var _thisForm$id;
-          event.preventDefault();
-          var thisForm = event.target;
-          var currentModal = thisForm.closest('.modal');
-          var formData = new FormData(thisForm);
-          var buttonSubmit = thisForm.querySelector('button[type="submit"]');
-          var formGroup = thisForm.querySelector('.field-group');
-          buttonSubmit.setAttribute('disabled', 'true');
-          var inputDateStart = thisForm.date_start;
-          var inputDateEnd = thisForm.date_end;
-          var inputComment = thisForm.comment;
-          var inputSurname = formId == 'formCustomer' ? thisForm.person_surname : thisForm.tourist_surname;
-          var inputName = formId == 'formCustomer' ? thisForm.person_name : thisForm.tourist_name;
-          var selectGender = formId == 'formCustomer' ? thisForm.person_gender : thisForm.tourist_gender;
-          var selectNationality = formId == 'formCustomer' ? thisForm.person_nationality : thisForm.tourist_nationality;
-          var inputBirthday = formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
-          var selectVisa = thisForm.visa_info;
-          var token = thisForm._token;
-          var inputId = (_thisForm$id = thisForm.id) === null || _thisForm$id === void 0 ? void 0 : _thisForm$id.value;
-          var formInputs = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('input');
-          var formSelects = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('select');
-          // const routes = {
-          // 	'formCreateClaim': `${url}/claims`,
-          // 	'formComment': `${url}/claims/${inputId}`,
-          // 	'formTourpackage': `${url}/tourpackages/${inputId}`,
-          // 	'formTouroperator': `${url}/touroperators/${inputId}`,
-          // 	'formCustomer': `${url}/customers/${inputClaimId}`,
-          // 	'formTourist': `${url}/tourists/${inputTouristId}`,
-          // 	'formFlights': `${url}/flights`,
-          // 	'formInsurance': `${url}/insurances`,
-          // 	'formTransfer': `${url}/transfers`,
-          // 	'formVisa': `${url}/visas`,
-          // 	'formHabitation': `${url}/habitations`,
-          // 	'formFuelSurchange': `${url}/fuelsurchanges`,
-          // 	'formExcursion': `${url}/excursions`,
-          // 	'formOtherService': `${url}/otherservices`,
-          // 	'formTouristUpdate': `${url}/tourists/update/${inputTouristId}`,
-          // 	'formFlightsUpdate': `${url}/flights/update`,
-          // 	'formInsuranceUpdate': `${url}/insurances/update`,
-          // 	'formTransferUpdate': `${url}/transfers/update`,
-          // 	'formVisaUpdate': `${url}/visas/update`,
-          // 	'formHabitationUpdate': `${url}/habitations/update`,
-          // };
-          // const route = getRoute(formId, routes);
-          fetch(route, {
-            headers: {
-              "X-CSRF-Token": token
-            },
-            method: 'POST',
-            body: formData
-          }).then(function (response) {
-            return response.json();
-          }).then(function (result) {
-            if (result.status === 'success') {
-              inputDateStart ? inputDateStart.value = '' : null;
-              inputDateEnd ? inputDateEnd.value = '' : null;
-              inputComment ? inputComment.value = '' : null;
-              $(currentModal).modal('hide');
-              if (formId == 'formCreateClaim') {
-                setTimeout(function () {
-                  window.location.href = "".concat(url, "/claims/").concat(inputId);
-                }, 500);
-              }
-              if (formId == 'formComment') {
-                elementUpdate('.comment-claim__text');
-              }
-            } else {
-              if (result.date_start) {
-                inputDateStart.classList.add('error');
-              }
-              if (result.date_end) {
-                inputDateEnd.classList.add('error');
-              }
-              if (result.person_surname || result.tourist_surname) {
-                inputSurname.classList.add('error');
-              }
-              if (result.person_name || result.tourist_name) {
-                inputName.classList.add('error');
-              }
-              if (result.person_gender || result.tourist_gender) {
-                selectGender.parentNode.classList.add('error');
-              }
-              if (result.person_nationality || result.tourist_nationality) {
-                selectNationality.parentNode.classList.add('error');
-              }
-              if (result.person_birthday || result.tourist_birthday) {
-                inputBirthday.classList.add('error');
-              }
-              if (result.visa_info) {
-                selectVisa.parentNode.classList.add('error');
-              }
+      form.addEventListener('submit', function (event) {
+        var _thisForm$id;
+        event.preventDefault();
+        var thisForm = event.target;
+        var currentModal = thisForm.closest('.modal');
+        var formData = new FormData(thisForm);
+        var buttonSubmit = thisForm.querySelector('button[type="submit"]');
+        var formGroup = thisForm.querySelector('.field-group');
+        buttonSubmit.setAttribute('disabled', 'true');
+        var inputDateStart = thisForm.date_start;
+        var inputDateEnd = thisForm.date_end;
+        var inputComment = thisForm.comment;
+        var inputSurname = formId == 'formCustomer' ? thisForm.person_surname : thisForm.tourist_surname;
+        var inputName = formId == 'formCustomer' ? thisForm.person_name : thisForm.tourist_name;
+        var selectGender = formId == 'formCustomer' ? thisForm.person_gender : thisForm.tourist_gender;
+        var selectNationality = formId == 'formCustomer' ? thisForm.person_nationality : thisForm.tourist_nationality;
+        var inputBirthday = formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
+        var selectVisa = thisForm.visa_info;
+        var token = thisForm._token;
+        var inputId = (_thisForm$id = thisForm.id) === null || _thisForm$id === void 0 ? void 0 : _thisForm$id.value;
+        var formInputs = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('input');
+        var formSelects = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('select');
+        // const routes = {
+        // 	'formCreateClaim': `${url}/claims`,
+        // 	'formComment': `${url}/claims/${inputId}`,
+        // 	'formTourpackage': `${url}/tourpackages/${inputId}`,
+        // 	'formTouroperator': `${url}/touroperators/${inputId}`,
+        // 	'formCustomer': `${url}/customers/${inputClaimId}`,
+        // 	'formTourist': `${url}/tourists/${inputTouristId}`,
+        // 	'formFlights': `${url}/flights`,
+        // 	'formInsurance': `${url}/insurances`,
+        // 	'formTransfer': `${url}/transfers`,
+        // 	'formVisa': `${url}/visas`,
+        // 	'formHabitation': `${url}/habitations`,
+        // 	'formFuelSurchange': `${url}/fuelsurchanges`,
+        // 	'formExcursion': `${url}/excursions`,
+        // 	'formOtherService': `${url}/otherservices`,
+        // 	'formTouristUpdate': `${url}/tourists/update/${inputTouristId}`,
+        // 	'formFlightsUpdate': `${url}/flights/update`,
+        // 	'formInsuranceUpdate': `${url}/insurances/update`,
+        // 	'formTransferUpdate': `${url}/transfers/update`,
+        // 	'formVisaUpdate': `${url}/visas/update`,
+        // 	'formHabitationUpdate': `${url}/habitations/update`,
+        // };
+        // const route = getRoute(formId, routes);
+        fetch(route, {
+          headers: {
+            "X-CSRF-Token": token
+          },
+          method: 'POST',
+          body: formData
+        }).then(function (response) {
+          return response.json();
+        }).then(function (result) {
+          if (result.status === 'success') {
+            inputDateStart ? inputDateStart.value = '' : null;
+            inputDateEnd ? inputDateEnd.value = '' : null;
+            inputComment ? inputComment.value = '' : null;
+            $(currentModal).modal('hide');
+            window.location.reload();
+            if (formId == 'formCreateClaim') {
+              setTimeout(function () {
+                window.location.href = "".concat(url, "/claims/").concat(inputId);
+              }, 500);
             }
-            buttonSubmit.removeAttribute('disabled');
-          })["catch"](function (error) {
-            buttonSubmit.removeAttribute('disabled');
-          });
+            if (formId == 'formComment') {
+              elementUpdate('.comment-claim__text');
+            }
+          } else {
+            if (result.date_start) {
+              inputDateStart.classList.add('error');
+            }
+            if (result.date_end) {
+              inputDateEnd.classList.add('error');
+            }
+            if (result.person_surname || result.tourist_surname) {
+              inputSurname.classList.add('error');
+            }
+            if (result.person_name || result.tourist_name) {
+              inputName.classList.add('error');
+            }
+            if (result.person_gender || result.tourist_gender) {
+              selectGender.parentNode.classList.add('error');
+            }
+            if (result.person_nationality || result.tourist_nationality) {
+              selectNationality.parentNode.classList.add('error');
+            }
+            if (result.person_birthday || result.tourist_birthday) {
+              inputBirthday.classList.add('error');
+            }
+            if (result.visa_info) {
+              selectVisa.parentNode.classList.add('error');
+            }
+          }
+          buttonSubmit.removeAttribute('disabled');
+        })["catch"](function (error) {
+          buttonSubmit.removeAttribute('disabled');
         });
-      }
+      });
     }
   });
 }
@@ -5230,6 +5229,70 @@ function showFieldSelect(event, selector) {
   var currentSelectValue = target.value;
   currentSelectValue == "yes" ? selector.style.display = "block" : selector.style.display = "none";
 }
+
+/***/ }),
+
+/***/ "./resources/js/modules/currency.js":
+/*!******************************************!*\
+  !*** ./resources/js/modules/currency.js ***!
+  \******************************************/
+/***/ (() => {
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+// import { rates } from "./../api/api.js";
+// Функция для получения селекторов и вызова функции с калькуляцией
+function getValute(selectId, inputName) {
+  var select = document.getElementById("".concat(selectId));
+  var input = document.querySelector("[data-name=".concat(inputName, "]"));
+  input.addEventListener('change', function () {
+    convertValue(select, input);
+  });
+  select.addEventListener('change', function () {
+    convertValue(select, input);
+  });
+}
+// Функция для калькуляции стоимости с текущим курсом
+function convertValue(select, input) {
+  if (input.value == "" || select.value == "") {
+    return;
+  }
+  if (select.value != "RUB" && input.value != "") {
+    input.value = (parseFloat(input.value) / rates[select.value].Value).toFixed(2);
+    // input.value = Math.ceil((parseFloat(input.value) / rates[select.value].Value) * 100) / 100;
+  }
+}
+// getValute("exposeCurrency", "expose_payment_sum");
+// getValute("tourPackageCurrency", "parameters_course_tourist");
+
+// Функция для скрытия | показа поля с курсом в зависимости от выбранного значения в селекте
+function hiddenField() {
+  var selectTourPackageCurrency = document.getElementById('tourPackageCurrency');
+  if (selectTourPackageCurrency) {
+    var inputCourseTourist = document.querySelector('[data-name="parameters_course_tourist"]');
+    var parentField = inputCourseTourist.closest('.field-group__item');
+    // parentField.setAttribute('hidden', true);
+    selectTourPackageCurrency.addEventListener('change', function (event) {
+      var self = event.target;
+      var parametersPrices = document.querySelectorAll('.parameters-price');
+      _toConsumableArray(parametersPrices).forEach(function (parametr) {
+        var label = parametr.querySelector('.field-group__label');
+        label.innerHTML = self.value;
+      });
+      if (self.value != "RUB") {
+        parentField.removeAttribute('hidden');
+      } else {
+        parentField.setAttribute('hidden', true);
+        inputCourseTourist.value = "";
+      }
+    });
+  }
+}
+hiddenField();
 
 /***/ }),
 
@@ -34575,12 +34638,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_tabs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs.js */ "./resources/js/modules/tabs.js");
 /* harmony import */ var _modules_tabs_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_modules_tabs_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _modules_calendar_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/calendar.js */ "./resources/js/modules/calendar.js");
-/* harmony import */ var _modules_choices_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/choices.js */ "./resources/js/modules/choices.js");
-/* harmony import */ var _modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/uploadFiles.js */ "./resources/js/modules/uploadFiles.js");
-/* harmony import */ var _modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _modules_ajax_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/ajax.js */ "./resources/js/modules/ajax.js");
+/* harmony import */ var _modules_currency_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/currency.js */ "./resources/js/modules/currency.js");
+/* harmony import */ var _modules_currency_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_modules_currency_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _modules_choices_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/choices.js */ "./resources/js/modules/choices.js");
+/* harmony import */ var _modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/uploadFiles.js */ "./resources/js/modules/uploadFiles.js");
+/* harmony import */ var _modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _modules_ajax_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/ajax.js */ "./resources/js/modules/ajax.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 // require('./bootstrap');
 console.log('app.js');
+
 
 
 
@@ -34621,23 +34693,45 @@ if (btnCopy) {
 }
 
 // Draggable Modal
-$(".modal__header").on("mousedown", function (mousedownEvt) {
-  var $draggable = $(this);
-  var x = mousedownEvt.pageX - $draggable.offset().left,
-    y = mousedownEvt.pageY - $draggable.offset().top;
-  $("body").on("mousemove.draggable", function (mousemoveEvt) {
-    $draggable.closest(".modal-content").offset({
-      "left": mousemoveEvt.pageX - x,
-      "top": mousemoveEvt.pageY - y
+if ($('.modal__header')) {
+  $(".modal__header").on("mousedown", function (mousedownEvt) {
+    var $draggable = $(this);
+    var x = mousedownEvt.pageX - $draggable.offset().left,
+      y = mousedownEvt.pageY - $draggable.offset().top;
+    $("body").on("mousemove.draggable", function (mousemoveEvt) {
+      $draggable.closest(".modal-content").offset({
+        "left": mousemoveEvt.pageX - x,
+        "top": mousemoveEvt.pageY - y
+      });
+    });
+    $("body").one("mouseup", function () {
+      $("body").off("mousemove.draggable");
+    });
+    $draggable.closest(".modal").one("bs.modal.hide", function () {
+      $("body").off("mousemove.draggable");
     });
   });
-  $("body").one("mouseup", function () {
-    $("body").off("mousemove.draggable");
+}
+var inputNumbers = document.querySelectorAll('[data-number]');
+_toConsumableArray(inputNumbers).forEach(function (input) {
+  input.addEventListener('keypress', function (event) {
+    check(event, input.value);
   });
-  $draggable.closest(".modal").one("bs.modal.hide", function () {
-    $("body").off("mousemove.draggable");
+  input.addEventListener('blur', function (event) {
+    input.value = parseInt(input.value * 100) / 100;
+    console.log(input.value);
+    // input.value = input.value.replace(/[^0-9.\d ]/g, "");
   });
 });
+
+function check(event, value) {
+  if (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46 || event.charCode == 0) {
+    if (value.indexOf('.') > -1) {
+      if (event.charCode == 46) event.preventDefault();
+    }
+  } else event.preventDefault();
+}
+;
 })();
 
 /******/ })()

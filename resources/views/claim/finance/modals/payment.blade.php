@@ -35,7 +35,7 @@
 									<label class="field-group__label">Курс для туриста</label>
 									<div class="field-group__box">
 										<input class="field-group__input" type="text" data-name="parameters_course_tourist" 
-										name="tourist_course"
+										name="tourist_course" data-number
 										value="{{$claim->payment && $claim->payment->tourist_course ? $claim->payment->tourist_course : old('tourist_course')}}">
 									</div>
 								</div>
@@ -52,7 +52,7 @@
 										{{$claim->payment && $claim->payment->currency ? $claim->payment->currency : 'RUB'}}
 									</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="tour_price"
+										<input class="field-group__input" type="text" name="tour_price" data-number
 										value="{{$claim->payment && $claim->payment->tour_price ? $claim->payment->tour_price : ''}}">
 									</div>
 								</div>
@@ -66,7 +66,7 @@
 										{{$claim->payment && $claim->payment->currency ? $claim->payment->currency : 'RUB'}}
 									</label>
 									<div class="field-group__box">
-										<input class="field-group__input" type="text" name="comission_price"
+										<input class="field-group__input" type="text" name="comission_price" data-number
 										value="{{$claim->payment && $claim->payment->comission_price ? $claim->payment->comission_price : ''}}">
 									</div>
 								</div>

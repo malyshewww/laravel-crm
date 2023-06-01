@@ -64,8 +64,9 @@
 				</div>
 			</form>
 		</div>
-		{{-- <div class="table-responsive">
-			<table class="table tour-table" id="test-table">
+		<input type="text" class="mt-2 mb-2 field-group__input" data-number pattern="[+]7\s[\(]\d{3}[\)]\s\d{3}[\-]\d{2}[\-]\d{2}">
+		<div class="table-responsive">
+			<table class="tour-table table" id="tour-table">
 				<thead> 
 					<tr>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
@@ -78,150 +79,135 @@
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
 					</tr>
 				</thead>
-			</table>
-		</div> --}}
-		<table class="tour-table table" id="tour-table">
-			<thead> 
-				<tr>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Начало тура</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Cтраны назначения</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Туристы</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, стоимость и долг заказчика</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Менеджер</th>
-					<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
-					{{-- <th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th> --}}
-				</tr>
-			</thead>
-			<tbody>
-				@foreach ($claims as $claim)
-					
-					@php
-						$start_ts = strtotime($claim->date_start);
-						$end_ts = strtotime($claim->date_end); 
-						$diff = $end_ts - $start_ts; 
-						$resultDiff = round($diff / 86400);
-					@endphp
-					<tr>
-						<td class="tour-table__number">
-							<a class="tour-table__link" href="{{route('claim.show', $claim->id)}}">{{$claim->id}}</a>
-						</td>
-						<td class="tour-table__data">
-							<span class="fw-600">{{$claim->date_start ? $claim->date_start->format('d.m.Y') : ''}} </span>
-							</br>
-							({{$resultDiff}} {{Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru')}})
-						</td>
-						<td class="tour-table__data">
-							@if ($claim->tourpackage)
-								@php
-									$cities = TourPackageHelper::city();
-									$countries = TourPackageHelper::country();
-								@endphp
-								<span>
-									@foreach ($cities as $key => $city)
-										{{$key === $claim->tourpackage->city_id ? $city['name'] : ''}}
-									@endforeach
-								</span>
-								- 
-								<span>
-									@foreach ($countries as $key => $country)
-										{{$key === $claim->tourpackage->country_id ? $country['name'] : ''}}
-									@endforeach
-								</span>
-							@else
-								<span>Не указано - Не указано</span>
-							@endif
-						</td>
-						<td class="tour-table__customer">
-							@if ($claim->customer)
-								@if ($claim->customer->type === 'person' && $claim->customer->person)
-									<div class="text-clamp fw-600"
-									title="{{$claim->customer->person->person_surname ?: ''}} {{$claim->customer->person->person_name ?: ''}} {{$claim->customer->person->person_patronymic ?: ''}}">
-										{{$claim->customer->person->person_surname ?: ''}} 
-										{{$claim->customer->person->person_name ?: ''}} 
-										{{$claim->customer->person->person_patronymic ?: ''}}
-									</div>
-								@elseif($claim->customer->type === 'company' && $claim->customer->company)
-									<div class="text-clamp fw-600"
-									title="{{$claim->customer->company->company_fullname ?: 'Полное наименование юр. лица не указано'}}">
-										{{$claim->customer->company->company_fullname ?: 'Полное наименование юр. лица не указано'}}
+				<tbody>
+					{{-- @foreach ($claims as $claim)
+						
+						@php
+							$start_ts = strtotime($claim->date_start);
+							$end_ts = strtotime($claim->date_end); 
+							$diff = $end_ts - $start_ts; 
+							$resultDiff = round($diff / 86400);
+						@endphp
+						<tr>
+							<td class="tour-table__number">
+								<a class="tour-table__link" href="{{route('claim.show', $claim->id)}}">{{$claim->id}}</a>
+							</td>
+							<td class="tour-table__data">
+								<span class="fw-600">{{$claim->date_start ? $claim->date_start->format('d.m.Y') : ''}} </span>
+								</br>
+								({{$resultDiff}} {{Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru')}})
+							</td>
+							<td class="tour-table__data">
+								@if ($claim->tourpackage)
+									@php
+										$cities = TourPackageHelper::city();
+										$countries = TourPackageHelper::country();
+									@endphp
+									<span>
+										@foreach ($cities as $key => $city)
+											{{$key === $claim->tourpackage->city_id ? $city['name'] : ''}}
+										@endforeach
+									</span>
+									- 
+									<span>
+										@foreach ($countries as $key => $country)
+											{{$key === $claim->tourpackage->country_id ? $country['name'] : ''}}
+										@endforeach
+									</span>
+								@else
+									<span>Не указано - Не указано</span>
+								@endif
+							</td>
+							<td class="tour-table__customer">
+								@if ($claim->customer)
+									@if ($claim->customer->type === 'person' && $claim->customer->person)
+										<div class="text-clamp fw-600"
+										title="{{$claim->customer->person->person_surname ?: ''}} {{$claim->customer->person->person_name ?: ''}} {{$claim->customer->person->person_patronymic ?: ''}}">
+											{{$claim->customer->person->person_surname ?: ''}} 
+											{{$claim->customer->person->person_name ?: ''}} 
+											{{$claim->customer->person->person_patronymic ?: ''}}
+										</div>
+									@elseif($claim->customer->type === 'company' && $claim->customer->company)
+										<div class="text-clamp fw-600"
+										title="{{$claim->customer->company->company_fullname ?: 'Полное наименование юр. лица не указано'}}">
+											{{$claim->customer->company->company_fullname ?: 'Полное наименование юр. лица не указано'}}
+										</div>
+									@endif
+								@else
+									<div class="fw-600">
+										Заказчик не указан
 									</div>
 								@endif
-							@else
-								<div class="fw-600">
-									Заказчик не указан
-								</div>
-							@endif
-							@if ($claim->tourist && count($claim->tourist) > 0)
-								@php
-									$tourists = [];
-									$stringTourists = '';
-									foreach ($claim->tourist as $key => $item) {
-										$currentTourist = [
-											'surname' => $item->tourist_surname,
-											'name' => Str::limit($item->tourist_name, 1, '.'),
-											'patronymic' => Str::limit($item->tourist_patronymic, 1, '.')
-										];
-										array_push($tourists, $currentTourist);
-									}
-									foreach ($tourists as $key => $item) {
-										$stringTourists .= $item['surname'] . ' ';
-										$stringTourists .= $item['name'] . ' ';
-										$stringTourists .= $item['patronymic'] . '';
-										if (count($tourists) > 1) {
-											$stringTourists .= ", ";
+								@if ($claim->tourist && count($claim->tourist) > 0)
+									@php
+										$tourists = [];
+										$stringTourists = '';
+										foreach ($claim->tourist as $key => $item) {
+											$currentTourist = [
+												'surname' => $item->tourist_surname,
+												'name' => Str::limit($item->tourist_name, 1, '.'),
+												'patronymic' => Str::limit($item->tourist_patronymic, 1, '.')
+											];
+											array_push($tourists, $currentTourist);
 										}
-									}
-								@endphp
-								<div class="text-clamp" title="{{$stringTourists}}">
-									<b>{{count($claim->tourist)}}:</b>
-										{{$stringTourists}}
-								</div>
-							@else
-								<div>
-									Туристы не указаны
-								</div>
-							@endif
-						</td>
-						<td></td>
-						<td></td>
-						<td class="tour-table__manager">
-							<div>
-								@if ($claim->manager)
-									<div class="text-primary">
-										@if ($claim->manager == 'test@mail.ru')
-											Алексей
-										@elseif ($claim->manager == 'tch.sezona@yandex.ru')
-											Канатова И.
-										@elseif ($claim->manager == 'info@4sezonatravel.ru')
-											Тихановская И.
-										@endif
+										foreach ($tourists as $key => $item) {
+											$stringTourists .= $item['surname'] . ' ';
+											$stringTourists .= $item['name'] . ' ';
+											$stringTourists .= $item['patronymic'] . '';
+											if (count($tourists) > 1) {
+												$stringTourists .= ", ";
+											}
+										}
+									@endphp
+									<div class="text-clamp" title="{{$stringTourists}}">
+										<b>{{count($claim->tourist)}}:</b>
+											{{$stringTourists}}
 									</div>
 								@else
-									<div class="text-danger">Менеджер не указан</div>
+									<div>
+										Туристы не указаны
+									</div>
 								@endif
-								<div>{{$claim->created_at->format('d.m.Y H:i:s')}}</div>
-							</div>
-						</td>
-						<td>
-							<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
-								<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data-type="delete" data-id="{{$claim->id}}" 
-									data-url="{{route('claim.destroy', $claim->id)}}" data-title="Вы действительно хотите удалить заявку № {{$claim->id}}">
-									<i class="fa-solid fa-box-archive"></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				@endforeach
-			</tbody>
-		</table>
+							</td>
+							<td></td>
+							<td></td>
+							<td class="tour-table__manager">
+								<div>
+									@if ($claim->manager)
+										<div class="text-primary">
+											@if ($claim->manager == 'test@mail.ru')
+												Алексей
+											@elseif ($claim->manager == 'tch.sezona@yandex.ru')
+												Канатова И.
+											@elseif ($claim->manager == 'info@4sezonatravel.ru')
+												Тихановская И.
+											@endif
+										</div>
+									@else
+										<div class="text-danger">Менеджер не указан</div>
+									@endif
+									<div>{{$claim->created_at->format('d.m.Y H:i:s')}}</div>
+								</div>
+							</td>
+							<td>
+								<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+									<button class="btn-archive" type="button" data-bs-toggle="modal" data-bs-target="#deleteRecord" data-type="delete" data-id="{{$claim->id}}" 
+										data-url="{{route('claim.destroy', $claim->id)}}" data-title="Вы действительно хотите удалить заявку № {{$claim->id}}">
+										<i class="fa-solid fa-box-archive"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					@endforeach --}}
+				</tbody>
+			</table>
+		</div>
 		<div class="table-bottom">
 			<nav class="pagination"></nav>
 			<div class="sorting-block"></div>
 		</div>
 	</div>
-	<div class="loader" id="loader" hidden>
+	<div class="loader fixed" id="loader" hidden>
 		<div class="loader__icon"></div>
 	</div>
 @endsection

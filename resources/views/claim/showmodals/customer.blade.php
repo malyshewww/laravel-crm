@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('customer.store', $claim->id)}}" method="post" id="formCustomer" class="form" data-url="{{route('customer.customerData', $claim->id)}}">
+			<form action="{{route('customer.store', $claim->id)}}" method="post" id="formCustomer" class="form">
 				@csrf
 				<input type="hidden" name="claim_id" value="{{$claim->id}}">
 				<input type="hidden" name="person_id" value="{{$claim->id}}">
