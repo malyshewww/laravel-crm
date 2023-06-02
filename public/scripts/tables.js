@@ -11,7 +11,7 @@ function hideLoading() {
 	loader.setAttribute("hidden", true);
 }
 const tableConfig = {
-	ordering: true,
+	ordering: false,
 	sorting: false,
 	searching: false,
 	responsive: true,
@@ -69,7 +69,7 @@ function initDataTable(data) {
 				}
 			},
 			{
-				"data": 'city_country',
+				"data": null,
 				"render": function (data, type, row, meta) {
 					return `${row.city ? row.city : 'Не указано'} - ${row.country ? row.country : 'Не указано'}`
 				}
@@ -109,7 +109,7 @@ function initDataTable(data) {
 				}
 			},
 			{
-				"data": 'buttons',
+				"data": null,
 				"render": function (data, type, row, meta) {
 					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
 						<button class="btn-archive" type="button" 

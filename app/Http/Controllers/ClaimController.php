@@ -148,7 +148,8 @@ class ClaimController extends Controller
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
         $fioTourist = $request->input('fio');
-        $result = null;
+        $result = Claim::get();
+        $now = date('Y-m-d');
         if (isset($dateStart) || isset($dateEnd) || isset($fioTourist)) {
             $from = $dateStart ? date($dateStart) : '';
             $to = $dateEnd ? date($dateEnd) : '';
@@ -191,8 +192,6 @@ class ClaimController extends Controller
             // })
             //     ->with(['tourist' => $filter])
             //     ->get();
-        } else {
-            $result = Claim::get();
         }
         $arr = [];
         foreach ($result as $claim) {

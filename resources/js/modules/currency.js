@@ -24,26 +24,31 @@ function convertValue(select, input) {
 // getValute("tourPackageCurrency", "parameters_course_tourist");
 
 // Функция для скрытия | показа поля с курсом в зависимости от выбранного значения в селекте
-function hiddenField() {
-	const selectTourPackageCurrency = document.getElementById('tourPackageCurrency');
-	if (selectTourPackageCurrency) {
-		const inputCourseTourist = document.querySelector('[data-name="parameters_course_tourist"]')
-		const parentField = inputCourseTourist.closest('.field-group__item');
-		// parentField.setAttribute('hidden', true);
-		selectTourPackageCurrency.addEventListener('change', (event) => {
-			let self = event.target;
-			const parametersPrices = document.querySelectorAll('.parameters-price');
-			[...parametersPrices].forEach((parametr) => {
-				const label = parametr.querySelector('.field-group__label')
-				label.innerHTML = self.value;
-			})
-			if (self.value != "RUB") {
-				parentField.removeAttribute('hidden');
-			} else {
-				parentField.setAttribute('hidden', true);
-				inputCourseTourist.value = "";
+export function hiddenField() {
+	let forms = document.querySelectorAll('form');
+	[...forms].forEach((form) => {
+		if (form) {
+			const selectTourPackageCurrency = form.querySelector('[data-id="tourPackageCurrency"]');
+			if (selectTourPackageCurrency) {
+				const inputCourseTourist = form.querySelector('[data-name="parameters_course_tourist"]')
+				const parentField = inputCourseTourist.closest('.field-group__item');
+				// parentField.setAttribute('hidden', true);
+				selectTourPackageCurrency.addEventListener('change', (event) => {
+					let self = event.target;
+					const parametersPrices = document.querySelectorAll('.parameters-price');
+					[...parametersPrices].forEach((parametr) => {
+						const label = parametr.querySelector('.field-group__label')
+						label.innerHTML = self.value;
+					})
+					if (self.value == "RUB" || self.value == "") {
+						parentField.setAttribute('hidden', true);
+						inputCourseTourist.value = "";
+					} else {
+						parentField.removeAttribute('hidden');
+					}
+				})
 			}
-		})
-	}
+		}
+	})
 }
 hiddenField();

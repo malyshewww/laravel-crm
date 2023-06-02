@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layout.app')
 @section('title')
 	Страница заявки № {{$claim->id}}
 @endsection
 @section('header')
-	@include('layouts.header')
+	@include('layout.header')
 @endsection
 @section('content')
 	<section class="claim">
@@ -92,8 +92,13 @@
 													</div>
 													<div>
 														<button class="item-group__button btn-blue btn-redact" type="button" 
-														data-bs-toggle="modal" 
-														data-bs-target="#prepaymentParameters">
+															data-bs-toggle="modal" 
+															data-bs-target="#prepaymentParameters"
+															data-id="{{$claim->id}}" 
+															data-type="update"
+															data-claim-id="{{$claim->id}}"
+															data-url="{{route('prepayment.store', $claim->id)}}"
+															data-path="{{route('prepayment.loadModal', [$claim->id, 'update'])}}">
 															[параметры предоплаты по договору]
 														</button>
 													</div>
@@ -353,7 +358,13 @@
 																	<i class="fa-solid fa-chevron-down icon-arrow"></i>
 																</button>
 																<div>
-																	<button class="item-group__button btn-blue btn-redact" type="button" data-bs-toggle="modal" data-bs-target="#parametersPayment">
+																	<button class="item-group__button btn-blue btn-redact" type="button" 
+																		data-bs-toggle="modal" data-bs-target="#parametersPayment"
+																		data-id="{{$claim->id}}" 
+																		data-type="update"
+																		data-claim-id="{{$claim->id}}"
+																		data-url="{{route('payment.store', $claim->id)}}"
+																		data-path="{{route('payment.loadModal', [$claim->id, 'update'])}}">
 																		[параметры]
 																	</button>
 																</div>

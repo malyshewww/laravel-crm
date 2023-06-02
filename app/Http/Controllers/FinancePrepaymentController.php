@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\FinancePrepayment;
 use Illuminate\Http\Request;
 
@@ -20,5 +21,15 @@ class FinancePrepaymentController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $claim = Claim::findOrFail($id);
+        if ($claim->prepayment) {
+            $prepayment = FinancePrepayment::findOrFail($claim->prepayment->id);
+            return view('claim.finance.modals.prepayment_update', compact('prepayment'))->render();
+        } else {
+            return view('claim.finance.modals.prepayment_create')->render();
+        }
     }
 }

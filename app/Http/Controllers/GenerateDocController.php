@@ -32,7 +32,6 @@ class GenerateDocController extends Controller
         $claimId = $request->id;
         $claim = Claim::find($claimId);
         $contractData['claimId'] = $claim->id;
-
         $contractData['claimDate'] = $claim->date_start->format('d.m.Y');
         // Общие данные по заявке, когда заказчик - ФИЗ. ЛИЦО
         if ($claim->customer && $claim->customer->type === 'person') {
@@ -277,6 +276,7 @@ class GenerateDocController extends Controller
         // $phpWord->setComplexValue('inline', $inline);
 
         $phpWord->setValues($tourPackageTableData);
+        $phpWord->setValues($contractData);
 
         $phpWord->saveAs($fileName . '.docx');
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);

@@ -1,6 +1,8 @@
 import { getTranslitValues } from "./translit.js";
 import { initChoices, choiceConfig } from "./choices.js";
 import { initDatePicker } from "./calendar.js";
+import { hiddenField } from "./currency.js";
+import { numberFormatted } from "./number-format.js";
 function formData() {
 	const url = BASE_URL;
 	let forms = document.querySelectorAll('.form');
@@ -223,6 +225,8 @@ function modalUpdate(modalUpdateId, formId) {
 					modalBody.innerHTML = text;
 					formUpdate(formId);
 					getTranslitValues();
+					hiddenField();
+					numberFormatted();
 					let selects = document.querySelectorAll('[data-select]');
 					[...selects].forEach((select) => {
 						if (select) {
@@ -256,6 +260,8 @@ modalUpdate('updatePaymentInvoice', 'formPaymentInvoiceUpdate');
 modalUpdate('contractModal', 'formContract');
 modalUpdate('touroperatorModal', 'formTouroperator');
 modalUpdate('tourpackageModal', 'formTourpackage');
+modalUpdate('prepaymentParameters', 'formPrepayment');
+modalUpdate('parametersPayment', 'formPayment');
 
 const modalDelete = document.getElementById('deleteRecord');
 if (modalDelete) {

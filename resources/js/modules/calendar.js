@@ -12,14 +12,108 @@ import moment from 'moment';
 
 let deviceType = window.innerWidth < 991.98 ? 'mobile' : 'desktop';
 
+function getNumberOfDays(start, end) {
+	const date1 = new Date(start);
+	const date2 = new Date(end);
+	// One day in milliseconds
+	const oneDay = 1000 * 3600 * 24;
+	// Calculating the time difference between two dates
+	const diffInTime = date2.getTime() - date1.getTime();
+	// Calculating the no. of days between two dates
+	const diffInDays = Math.round(diffInTime / oneDay);
+	return diffInDays;
+}
+
 export function initDatePicker(type) {
 	const rangeDateConfig = {
 		position: 'bottom right',
 		buttons: ['today', 'clear'],
 		dateSeparator: ",",
 		timeFormat: 'HH:mm',
+		position({ $datepicker, $target, $pointer, done }) {
+			let popper = createPopper($target, $datepicker, {
+				placement: 'bottom',
+				modifiers: [
+					{
+						name: 'flip',
+						options: {
+							padding: {
+								top: 64
+							}
+						}
+					},
+					{
+						name: 'offset',
+						options: {
+							offset: [0, 20]
+						}
+					},
+					{
+						name: 'arrow',
+						options: {
+							element: $pointer
+						}
+					}
+				]
+			})
+			return function completeHide() {
+				popper.destroy();
+				done();
+			}
+		},
 	}
 
+	const datePickerRange = document.querySelectorAll('[data-range]');
+	[...datePickerRange].forEach((range) => {
+		let datepickerRange = new AirDatepicker(range, {
+			range: true,
+			autoClose: true,
+			multipleDatesSeparator: ' - ',
+			multipleDates: true,
+			dateFormat: 'yyyy/MM/dd',
+			// dynamicRange: true,
+			onSelect: function onSelect(datepicker, selectedDates) {
+				const { formattedDate } = datepicker
+				if (formattedDate[0] && formattedDate[1]) {
+					const dateStart = formattedDate[0];
+					const dateEnd = formattedDate[1];
+					const days = getNumberOfDays(dateStart, dateEnd);
+					range.value = days;
+				}
+			},
+			position({ $datepicker, $target, $pointer, done }) {
+				let popper = createPopper($target, $datepicker, {
+					placement: 'bottom',
+					modifiers: [
+						{
+							name: 'flip',
+							options: {
+								padding: {
+									top: 64
+								}
+							}
+						},
+						{
+							name: 'offset',
+							options: {
+								offset: [0, 20]
+							}
+						},
+						{
+							name: 'arrow',
+							options: {
+								element: $pointer
+							}
+						}
+					]
+				})
+				return function completeHide() {
+					popper.destroy();
+					done();
+				}
+			},
+		})
+	})
 	// Конфигурация для одиночных дат
 	let button = {
 		content: 'Применить',

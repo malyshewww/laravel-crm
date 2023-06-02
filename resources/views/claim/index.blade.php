@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layout.app')
 @section('title','Главная страница')
 @section('header')
-	@include('layouts.header')
+	@include('layout.header')
 @endsection
 @section('content')
 	<div class="container">

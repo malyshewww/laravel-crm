@@ -22,8 +22,8 @@
                 @yield('content')
             </div>
         </main>
-        @include('layouts.footer')
-        {{-- @include('layouts.modals') --}}
+        @include('layout.footer')
+        @include('layout.modals')
         @yield('page-modal')
     </div>
 	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>

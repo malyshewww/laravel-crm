@@ -130,10 +130,13 @@ Route::delete('/files/{file}/delete', [FileController::class, 'destroy'])->name(
 
 // Финансы
 // Параметры предоплаты
-Route::post('/prepayments', [FinancePrepaymentController::class, 'store'])->name('prepayment.store');
+Route::post('/prepayments/{prepayment}/store', [FinancePrepaymentController::class, 'store'])->name('prepayment.store');
+Route::get('/prepayments/{prepayment}/loadModal-{action}', [FinancePrepaymentController::class, 'loadModal'])->name('prepayment.loadModal');
 
 // Параметры стоимости
-Route::post('/payments', [FinancePaymentController::class, 'store'])->name('payment.store');
+Route::post('/payments/{payment}/store', [FinancePaymentController::class, 'store'])->name('payment.store');
+Route::get('/payments/{payment}/loadModal-{action}', [FinancePaymentController::class, 'loadModal'])->name('payment.loadModal');
+
 
 // Выставление счета туристу
 Route::post('/payment_invoices', [FinancePaymentInvoiceController::class, 'store'])->name('payment_invoice.store');

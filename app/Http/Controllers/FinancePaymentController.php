@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\FinancePayment;
 use Illuminate\Http\Request;
 
@@ -22,5 +23,15 @@ class FinancePaymentController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+    }
+    public function loadModal($id, $action)
+    {
+        $claim = Claim::findOrFail($id);
+        if ($claim->payment) {
+            $payment = FinancePayment::findOrFail($claim->payment->id);
+            return view('claim.finance.modals.payment_update', compact('payment'))->render();
+        } else {
+            return view('claim.finance.modals.payment_create')->render();
+        }
     }
 }
