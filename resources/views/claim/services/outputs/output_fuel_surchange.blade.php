@@ -21,12 +21,13 @@
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
 						<button class="btn-gear" type="button" 
-							data-bs-toggle="modal" data-bs-target="#updateFuelSurchange"
+							data-bs-toggle="modal" data-bs-target="#serviceUpdateModal"
 							data-id="{{$fs->id}}" 
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('fuelsurchange.update', $fs->id)}}"
-							data-path="{{route('fuelsurchange.loadModal', [$fs->id, 'update'])}}">
+							data-path="{{route('fuelsurchange.loadModal', [$fs->id, 'update'])}}"
+							data-title="Топливный сбор (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
@@ -40,7 +41,6 @@
 						</button>
 					</div>
 				</div>
-				@include('claim.services.modals.update_fuelsurchange', ['fs' => $fs])
 			</td>
 		</tr>
 	@endforeach

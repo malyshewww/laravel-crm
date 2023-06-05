@@ -1,4 +1,6 @@
-<div class="field-group"> 
+<input type="hidden" name="type" value="excursion">
+<input type="hidden" name="record_id" value="{{$excursion->id}}">
+<div class="field-group">
 	<div class="row">
 		<div class="col-12"> 
 			<div class="field-group__item">

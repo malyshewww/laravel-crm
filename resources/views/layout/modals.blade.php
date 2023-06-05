@@ -1,7 +1,10 @@
 @component('layout.modal')
 	@slot('modal_id', 'docModal')
-	@slot('modal_title', 'Статус отправки документов')
+	{{-- @slot('modal_title', 'Статус отправки документов') --}}
 	@slot('modal_class', null)
+	<x-slot name="modal_title">
+		Статус отправки документов
+	</x-slot>
 	<form action="#">
 		<div class="modal__body">
 			<div class="field-group">

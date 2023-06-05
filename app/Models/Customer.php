@@ -17,12 +17,4 @@ class Customer extends Model
     {
         return $this->belongsTo(Claim::class, 'claim_id', 'id');
     }
-    public function person()
-    {
-        return $this->hasOne(Person::class);
-    }
-    public function company()
-    {
-        return $this->hasOne(Company::class);
-    }
 }

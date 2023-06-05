@@ -30,39 +30,7 @@ export function initDatePicker(type) {
 		buttons: ['today', 'clear'],
 		dateSeparator: ",",
 		timeFormat: 'HH:mm',
-		position({ $datepicker, $target, $pointer, done }) {
-			let popper = createPopper($target, $datepicker, {
-				placement: 'bottom',
-				modifiers: [
-					{
-						name: 'flip',
-						options: {
-							padding: {
-								top: 64
-							}
-						}
-					},
-					{
-						name: 'offset',
-						options: {
-							offset: [0, 20]
-						}
-					},
-					{
-						name: 'arrow',
-						options: {
-							element: $pointer
-						}
-					}
-				]
-			})
-			return function completeHide() {
-				popper.destroy();
-				done();
-			}
-		},
 	}
-
 	const datePickerRange = document.querySelectorAll('[data-range]');
 	[...datePickerRange].forEach((range) => {
 		let datepickerRange = new AirDatepicker(range, {
@@ -79,37 +47,6 @@ export function initDatePicker(type) {
 					const dateEnd = formattedDate[1];
 					const days = getNumberOfDays(dateStart, dateEnd);
 					range.value = days;
-				}
-			},
-			position({ $datepicker, $target, $pointer, done }) {
-				let popper = createPopper($target, $datepicker, {
-					placement: 'bottom',
-					modifiers: [
-						{
-							name: 'flip',
-							options: {
-								padding: {
-									top: 64
-								}
-							}
-						},
-						{
-							name: 'offset',
-							options: {
-								offset: [0, 20]
-							}
-						},
-						{
-							name: 'arrow',
-							options: {
-								element: $pointer
-							}
-						}
-					]
-				})
-				return function completeHide() {
-					popper.destroy();
-					done();
 				}
 			},
 		})
@@ -198,16 +135,16 @@ export function initDatePicker(type) {
 		let inputAltFieldStart = form.querySelector('[data-name="date_start"]');
 		let inputAltFieldEnd = form.querySelector('[data-name="date_end"]');
 		if (inputTriggerStart && inputTriggerEnd && inputAltFieldStart && inputAltFieldEnd) {
-			if (inputAltFieldStart.value != "") {
-				startConfig = {
-					selectedDates: [inputAltFieldStart.value]
-				}
-			}
-			if (inputAltFieldEnd.value != "") {
-				endConfig = {
-					selectedDates: [inputAltFieldEnd.value]
-				}
-			}
+			// if (inputAltFieldStart.value != "") {
+			// 	startConfig = {
+			// 		selectedDates: [inputAltFieldStart?.value]
+			// 	}
+			// }
+			// if (inputAltFieldEnd.value != "") {
+			// 	endConfig = {
+			// 		selectedDates: [inputAltFieldEnd?.value]
+			// 	}
+			// }
 			let inputAltFieldStartFormat = inputAltFieldStart.dataset.format;
 			let inputAltFieldEndFormat = inputAltFieldEnd.dataset.format;
 			let datepickerStart = new AirDatepicker(inputTriggerStart, {
@@ -251,11 +188,11 @@ export function initDatePicker(type) {
 			const altFieldDate = parent.querySelector('[data-name="date"]');
 			if (altFieldDate) {
 				let altFieldDateFormat = altFieldDate?.dataset.format;
-				if (altFieldDate.value != "") {
-					singleDateConfig = {
-						selectedDates: [altFieldDate.value]
-					}
-				}
+				// if (altFieldDate.value != "") {
+				// 	singleDateConfig = {
+				// 		selectedDates: [altFieldDate.value]
+				// 	}
+				// }
 				let datepicker = new AirDatepicker(item, {
 					...settings,
 					dateSeparator: "",

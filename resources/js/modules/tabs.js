@@ -16,19 +16,22 @@ function tabsAction(event) {
 		}
 	}
 }
-const personsSelect = document.getElementById('personsSelect');
-if (personsSelect) {
-	const tabsContentAll = document.querySelectorAll('#tabContentModal .tabs-content');
-	personsSelect.addEventListener('change', (event) => {
-		let selectValue = event.target.value;
-		if (selectValue == "") return;
-		let tabContent = document.getElementById(selectValue);
-		[...tabsContentAll].forEach((item) => {
-			item.classList.remove("isOpen");
-		})
-		tabContent.classList.add('isOpen')
-	});
+export function changeCustomer() {
+	const personsSelect = document.getElementById('personsSelect');
+	if (personsSelect) {
+		const tabsContentAll = document.querySelectorAll('#tabContentModal .tabs-content');
+		personsSelect.addEventListener('change', (event) => {
+			let selectValue = event.target.value;
+			if (selectValue == "") return;
+			let tabContent = document.getElementById(selectValue);
+			[...tabsContentAll].forEach((item) => {
+				item.classList.remove("isOpen");
+			})
+			tabContent.classList.add('isOpen')
+		});
+	}
 }
+changeCustomer();
 const tab = document.querySelector('[data-tab]');
 if (tab) {
 	document.querySelector('[data-tab]').click();

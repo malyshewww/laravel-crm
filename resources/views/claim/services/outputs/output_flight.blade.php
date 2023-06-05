@@ -21,12 +21,13 @@
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
 						<button class="btn-gear" type="button" 
-							data-bs-toggle="modal" data-bs-target="#updateFlight"
+							data-bs-toggle="modal" data-bs-target="#serviceUpdateModal"
 							data-id="{{$flight->id}}" 
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('flight.update', $flight->id)}}"
-							data-path="{{route('flight.loadModal', [$flight->id, 'update'])}}">
+							data-path="{{route('flight.loadModal', [$flight->id, 'update'])}}"
+							data-title="Перелёт (редактирвоание)">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
@@ -38,7 +39,6 @@
 						</button>
 					</div>
 				</div>
-				@include('claim.services.modals.update_flights', ['flight' => $flight])
 			</td>
 		</tr>
 	@endforeach

@@ -22,11 +22,12 @@
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
 						<button class="btn-gear" type="button" 
 							data-id="{{$excursion->id}}" 
-							data-bs-toggle="modal" data-bs-target="#updateExcursionProgramm"
+							data-bs-toggle="modal" data-bs-target="#serviceUpdateModal"
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('excursion.update', $excursion->id)}}"
-							data-path="{{route('excursion.loadModal', [$excursion->id, 'update'])}}">
+							data-path="{{route('excursion.loadModal', [$excursion->id, 'update'])}}"
+							data-title="Экскурсионная программа (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
@@ -40,7 +41,6 @@
 						</button>
 					</div>
 				</div>
-				@include('claim.services.modals.update_excursion', ['excursion' => $excursion])
 			</td>
 		</tr>
 	@endforeach

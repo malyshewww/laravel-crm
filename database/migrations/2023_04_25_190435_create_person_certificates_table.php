@@ -20,8 +20,7 @@ class CreatePersonCertificatesTable extends Migration
             $table->date('person_certificate_date')->nullable(true);
             $table->text('person_certificate_issued')->nullable(true);
 
-            $table->unsignedBigInteger('person_id');
-            $table->foreign('person_id')->on('persons')->references('id')->onDelete('cascade');
+            $table->foreignId('person_id')->onDelete()->constrained('persons');
 
             $table->timestamps();
         });

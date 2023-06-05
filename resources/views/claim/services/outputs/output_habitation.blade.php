@@ -21,12 +21,13 @@
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
 						<button class="btn-gear" type="button" 
-							data-bs-toggle="modal" data-bs-target="#updateHabitation"
+							data-bs-toggle="modal" data-bs-target="#serviceUpdateModal"
 							data-id="{{$habitation->id}}" 
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('habitation.update', $habitation->id)}}"
-							data-path="{{route('habitation.loadModal', [$habitation->id, 'update'])}}">
+							data-path="{{route('habitation.loadModal', [$habitation->id, 'update'])}}"
+							data-title="Проживание (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
@@ -40,7 +41,6 @@
 						</button>
 					</div>
 				</div>
-				@include('claim.services.modals.update_habitation', ['habitation' => $habitation])
 			</td>
 		</tr>
 	@endforeach

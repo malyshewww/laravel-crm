@@ -21,12 +21,13 @@
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
 						<button class="btn-gear" type="button" 
-							data-bs-toggle="modal" data-bs-target="#updateTransfer"
+							data-bs-toggle="modal" data-bs-target="#serviceUpdateModal"
 							data-id="{{$transfer->id}}"
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('transfer.update', $transfer->id)}}"
-							data-path="{{route('transfer.loadModal', [$transfer->id, 'update'])}}">
+							data-path="{{route('transfer.loadModal', [$transfer->id, 'update'])}}"
+							data-title="Трансфер (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
@@ -38,7 +39,6 @@
 						</button>
 					</div>
 				</div>
-				@include('claim.services.modals.update_transfer', ['transfer' => $transfer])
 			</td>
 		</tr>
 	@endforeach

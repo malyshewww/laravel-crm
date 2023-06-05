@@ -1,0 +1,18 @@
+function displayLoading() {
+	if (loader) {
+		loader.removeAttribute('hidden');
+		// to stop loading after some time
+		setTimeout(() => {
+			loader.setAttribute("hidden", true);
+		}, 5000);
+	}
+}
+function hideLoading() {
+	if (loader) {
+		loader.setAttribute("hidden", true);
+	}
+}
+export {
+	displayLoading,
+	hideLoading
+}

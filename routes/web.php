@@ -65,8 +65,8 @@ Route::post('/contracts/{contract}/store', [ContractController::class, 'store'])
 Route::get('/contracts/{contract}/loadModal-{action}', [ContractController::class, 'loadModal'])->name('contract.loadModal');
 
 // Данные о заказчике (Физическое|Юридическое лицо)
-Route::get('/customers/{customer}', [CustomerController::class, 'customerData'])->name('customer.customerData');
 Route::post('/customers/{customer}/store', [CustomerController::class, 'store'])->name('customer.store');
+Route::get('/customers/{customer}/loadModal-{action}', [CustomerController::class, 'loadModal'])->name('customer.loadModal');
 
 // Данные о туристе
 Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');
@@ -125,7 +125,7 @@ Route::delete('/otherservices/{otherservice}/delete', [OtherServiceController::c
 Route::get('/otherservices/{otherservice}/loadModal-{action}', [OtherServiceController::class, 'loadModal'])->name('otherservice.loadModal');
 
 // Добавление/Удаление файлов
-Route::post('/files', [FileController::class, 'store'])->name('file.store');
+Route::post('/files/store', [FileController::class, 'store'])->name('file.store');
 Route::delete('/files/{file}/delete', [FileController::class, 'destroy'])->name('file.destroy');
 
 // Финансы

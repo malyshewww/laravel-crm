@@ -28,6 +28,14 @@ class Claim extends Model
     // {
     //     $this->attributes['date_end'] = (new Carbon($value))->format('d.m.Y');
     // }
+    public function person()
+    {
+        return $this->hasOne(Person::class);
+    }
+    public function company()
+    {
+        return $this->hasOne(Company::class);
+    }
     public function latestClaim()
     {
         return $this->hasOne(Claim::class)->latest();
@@ -106,6 +114,7 @@ class Claim extends Model
     {
         return $this->hasMany(OtherService::class);
     }
+    // Добавить файлы
     public function file()
     {
         return $this->hasMany(FileUpload::class);

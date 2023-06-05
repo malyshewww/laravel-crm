@@ -1,3 +1,5 @@
+<input type="hidden" name="type" value="transfer">
+<input type="hidden" name="record_id" value="{{$transfer->id}}">
 <div class="field-group"> 
 	<div class="row">
 		<div class="col-lg-6">

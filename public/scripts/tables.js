@@ -11,7 +11,7 @@ function hideLoading() {
 	loader.setAttribute("hidden", true);
 }
 const tableConfig = {
-	ordering: false,
+	ordering: true,
 	sorting: false,
 	searching: false,
 	responsive: true,
@@ -124,8 +124,17 @@ function initDataTable(data) {
 		],
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
+			initBootstrapTooltip();
 		}
 	})
+}
+function initBootstrapTooltip() {
+	let tooltipTriggerList = [].slice.call(
+		document.querySelectorAll('[data-bs-toggle="tooltip"]')
+	);
+	let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl);
+	});
 }
 var newArr = [];
 function fetchTable(form) {
@@ -191,6 +200,7 @@ function filterTable() {
 				tourTable.clear();
 				tourTable.rows.add(data);
 				tourTable.draw();
+				initBootstrapTooltip();
 				hideLoading();
 			})
 	})

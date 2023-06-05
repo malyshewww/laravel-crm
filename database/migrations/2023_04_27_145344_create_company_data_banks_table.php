@@ -21,8 +21,7 @@ class CreateCompanyDataBanksTable extends Migration
             $table->string('company_rs')->nullable(true);
             $table->string('company_ks')->nullable(true);
 
-            $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->on('companies')->references('id')->onDelete('cascade');
+            $table->foreignId('company_id')->onDelete()->constrained('companies');
 
             $table->timestamps();
         });

@@ -26,28 +26,7 @@ class ClaimController extends Controller
 {
     public function index(Request $request, Claim $claim)
     {
-        $data['q'] = $request->query('fio');
-        $query = DB::table('customers')
-            ->join('claims', 'customers.claim_id', '=', 'claims.id')
-            ->join('tourists', 'tourists.claim_id', '=', 'claims.id')
-            ->join('persons', 'persons.customer_id', '=', 'customers.id')
-            ->join('companies', 'companies.customer_id', '=', 'customers.id')
-            ->join('tour_packages', 'tour_packages.claim_id', '=', 'claims.id')
-            ->where('customers.claim_id', '=', 'claims.id')
-            ->select(
-                'claims.*',
-                'tourists.*',
-                'customers.*',
-                'persons.*',
-                'companies.*',
-                'tour_packages.*',
-            )
-            // ->where('tourists.claim_id', '=', 'claims.id')
-            // ->Orwhere('persons.customer_id', '=', 'customers.id')
-            ->get();
         $claims = Claim::get();
-        // dd($query);
-        $data['claims'] = $query;
         if (Auth::check()) {
             $tourpackages = TourPackage::get();
             return view('claim.index', compact('claims'));
@@ -238,10 +217,10 @@ class ClaimController extends Controller
                 }
             }
             if (isset($claim->customer)) {
-                if ($claim->customer->type == 'person' && $claim->customer->person) {
-                    $customer = $claim->customer->person->person_surname . ' ' . $claim->customer->person->person_name . ' ' . $claim->customer->person->person_patronymic;
-                } else if ($claim->customer->type == 'company' && $claim->customer->company) {
-                    $customer = $claim->customer->company->company_fullname;
+                if ($claim->customer->type == 'person' && $claim->person) {
+                    $customer = $claim->person->person_surname . ' ' . $claim->person->person_name . ' ' . $claim->person->person_patronymic;
+                } else if ($claim->customer->type == 'company' && $claim->company) {
+                    $customer = $claim->company->company_fullname ?: '';
                 } else {
                     $customer = '';
                 }

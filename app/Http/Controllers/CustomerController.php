@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\Company;
 use App\Models\CompanyDataBank;
 use App\Models\CompanyDataContact;
@@ -61,10 +62,10 @@ class CustomerController extends Controller
                 'person_surname' => $request->person_surname,
                 'person_name' =>  $request->person_name,
                 'person_patronymic' => $request->person_patronymic,
-                'customer_id' => $request->customer_id
+                'claim_id' => $request->claim_id
             ];
             Person::updateOrCreate([
-                'customer_id' => $request->customer_id
+                'claim_id' => $request->claim_id
             ], $personFields);
             // Общие данные о заказчике
             $personCommonsFields = [
@@ -125,10 +126,10 @@ class CustomerController extends Controller
             $companyFields = [
                 'company_fullname' => $request->company_fullname,
                 'company_shortname' => $request->company_shortname,
-                'customer_id' => $request->customer_id
+                'claim_id' => $request->claim_id
             ];
             Company::updateOrCreate([
-                'customer_id' => $request->customer_id
+                'claim_id' => $request->claim_id
             ], $companyFields);
             $companyRegisterFields = [
                 'company_kpp' => $request->company_kpp,
@@ -165,14 +166,19 @@ class CustomerController extends Controller
             ]);
         }
     }
-    public function customerData($id)
+    public function loadModal($id, $action)
     {
-        $customer = Customer::find($id);
-        return response()->json([
-            'commons' => $customer->person->commons,
-            'passport' => $customer->person->passport,
-            'certificate' => $customer->person->certificate,
-            'internationalPassport' => $customer->person->internationalPassport,
-        ]);
+        $claim = Claim::findOrFail($id);
+        return view('claim.customer.modal_update_customer', compact('claim'))->render();
     }
+    // public function customerData($id)
+    // {
+    //     $customer = Customer::find($id);
+    //     return response()->json([
+    //         'commons' => $customer->person->commons,
+    //         'passport' => $customer->person->passport,
+    //         'certificate' => $customer->person->certificate,
+    //         'internationalPassport' => $customer->person->internationalPassport,
+    //     ]);
+    // }
 }

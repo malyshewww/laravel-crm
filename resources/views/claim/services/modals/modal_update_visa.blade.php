@@ -1,3 +1,5 @@
+<input type="hidden" name="type" value="visa">
+<input type="hidden" name="record_id" value="{{$visa->id}}">
 <div class="field-group"> 
 	<div class="row">
 		<div class="col-lg-6">

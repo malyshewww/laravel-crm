@@ -18,8 +18,8 @@ class CreateCompaniesTable extends Migration
             $table->string('company_fullname')->nullable(true);
             $table->string('company_shortname')->nullable(true);
 
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->on('customers')->references('id')->onDelete('cascade');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });

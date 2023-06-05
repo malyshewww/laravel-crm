@@ -4549,14 +4549,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _calendar_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./calendar.js */ "./resources/js/modules/calendar.js");
 /* harmony import */ var _currency_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./currency.js */ "./resources/js/modules/currency.js");
 /* harmony import */ var _number_format_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./number-format.js */ "./resources/js/modules/number-format.js");
+/* harmony import */ var _tabs_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./tabs.js */ "./resources/js/modules/tabs.js");
+/* harmony import */ var _loader_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./loader.js */ "./resources/js/modules/loader.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4568,131 +4566,15 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
-function formData() {
-  var url = BASE_URL;
-  var forms = document.querySelectorAll('.form');
-  _toConsumableArray(forms).forEach(function (form) {
-    if (form) {
-      var formId = form.getAttribute('id');
-      var route = form.getAttribute('action');
-      form.addEventListener('submit', function (event) {
-        var _thisForm$id;
-        event.preventDefault();
-        var thisForm = event.target;
-        var currentModal = thisForm.closest('.modal');
-        var formData = new FormData(thisForm);
-        var buttonSubmit = thisForm.querySelector('button[type="submit"]');
-        var formGroup = thisForm.querySelector('.field-group');
-        buttonSubmit.setAttribute('disabled', 'true');
-        var inputDateStart = thisForm.date_start;
-        var inputDateEnd = thisForm.date_end;
-        var inputComment = thisForm.comment;
-        var inputSurname = formId == 'formCustomer' ? thisForm.person_surname : thisForm.tourist_surname;
-        var inputName = formId == 'formCustomer' ? thisForm.person_name : thisForm.tourist_name;
-        var selectGender = formId == 'formCustomer' ? thisForm.person_gender : thisForm.tourist_gender;
-        var selectNationality = formId == 'formCustomer' ? thisForm.person_nationality : thisForm.tourist_nationality;
-        var inputBirthday = formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
-        var selectVisa = thisForm.visa_info;
-        var token = thisForm._token;
-        var inputId = (_thisForm$id = thisForm.id) === null || _thisForm$id === void 0 ? void 0 : _thisForm$id.value;
-        var formInputs = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('input');
-        var formSelects = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('select');
-        // const routes = {
-        // 	'formCreateClaim': `${url}/claims`,
-        // 	'formComment': `${url}/claims/${inputId}`,
-        // 	'formTourpackage': `${url}/tourpackages/${inputId}`,
-        // 	'formTouroperator': `${url}/touroperators/${inputId}`,
-        // 	'formCustomer': `${url}/customers/${inputClaimId}`,
-        // 	'formTourist': `${url}/tourists/${inputTouristId}`,
-        // 	'formFlights': `${url}/flights`,
-        // 	'formInsurance': `${url}/insurances`,
-        // 	'formTransfer': `${url}/transfers`,
-        // 	'formVisa': `${url}/visas`,
-        // 	'formHabitation': `${url}/habitations`,
-        // 	'formFuelSurchange': `${url}/fuelsurchanges`,
-        // 	'formExcursion': `${url}/excursions`,
-        // 	'formOtherService': `${url}/otherservices`,
-        // 	'formTouristUpdate': `${url}/tourists/update/${inputTouristId}`,
-        // 	'formFlightsUpdate': `${url}/flights/update`,
-        // 	'formInsuranceUpdate': `${url}/insurances/update`,
-        // 	'formTransferUpdate': `${url}/transfers/update`,
-        // 	'formVisaUpdate': `${url}/visas/update`,
-        // 	'formHabitationUpdate': `${url}/habitations/update`,
-        // };
-        // const route = getRoute(formId, routes);
-        fetch(route, {
-          headers: {
-            "X-CSRF-Token": token
-          },
-          method: 'POST',
-          body: formData
-        }).then(function (response) {
-          return response.json();
-        }).then(function (result) {
-          if (result.status === 'success') {
-            inputDateStart ? inputDateStart.value = '' : null;
-            inputDateEnd ? inputDateEnd.value = '' : null;
-            inputComment ? inputComment.value = '' : null;
-            $(currentModal).modal('hide');
-            window.location.reload();
-            if (formId == 'formCreateClaim') {
-              setTimeout(function () {
-                window.location.href = "".concat(url, "/claims/").concat(inputId);
-              }, 500);
-            }
-            if (formId == 'formComment') {
-              elementUpdate('.comment-claim__text');
-            }
-          } else {
-            if (result.date_start) {
-              inputDateStart.classList.add('error');
-            }
-            if (result.date_end) {
-              inputDateEnd.classList.add('error');
-            }
-            if (result.person_surname || result.tourist_surname) {
-              inputSurname.classList.add('error');
-            }
-            if (result.person_name || result.tourist_name) {
-              inputName.classList.add('error');
-            }
-            if (result.person_gender || result.tourist_gender) {
-              selectGender.parentNode.classList.add('error');
-            }
-            if (result.person_nationality || result.tourist_nationality) {
-              selectNationality.parentNode.classList.add('error');
-            }
-            if (result.person_birthday || result.tourist_birthday) {
-              inputBirthday.classList.add('error');
-            }
-            if (result.visa_info) {
-              selectVisa.parentNode.classList.add('error');
-            }
-          }
-          buttonSubmit.removeAttribute('disabled');
-        })["catch"](function (error) {
-          buttonSubmit.removeAttribute('disabled');
-        });
-      });
-    }
-  });
-}
-function getRoute(formId, obj) {
-  for (var _i = 0, _Object$entries = Object.entries(obj); _i < _Object$entries.length; _i++) {
-    var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-      key = _Object$entries$_i[0],
-      value = _Object$entries$_i[1];
-    if (key == formId) return value;
-  }
-}
-formData();
-function formUpdate(formId) {
+
+
+function formHandler(formId) {
   var form = document.getElementById(formId);
   if (form) {
     var _formId = form.getAttribute('id');
     var route = form.getAttribute('action');
     form.addEventListener('submit', function (event) {
-      var _thisForm$id2;
+      var _thisForm$id;
       event.preventDefault();
       var thisForm = event.target;
       var currentModal = thisForm.closest('.modal');
@@ -4703,14 +4585,14 @@ function formUpdate(formId) {
       var inputDateStart = thisForm.date_start;
       var inputDateEnd = thisForm.date_end;
       var inputComment = thisForm.comment;
-      var inputSurname = thisForm.tourist_surname;
-      var inputName = thisForm.tourist_name;
-      var selectGender = thisForm.tourist_gender;
-      var selectNationality = thisForm.tourist_nationality;
-      var inputBirthday = thisForm.tourist_birthday;
+      var inputSurname = _formId == 'formCustomer' ? thisForm.person_surname : thisForm.tourist_surname;
+      var inputName = _formId == 'formCustomer' ? thisForm.person_name : thisForm.tourist_name;
+      var selectGender = _formId == 'formCustomer' ? thisForm.person_gender : thisForm.tourist_gender;
+      var selectNationality = _formId == 'formCustomer' ? thisForm.person_nationality : thisForm.tourist_nationality;
+      var inputBirthday = _formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
       var selectVisa = thisForm.visa_info;
       var token = thisForm._token;
-      var inputId = (_thisForm$id2 = thisForm.id) === null || _thisForm$id2 === void 0 ? void 0 : _thisForm$id2.value;
+      var inputId = (_thisForm$id = thisForm.id) === null || _thisForm$id === void 0 ? void 0 : _thisForm$id.value;
       var formInputs = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('input');
       var formSelects = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('select');
       fetch(route, {
@@ -4727,6 +4609,7 @@ function formUpdate(formId) {
           inputDateEnd ? inputDateEnd.value = '' : null;
           inputComment ? inputComment.value = '' : null;
           $(currentModal).modal('hide');
+          window.location.reload();
         } else {
           if (result.date_start) {
             inputDateStart.classList.add('error');
@@ -4734,19 +4617,19 @@ function formUpdate(formId) {
           if (result.date_end) {
             inputDateEnd.classList.add('error');
           }
-          if (result.tourist_surname) {
+          if (result.person_surname || result.tourist_surname) {
             inputSurname.classList.add('error');
           }
-          if (result.tourist_name) {
+          if (result.person_name || result.tourist_name) {
             inputName.classList.add('error');
           }
-          if (result.tourist_gender) {
+          if (result.person_gender || result.tourist_gender) {
             selectGender.parentNode.classList.add('error');
           }
-          if (result.tourist_nationality) {
+          if (result.person_nationality || result.tourist_nationality) {
             selectNationality.parentNode.classList.add('error');
           }
-          if (result.tourist_birthday) {
+          if (result.person_birthday || result.tourist_birthday) {
             inputBirthday.classList.add('error');
           }
           if (result.visa_info) {
@@ -4760,6 +4643,23 @@ function formUpdate(formId) {
     });
   }
 }
+// Создание заявки
+formHandler('formCreateClaim');
+// Создание/редактировани комментария
+formHandler('formComment');
+// ДЕТАЛИ ТУРА
+formHandler('formFlights');
+formHandler('formInsurance');
+formHandler('formTransfer');
+formHandler('formVisa');
+formHandler('formHabitation');
+formHandler('formFuelSurchange');
+formHandler('formExcursion');
+formHandler('formOtherService');
+// ДОБАВИТЬ ФАЙЛЫ
+formHandler('formFile');
+// Добавить счеёт на оплату
+formHandler('formPaymentInvoice');
 function modalUpdate(modalUpdateId, formId) {
   var modal = document.getElementById(modalUpdateId);
   if (modal) {
@@ -4770,16 +4670,19 @@ function modalUpdate(modalUpdateId, formId) {
       var dataClaimId = thisButton.dataset.claimId;
       var dataUrl = thisButton.dataset.url;
       var dataPath = thisButton.dataset.path;
+      var dataTitle = thisButton.dataset.title;
       var modalBody = thisModal.querySelector('.modal__body');
+      var modalTitle = thisModal.querySelector('.modal__title');
       var form = thisModal.querySelector('form');
       var inputClaimId = form.claim_id;
       var inputTouristId = form.tourist_id;
       var inputRecordId = form.record_id;
       var token = form._token;
       form.setAttribute('action', dataUrl);
-      inputClaimId.value = dataClaimId;
+      inputClaimId ? inputClaimId.value = dataClaimId : null;
       inputTouristId ? inputTouristId.value = dataId : null;
       inputRecordId ? inputRecordId.value = dataId : null;
+      _loader_js__WEBPACK_IMPORTED_MODULE_6__.displayLoading();
       fetch("".concat(dataPath), {
         headers: {
           "X-CSRF-Token": token
@@ -4788,11 +4691,13 @@ function modalUpdate(modalUpdateId, formId) {
       }).then(function (response) {
         return response.status == 200 ? response.text() : console.log('status error');
       }).then(function (text) {
+        dataTitle ? modalTitle.textContent = dataTitle : null;
         modalBody.innerHTML = text;
-        formUpdate(formId);
+        formHandler(formId);
         (0,_translit_js__WEBPACK_IMPORTED_MODULE_0__.getTranslitValues)();
         (0,_currency_js__WEBPACK_IMPORTED_MODULE_3__.hiddenField)();
         (0,_number_format_js__WEBPACK_IMPORTED_MODULE_4__.numberFormatted)();
+        (0,_tabs_js__WEBPACK_IMPORTED_MODULE_5__.changeCustomer)();
         var selects = document.querySelectorAll('[data-select]');
         _toConsumableArray(selects).forEach(function (select) {
           if (select) {
@@ -4803,31 +4708,36 @@ function modalUpdate(modalUpdateId, formId) {
       })["catch"](function (error) {
         console.log(error);
         ;
+      })["finally"](function () {
+        return _loader_js__WEBPACK_IMPORTED_MODULE_6__.hideLoading();
       });
     });
     modal.addEventListener('hidden.bs.modal', function (event) {
       var thisModal = event.target;
       var form = thisModal.querySelector('form');
       var modalBody = form.querySelector('.modal__body');
+      var modalTitle = thisModal.querySelector('.modal__title');
       modalBody.innerHTML = '';
+      modalTitle.textContent = '';
     });
   }
 }
-modalUpdate('updateTourist', 'formTouristUpdate');
-modalUpdate('updateTransfer', 'formTransferUpdate');
-modalUpdate('updateInsurance', 'formInsuranceUpdate');
-modalUpdate('updateFlight', 'formFlightUpdate');
-modalUpdate('updateVisa', 'formVisaUpdate');
-modalUpdate('updateHabitation', 'formHabitationUpdate');
-modalUpdate('updateFuelSurchange', 'formFuelSurchangeUpdate');
-modalUpdate('updateExcursionProgramm', 'formExcursionUpdate');
-modalUpdate('updateOtherService', 'formOtherServiceUpdate');
-modalUpdate('updatePaymentInvoice', 'formPaymentInvoiceUpdate');
-modalUpdate('contractModal', 'formContract');
-modalUpdate('touroperatorModal', 'formTouroperator');
+// ИНФОРМАЦИЯ О ТУРПАКЕТЕ
 modalUpdate('tourpackageModal', 'formTourpackage');
+// ИНФОРМАЦИЯ О ТУРОПЕРАТОРЕ
+modalUpdate('touroperatorModal', 'formTouroperator');
+// ДАННЫЕ ДОГОВОРА И БРОНИРОВАНИЯ
+modalUpdate('contractModal', 'formContract');
+// Заказчик
+modalUpdate('addCustomer', 'formCustomer');
+// Туристы
+modalUpdate('updateTourist', 'formTouristUpdate');
+// Детали тура
+modalUpdate('serviceUpdateModal', 'formServiceUpdate');
+// Финансы
 modalUpdate('prepaymentParameters', 'formPrepayment');
 modalUpdate('parametersPayment', 'formPayment');
+modalUpdate('updatePaymentInvoice', 'formPaymentInvoiceUpdate');
 var modalDelete = document.getElementById('deleteRecord');
 if (modalDelete) {
   modalDelete.addEventListener('show.bs.modal', function (event) {
@@ -4874,7 +4784,7 @@ function deleteRecord() {
   }
 }
 deleteRecord();
-function elementUpdate(_x2) {
+function elementUpdate(_x) {
   return _elementUpdate.apply(this, arguments);
 }
 function _elementUpdate() {
@@ -4946,15 +4856,15 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 // Плагин календаря air-datepicker
 
 // Библиотека для позиционирования календаря
@@ -4980,42 +4890,12 @@ function getNumberOfDays(start, end) {
   return diffInDays;
 }
 function initDatePicker(type) {
-  var rangeDateConfig = _defineProperty({
+  var rangeDateConfig = {
     position: 'bottom right',
     buttons: ['today', 'clear'],
     dateSeparator: ",",
     timeFormat: 'HH:mm'
-  }, "position", function position(_ref) {
-    var $datepicker = _ref.$datepicker,
-      $target = _ref.$target,
-      $pointer = _ref.$pointer,
-      done = _ref.done;
-    var popper = (0,_popperjs_core__WEBPACK_IMPORTED_MODULE_3__.createPopper)($target, $datepicker, {
-      placement: 'bottom',
-      modifiers: [{
-        name: 'flip',
-        options: {
-          padding: {
-            top: 64
-          }
-        }
-      }, {
-        name: 'offset',
-        options: {
-          offset: [0, 20]
-        }
-      }, {
-        name: 'arrow',
-        options: {
-          element: $pointer
-        }
-      }]
-    });
-    return function completeHide() {
-      popper.destroy();
-      done();
-    };
-  });
+  };
   var datePickerRange = document.querySelectorAll('[data-range]');
   _toConsumableArray(datePickerRange).forEach(function (range) {
     var datepickerRange = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](range, {
@@ -5033,37 +4913,6 @@ function initDatePicker(type) {
           var days = getNumberOfDays(dateStart, dateEnd);
           range.value = days;
         }
-      },
-      position: function position(_ref2) {
-        var $datepicker = _ref2.$datepicker,
-          $target = _ref2.$target,
-          $pointer = _ref2.$pointer,
-          done = _ref2.done;
-        var popper = (0,_popperjs_core__WEBPACK_IMPORTED_MODULE_3__.createPopper)($target, $datepicker, {
-          placement: 'bottom',
-          modifiers: [{
-            name: 'flip',
-            options: {
-              padding: {
-                top: 64
-              }
-            }
-          }, {
-            name: 'offset',
-            options: {
-              offset: [0, 20]
-            }
-          }, {
-            name: 'arrow',
-            options: {
-              element: $pointer
-            }
-          }]
-        });
-        return function completeHide() {
-          popper.destroy();
-          done();
-        };
       }
     });
   });
@@ -5094,12 +4943,12 @@ function initDatePicker(type) {
     };
     var singleDateSettings = {
       container: "#scroll-container",
-      position: function position(_ref3) {
-        var $datepicker = _ref3.$datepicker,
-          $target = _ref3.$target,
-          $pointer = _ref3.$pointer,
-          isViewChange = _ref3.isViewChange,
-          done = _ref3.done;
+      position: function position(_ref) {
+        var $datepicker = _ref.$datepicker,
+          $target = _ref.$target,
+          $pointer = _ref.$pointer,
+          isViewChange = _ref.isViewChange,
+          done = _ref.done;
         var popper = (0,_popperjs_core__WEBPACK_IMPORTED_MODULE_3__.createPopper)($target, $datepicker, {
           placement: 'bottom',
           onFirstUpdate: function onFirstUpdate(state) {
@@ -5151,16 +5000,16 @@ function initDatePicker(type) {
     var inputAltFieldStart = form.querySelector('[data-name="date_start"]');
     var inputAltFieldEnd = form.querySelector('[data-name="date_end"]');
     if (inputTriggerStart && inputTriggerEnd && inputAltFieldStart && inputAltFieldEnd) {
-      if (inputAltFieldStart.value != "") {
-        startConfig = {
-          selectedDates: [inputAltFieldStart.value]
-        };
-      }
-      if (inputAltFieldEnd.value != "") {
-        endConfig = {
-          selectedDates: [inputAltFieldEnd.value]
-        };
-      }
+      // if (inputAltFieldStart.value != "") {
+      // 	startConfig = {
+      // 		selectedDates: [inputAltFieldStart?.value]
+      // 	}
+      // }
+      // if (inputAltFieldEnd.value != "") {
+      // 	endConfig = {
+      // 		selectedDates: [inputAltFieldEnd?.value]
+      // 	}
+      // }
       var inputAltFieldStartFormat = inputAltFieldStart.dataset.format;
       var inputAltFieldEndFormat = inputAltFieldEnd.dataset.format;
       var datepickerStart = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](inputTriggerStart, _objectSpread(_objectSpread(_objectSpread({
@@ -5170,9 +5019,9 @@ function initDatePicker(type) {
         dateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
         altFieldDateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
         timepicker: inputAltFieldStartFormat == 'datetime' ? true : false,
-        onSelect: function onSelect(_ref4) {
-          var date = _ref4.date,
-            datepicker = _ref4.datepicker;
+        onSelect: function onSelect(_ref2) {
+          var date = _ref2.date,
+            datepicker = _ref2.datepicker;
           datepickerEnd.update({
             minDate: date
           });
@@ -5185,9 +5034,9 @@ function initDatePicker(type) {
         dateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
         altFieldDateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
         timepicker: inputAltFieldEndFormat == 'datetime' ? true : false,
-        onSelect: function onSelect(_ref5) {
-          var date = _ref5.date,
-            datepicker = _ref5.datepicker;
+        onSelect: function onSelect(_ref3) {
+          var date = _ref3.date,
+            datepicker = _ref3.datepicker;
           datepickerStart.update({
             maxDate: date
           });
@@ -5202,11 +5051,11 @@ function initDatePicker(type) {
       var altFieldDate = parent.querySelector('[data-name="date"]');
       if (altFieldDate) {
         var altFieldDateFormat = altFieldDate === null || altFieldDate === void 0 ? void 0 : altFieldDate.dataset.format;
-        if (altFieldDate.value != "") {
-          singleDateConfig = {
-            selectedDates: [altFieldDate.value]
-          };
-        }
+        // if (altFieldDate.value != "") {
+        // 	singleDateConfig = {
+        // 		selectedDates: [altFieldDate.value]
+        // 	}
+        // }
         var datepicker = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](item, _objectSpread(_objectSpread({}, settings), {}, {
           dateSeparator: "",
           position: "bottom right",
@@ -5405,6 +5254,36 @@ hiddenField();
 
 /***/ }),
 
+/***/ "./resources/js/modules/loader.js":
+/*!****************************************!*\
+  !*** ./resources/js/modules/loader.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "displayLoading": () => (/* binding */ displayLoading),
+/* harmony export */   "hideLoading": () => (/* binding */ hideLoading)
+/* harmony export */ });
+function displayLoading() {
+  if (loader) {
+    loader.removeAttribute('hidden');
+    // to stop loading after some time
+    setTimeout(function () {
+      loader.setAttribute("hidden", true);
+    }, 5000);
+  }
+}
+function hideLoading() {
+  if (loader) {
+    loader.setAttribute("hidden", true);
+  }
+}
+
+
+/***/ }),
+
 /***/ "./resources/js/modules/number-format.js":
 /*!***********************************************!*\
   !*** ./resources/js/modules/number-format.js ***!
@@ -5451,8 +5330,13 @@ function check(event, value) {
 /*!**************************************!*\
   !*** ./resources/js/modules/tabs.js ***!
   \**************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "changeCustomer": () => (/* binding */ changeCustomer)
+/* harmony export */ });
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -5477,19 +5361,22 @@ function tabsAction(event) {
     }
   }
 }
-var personsSelect = document.getElementById('personsSelect');
-if (personsSelect) {
-  var tabsContentAll = document.querySelectorAll('#tabContentModal .tabs-content');
-  personsSelect.addEventListener('change', function (event) {
-    var selectValue = event.target.value;
-    if (selectValue == "") return;
-    var tabContent = document.getElementById(selectValue);
-    _toConsumableArray(tabsContentAll).forEach(function (item) {
-      item.classList.remove("isOpen");
+function changeCustomer() {
+  var personsSelect = document.getElementById('personsSelect');
+  if (personsSelect) {
+    var tabsContentAll = document.querySelectorAll('#tabContentModal .tabs-content');
+    personsSelect.addEventListener('change', function (event) {
+      var selectValue = event.target.value;
+      if (selectValue == "") return;
+      var tabContent = document.getElementById(selectValue);
+      _toConsumableArray(tabsContentAll).forEach(function (item) {
+        item.classList.remove("isOpen");
+      });
+      tabContent.classList.add('isOpen');
     });
-    tabContent.classList.add('isOpen');
-  });
+  }
 }
+changeCustomer();
 var tab = document.querySelector('[data-tab]');
 if (tab) {
   document.querySelector('[data-tab]').click();
@@ -34787,7 +34674,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_bootstrapTooltip_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/bootstrapTooltip.js */ "./resources/js/modules/bootstrapTooltip.js");
 /* harmony import */ var _modules_bootstrapTooltip_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_modules_bootstrapTooltip_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _modules_tabs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs.js */ "./resources/js/modules/tabs.js");
-/* harmony import */ var _modules_tabs_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_modules_tabs_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _modules_calendar_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/calendar.js */ "./resources/js/modules/calendar.js");
 /* harmony import */ var _modules_currency_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/currency.js */ "./resources/js/modules/currency.js");
 /* harmony import */ var _modules_choices_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/choices.js */ "./resources/js/modules/choices.js");

@@ -7,7 +7,7 @@
 					<i class="fa-solid fa-xmark"></i>
 				</button>
 			</div>
-			<form action="{{route('file.store')}}" method="post" enctype="multipart/form-data" id="formFile" class="form">
+			<form action="{{route('file.store')}}" method="post" enctype="multipart/form-data" id="formFile">
 				@csrf
 				<input type="hidden" name="claim_id" value="{{$claim->id}}">
 				<div class="modal__body">

@@ -24,8 +24,7 @@ class CreatePersonCommonsTable extends Migration
             $table->string('person_phone')->nullable(true);
             $table->string('person_email')->nullable(true);
 
-            $table->unsignedBigInteger('person_id');
-            $table->foreign('person_id')->on('persons')->references('id')->onDelete('cascade');
+            $table->foreignId('person_id')->onDelete()->constrained('persons');
 
             $table->timestamps();
         });

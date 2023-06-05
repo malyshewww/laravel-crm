@@ -25,6 +25,9 @@
         @include('layout.footer')
         @include('layout.modals')
         @yield('page-modal')
+        <div class="loader fixed" id="loader" hidden>
+            <div class="loader__icon"></div>
+        </div>
     </div>
 	<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="{{asset('scripts/bootstrap.bundle.min.js')}}"></script>

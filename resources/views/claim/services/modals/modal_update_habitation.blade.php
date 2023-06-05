@@ -1,3 +1,5 @@
+<input type="hidden" name="type" value="habitation">
+<input type="hidden" name="record_id" value="{{$habitation->id}}">
 <div class="field-group"> 
 	<div class="row">
 		<div class="col-12"> 

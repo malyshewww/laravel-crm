@@ -98,7 +98,8 @@
 															data-type="update"
 															data-claim-id="{{$claim->id}}"
 															data-url="{{route('prepayment.store', $claim->id)}}"
-															data-path="{{route('prepayment.loadModal', [$claim->id, 'update'])}}">
+															data-path="{{route('prepayment.loadModal', [$claim->id, 'update'])}}"
+															data-title="Параметры предоплаты">
 															[параметры предоплаты по договору]
 														</button>
 													</div>
@@ -268,7 +269,8 @@
 																							data-type="update"
 																							data-claim-id="{{$claim->id}}"
 																							data-url="{{route('payment_invoice.update', $itemInvoice->id)}}"
-																							data-path="{{route('payment_invoice.loadModal', [$itemInvoice->id, 'update'])}}">
+																							data-path="{{route('payment_invoice.loadModal', [$itemInvoice->id, 'update'])}}"
+																							data-title="Счёт на оплату (редактирование)">
 																							<i class="fa-solid fa-pen"></i>
 																						</button>
 																					</div>
@@ -364,7 +366,8 @@
 																		data-type="update"
 																		data-claim-id="{{$claim->id}}"
 																		data-url="{{route('payment.store', $claim->id)}}"
-																		data-path="{{route('payment.loadModal', [$claim->id, 'update'])}}">
+																		data-path="{{route('payment.loadModal', [$claim->id, 'update'])}}"
+																		data-title="Параметры стоимости">
 																		[параметры]
 																	</button>
 																</div>
@@ -508,8 +511,9 @@
 @endsection
 @section('page-modal')
 	@include('claim.showmodals.comment')
-	@include('claim.showmodals.customer')
 	@include('claim.showmodals.file')
+	
+	@include('claim.customer.modal_customer')
 
 	@include('claim.contract.modals.contract')
 	@include('claim.touroperator.modals.touroperator')
@@ -526,6 +530,7 @@
 	@include('claim.services.modals.fuelsurchange')
 	@include('claim.services.modals.excursion')
 	@include('claim.services.modals.other')
+	@include('claim.services.modals.service_update_modal')
 
 	@include('claim.finance.modals.prepayment')
 	@include('claim.finance.modals.payment')

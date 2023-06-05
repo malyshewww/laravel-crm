@@ -137,7 +137,8 @@
 													data-type="update"
 													data-claim-id="{{$claim->id}}"
 													data-url="{{route('tourist.update', $tourist->id)}}"
-													data-path="{{route('tourist.loadModal', [$tourist->id, 'update'])}}">
+													data-path="{{route('tourist.loadModal', [$tourist->id, 'update'])}}"
+													data-title="Турист (редактирование)">
 													<i class="fa-solid fa-gear"></i>
 												</button>
 											</div>

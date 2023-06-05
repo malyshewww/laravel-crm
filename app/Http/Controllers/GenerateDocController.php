@@ -35,26 +35,26 @@ class GenerateDocController extends Controller
         $contractData['claimDate'] = $claim->date_start->format('d.m.Y');
         // Общие данные по заявке, когда заказчик - ФИЗ. ЛИЦО
         if ($claim->customer && $claim->customer->type === 'person') {
-            if ($claim->customer->person) {
-                $contractData['personSurname'] = $claim->customer->person->person_surname ?: 'Фамилия';
-                $contractData['personName'] = $claim->customer->person->person_name ?: 'Имя';
-                $contractData['personPatronymic'] = $claim->customer->person->person_patronymic ?: 'Отчество';
-                $contractData['personPassportSeries'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_series
-                    ? $claim->customer->person->passport->person_passport_series : '-';
-                $contractData['personPassportNumber'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_number
-                    ? $claim->customer->person->passport->person_passport_number : '-';
-                $contractData['personPassportIssued'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_issued
-                    ? $claim->customer->person->passport->person_passport_issued : '-';
-                $contractData['personPassportDate'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_date
-                    ? $claim->customer->person->passport->person_passport_date : '-';
-                $contractData['personPassportAddress'] = $claim->customer->person->passport && $claim->customer->person->passport->person_passport_address
-                    ? $claim->customer->person->passport->person_passport_address : '-';
-                $contractData['personAddress'] = $claim->customer->person->commons && $claim->customer->person->commons->person_address
-                    ? $claim->customer->person->commons->person_address  : '-';
-                $contractData['personPhone'] = $claim->customer->person->commons && $claim->customer->person->commons->person_phone
-                    ? $claim->customer->person->commons->person_phone : '-';
-                $contractData['personEmail'] = $claim->customer->person->commons && $claim->customer->person->commons->person_email
-                    ? $claim->customer->person->commons->person_email : '-';
+            if ($claim->person) {
+                $contractData['personSurname'] = $claim->person->person_surname ?: 'Фамилия';
+                $contractData['personName'] = $claim->person->person_name ?: 'Имя';
+                $contractData['personPatronymic'] = $claim->person->person_patronymic ?: 'Отчество';
+                $contractData['personPassportSeries'] = $claim->person->passport && $claim->person->passport->person_passport_series
+                    ? $claim->person->passport->person_passport_series : '-';
+                $contractData['personPassportNumber'] = $claim->person->passport && $claim->person->passport->person_passport_number
+                    ? $claim->person->passport->person_passport_number : '-';
+                $contractData['personPassportIssued'] = $claim->person->passport && $claim->person->passport->person_passport_issued
+                    ? $claim->person->passport->person_passport_issued : '-';
+                $contractData['personPassportDate'] = $claim->person->passport && $claim->person->passport->person_passport_date
+                    ? $claim->person->passport->person_passport_date : '-';
+                $contractData['personPassportAddress'] = $claim->person->passport && $claim->person->passport->person_passport_address
+                    ? $claim->person->passport->person_passport_address : '-';
+                $contractData['personAddress'] = $claim->person->commons && $claim->person->commons->person_address
+                    ? $claim->person->commons->person_address  : '-';
+                $contractData['personPhone'] = $claim->person->commons && $claim->person->commons->person_phone
+                    ? $claim->person->commons->person_phone : '-';
+                $contractData['personEmail'] = $claim->person->commons && $claim->person->commons->person_email
+                    ? $claim->person->commons->person_email : '-';
                 $phpWord->setValues($contractData);
             }
         }

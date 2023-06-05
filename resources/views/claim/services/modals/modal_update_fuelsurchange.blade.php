@@ -1,3 +1,5 @@
+<input type="hidden" name="type" value="fuel_surchange">
+<input type="hidden" name="record_id" value="{{$fs->id}}">
 <div class="field-group">
 	<div class="row">
 		<div class="col-12"> 

@@ -21,12 +21,13 @@
 				<div class="table__buttons">
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Редактировать услугу">
 						<button class="btn-gear" type="button" 
-							data-bs-toggle="modal" data-bs-target="#updateVisa"
+							data-bs-toggle="modal" data-bs-target="#serviceUpdateModal"
 							data-id="{{$visa->id}}" 
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('visa.update', $visa->id)}}"
-							data-path="{{route('visa.loadModal', [$visa->id, 'update'])}}">
+							data-path="{{route('visa.loadModal', [$visa->id, 'update'])}}"
+							data-title="Виза (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>
 					</div>
@@ -40,7 +41,6 @@
 						</button>
 					</div>
 				</div>
-				@include('claim.services.modals.update_visa', ['visa' => $visa])
 			</td>
 		</tr>
 	@endforeach

@@ -12,11 +12,11 @@ class Company extends Model
     protected $fillable = [
         'company_fullname',
         'company_shortname',
-        'customer_id'
+        'claim_id'
     ];
-    public function customer()
+    public function claim()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(Claim::class, 'claim_id', 'id');
     }
     public function register()
     {

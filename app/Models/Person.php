@@ -13,11 +13,11 @@ class Person extends Model
         'person_surname',
         'person_name',
         'person_patronymic',
-        'customer_id'
+        'claim_id'
     ];
-    public function customer()
+    public function claim()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(Claim::class, 'claim_id', 'id');
     }
     public function commons()
     {

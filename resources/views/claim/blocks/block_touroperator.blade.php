@@ -7,7 +7,8 @@
 			data-type="update"
 			data-claim-id="{{$claim->id}}"
 			data-url="{{route('touroperator.store', $claim->id)}}"
-			data-path="{{route('touroperator.loadModal', [$claim->id, 'update'])}}">
+			data-path="{{route('touroperator.loadModal', [$claim->id, 'update'])}}"
+			data-title="Туроператор - поставщик тура">
 			[изменить]
 		</button>
 	</div>
