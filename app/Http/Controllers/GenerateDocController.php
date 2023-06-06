@@ -10,6 +10,7 @@ use PhpOffice\PhpWord\ComplexType\TblWidth;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\Element\TextRun;
 use PhpOffice\PhpWord\SimpleType\TblWidth as SimpleTypeTblWidth;
+use Ramsey\Uuid\Type\Decimal;
 
 // use PhpOffice\PhpWord\PhpWord;
 // use PhpOffice\PhpWord\Writer\Word2007;
@@ -31,33 +32,56 @@ class GenerateDocController extends Controller
         $contractData = [];
         $claimId = $request->id;
         $claim = Claim::find($claimId);
-        $contractData['claimId'] = $claim->id;
-        $contractData['claimDate'] = $claim->date_start->format('d.m.Y');
+        $claimId = $claim->id;
+        $claimDate = $claim->date_start->format('d.m.Y');
+        $phpWord->setValue('claimId', $claimId);
+        $phpWord->setValue('claimDate', $claimDate);
         // Общие данные по заявке, когда заказчик - ФИЗ. ЛИЦО
+        $personSurname = '';
+        $personName = '';
+        $personPatronymic = '';
+        $personPassportSeries = '';
+        $personPassportNumber = '';
+        $personPassportIssued = '';
+        $personPassportDate = '';
+        $personPassportAddress = '';
+        $personAddress = '';
+        $personPhone = '';
+        $personEmail = '';
         if ($claim->customer && $claim->customer->type === 'person') {
             if ($claim->person) {
-                $contractData['personSurname'] = $claim->person->person_surname ?: 'Фамилия';
-                $contractData['personName'] = $claim->person->person_name ?: 'Имя';
-                $contractData['personPatronymic'] = $claim->person->person_patronymic ?: 'Отчество';
-                $contractData['personPassportSeries'] = $claim->person->passport && $claim->person->passport->person_passport_series
+                $personSurname = $claim->person->person_surname ?: 'Фамилия';
+                $personName = $claim->person->person_name ?: 'Имя';
+                $personPatronymic = $claim->person->person_patronymic ?: 'Отчество';
+                $personPassportSeries = $claim->person->passport && $claim->person->passport->person_passport_series
                     ? $claim->person->passport->person_passport_series : '-';
-                $contractData['personPassportNumber'] = $claim->person->passport && $claim->person->passport->person_passport_number
+                $personPassportNumber = $claim->person->passport && $claim->person->passport->person_passport_number
                     ? $claim->person->passport->person_passport_number : '-';
-                $contractData['personPassportIssued'] = $claim->person->passport && $claim->person->passport->person_passport_issued
+                $personPassportIssued = $claim->person->passport && $claim->person->passport->person_passport_issued
                     ? $claim->person->passport->person_passport_issued : '-';
-                $contractData['personPassportDate'] = $claim->person->passport && $claim->person->passport->person_passport_date
+                $personPassportDate = $claim->person->passport && $claim->person->passport->person_passport_date
                     ? $claim->person->passport->person_passport_date : '-';
-                $contractData['personPassportAddress'] = $claim->person->passport && $claim->person->passport->person_passport_address
+                $personPassportAddress = $claim->person->passport && $claim->person->passport->person_passport_address
                     ? $claim->person->passport->person_passport_address : '-';
-                $contractData['personAddress'] = $claim->person->commons && $claim->person->commons->person_address
+                $personAddress = $claim->person->commons && $claim->person->commons->person_address
                     ? $claim->person->commons->person_address  : '-';
-                $contractData['personPhone'] = $claim->person->commons && $claim->person->commons->person_phone
+                $personPhone = $claim->person->commons && $claim->person->commons->person_phone
                     ? $claim->person->commons->person_phone : '-';
-                $contractData['personEmail'] = $claim->person->commons && $claim->person->commons->person_email
+                $personEmail = $claim->person->commons && $claim->person->commons->person_email
                     ? $claim->person->commons->person_email : '-';
-                $phpWord->setValues($contractData);
             }
         }
+        $phpWord->setValue('personSurname', $personSurname);
+        $phpWord->setValue('personName', $personName);
+        $phpWord->setValue('personPatronymic', $personPatronymic);
+        $phpWord->setValue('personPassportSeries', $personPassportSeries);
+        $phpWord->setValue('personPassportNumber', $personPassportNumber);
+        $phpWord->setValue('personPassportIssued', $personPassportIssued);
+        $phpWord->setValue('personPassportDate', $personPassportDate);
+        $phpWord->setValue('personPassportAddress', $personPassportAddress);
+        $phpWord->setValue('personAddress', $personAddress);
+        $phpWord->setValue('personPhone', $personPhone);
+        $phpWord->setValue('personEmail', $personEmail);
         $arrTourist = [];
         $touristList = '';
         if ($claim->tourist && count($claim->tourist) > 0) {
@@ -79,10 +103,18 @@ class GenerateDocController extends Controller
         // Данные Турпакета
         $tourPackageTableData = [];
         if ($claim->tourpackage) {
-            $tourPackageTableData['tourpackageName'] = $claim->tourpackage->name;
-            $tourPackageTableData['claimDateStart'] = $claim->date_start->format('d.m.Y');
-            $tourPackageTableData['claimDateEnd'] = $claim->date_end->format('d.m.Y');
+            $tourPackageTableData[] = [
+                'tourpackageName' => $claim->tourpackage->name,
+                'claimDateStart' => $claim->date_start->format('d.m.Y'),
+                'claimDateEnd' => $claim->date_end->format('d.m.Y')
+            ];
+            // $tourPackageTableData['tourpackageName'] = $claim->tourpackage->name;
+            // $tourPackageTableData['claimDateStart'] = $claim->date_start->format('d.m.Y');
+            // $tourPackageTableData['claimDateEnd'] = $claim->date_end->format('d.m.Y');
         }
+        // $phpWord->setValue('tourpackageName', $tourpackageName);
+        // $phpWord->setValue('claimDateStart', $claimDateStart);
+        // $phpWord->setValue('claimDateEnd', $claimDateEnd);
         // Услуга "Проживание"
         $habitationTableData = [];
         if (count($claim->serviceHabitation) > 0) {
@@ -243,14 +275,6 @@ class GenerateDocController extends Controller
                     'touristInternationalPassportPeriod' => $tourist->internationalPassport && $tourist->internationalPassport->tourist_international_passport_period
                         ? $tourist->internationalPassport->tourist_international_passport_period->format('d.m.Y') : '',
                 ];
-                // $phpWord->cloneBlock('block_ipassport', 1, true, true);
-                // $phpWord->cloneBlock('block_passport', 1, true, true);
-                // if ($tourist->internationalPassport == null) {
-                //     $phpWord->deleteBlock('block_ipassport');
-                // }
-                // if ($tourist->passport->tourist_passport_series == null) {
-                //     $phpWord->deleteBlock('block_passport');
-                // }
             }
         }
         // dd($otherServiceTableData);
@@ -270,13 +294,17 @@ class GenerateDocController extends Controller
         $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
         $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
         $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
+        $phpWord->cloneRowAndSetValues('tourpackageName', $tourPackageTableData);
+
+        $num = floatval('45.55');
+        $a = (int)($num);
+        $b = 100 * ($num - $a);
+        $strPrice = $a . 'руб.' . $b . 'коп.';
+        $phpWord->setValue('number', $strPrice);
 
         // $inline = new TextRun();
         // $inline->addText('by a red italic text', array('italic' => true, 'color' => 'red'));
         // $phpWord->setComplexValue('inline', $inline);
-
-        $phpWord->setValues($tourPackageTableData);
-        $phpWord->setValues($contractData);
 
         $phpWord->saveAs($fileName . '.docx');
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);

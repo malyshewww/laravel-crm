@@ -50,22 +50,22 @@ if (btnCopy) {
 }
 
 // Draggable Modal
-if ($('.modal__header')) {
-	$(".modal__header").on("mousedown", function (mousedownEvt) {
-		var $draggable = $(this);
-		var x = mousedownEvt.pageX - $draggable.offset().left,
-			y = mousedownEvt.pageY - $draggable.offset().top;
-		$("body").on("mousemove.draggable", function (mousemoveEvt) {
-			$draggable.closest(".modal-content").offset({
-				"left": mousemoveEvt.pageX - x,
-				"top": mousemoveEvt.pageY - y
-			});
-		});
-		$("body").one("mouseup", function () {
-			$("body").off("mousemove.draggable");
-		});
-		$draggable.closest(".modal").one("bs.modal.hide", function () {
-			$("body").off("mousemove.draggable");
-		});
-	});
-}
+// if ($('.modal__header')) {
+// 	$(".modal__header").on("mousedown", function (mousedownEvt) {
+// 		var $draggable = $(this);
+// 		var x = mousedownEvt.pageX - $draggable.offset().left,
+// 			y = mousedownEvt.pageY - $draggable.offset().top;
+// 		$("body").on("mousemove.draggable", function (mousemoveEvt) {
+// 			$draggable.closest(".modal-content").offset({
+// 				"left": mousemoveEvt.pageX - x,
+// 				"top": mousemoveEvt.pageY - y
+// 			});
+// 		});
+// 		$("body").one("mouseup", function () {
+// 			$("body").off("mousemove.draggable");
+// 		});
+// 		$draggable.closest(".modal").one("bs.modal.hide", function () {
+// 			$("body").off("mousemove.draggable");
+// 		});
+// 	});
+// }

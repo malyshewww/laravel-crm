@@ -17,6 +17,7 @@ use App\Http\Controllers\FlightController;
 use App\Http\Controllers\FuelSurchangeController;
 use App\Http\Controllers\GenerateDocController;
 use App\Http\Controllers\HabitationController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\OtherServiceController;
 use App\Http\Controllers\ServiceController;
@@ -39,18 +40,32 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Route::get('/', function () {
-    return view('login');
-});
+// Route::get('/', 'HomeController@index');
+
+// Авторизация
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// Маршруты аутентификации...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Маршруты регистрации...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 // Заявка
-Route::get('/claims', [ClaimController::class, 'index'])->middleware('auth')->name('claim.index');
-Route::get('/claims/create/{id}', [ClaimController::class, 'create'])->name('claim.create');
-Route::get('/claims/{claim}', [ClaimController::class, 'show'])->middleware('auth')->name('claim.show');
-Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
-Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
-Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
-Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
+Route::middleware('auth')->group(function () {
+    Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
+    Route::get('/claims/create/{id}', [ClaimController::class, 'create'])->name('claim.create');
+    Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
+    Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
+    Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
+    Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
+    Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
+});
 
 // Информация о туроператоре
 Route::post('/touroperators/{touroperator}/store', [TourOperatorController::class, 'store'])->name('touroperator.store');
@@ -157,28 +172,3 @@ Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->n
 Route::get('/linkstorage', function () {
     Artisan::call('storage:link');
 });
-
-// Авторизация
-// Route::name('user.')->group(function () {
-Route::view('/private', 'private')->middleware('auth')->name('private');
-Route::get('/login', function () {
-    if (Auth::check()) {
-        return redirect(route('claim.index'));
-    }
-    return view('login');
-})->name('user.login');
-
-Route::post('/login', [LoginController::class, 'login']);
-
-Route::get('/logout', [LoginController::class, 'logout'])->name('user.logout');
-// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-Route::get('/registration', function () {
-    if (Auth::check()) {
-        return redirect(route('claim.index'));
-    }
-    return view('registration');
-})->name('user.registration');
-
-Route::post('/registration', [RegisterController::class, 'save'])->name('registration');
-// });

@@ -1,3 +1,4 @@
+import Choices from "choices.js";
 import { getTranslitValues } from "./translit.js";
 import { initChoices, choiceConfig } from "./choices.js";
 import { initDatePicker } from "./calendar.js";
@@ -111,6 +112,7 @@ function modalUpdate(modalUpdateId, formId) {
 			const dataTitle = thisButton.dataset.title;
 			const modalBody = thisModal.querySelector('.modal__body');
 			const modalTitle = thisModal.querySelector('.modal__title');
+			const modalContent = thisModal.querySelector('.modal-content');
 			const form = thisModal.querySelector('form');
 			const inputClaimId = form.claim_id;
 			const inputTouristId = form.tourist_id;
@@ -120,6 +122,8 @@ function modalUpdate(modalUpdateId, formId) {
 			inputClaimId ? inputClaimId.value = dataClaimId : null;
 			inputTouristId ? inputTouristId.value = dataId : null;
 			inputRecordId ? inputRecordId.value = dataId : null;
+			Loader.loader.setAttribute('class', 'loader');
+			modalContent.appendChild(Loader.loader)
 			Loader.displayLoading();
 			fetch(`${dataPath}`, {
 				headers: {
@@ -147,7 +151,10 @@ function modalUpdate(modalUpdateId, formId) {
 				.catch((error) => {
 					console.log(error);;
 				})
-				.finally(() => Loader.hideLoading())
+				.finally(() => {
+					Loader.hideLoading()
+					Loader.loader.remove();
+				})
 		})
 		modal.addEventListener('hidden.bs.modal', (event) => {
 			const thisModal = event.target;

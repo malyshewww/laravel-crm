@@ -1,4 +1,4 @@
-@extends('layout.app')
+{{-- @extends('layout.app')
 @section('title')
 	Регистрация
 @endsection
@@ -42,4 +42,4 @@
 @endsection
 @section('page-script')
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-@endsection
+@endsection --}}

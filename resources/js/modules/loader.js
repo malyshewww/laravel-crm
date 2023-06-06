@@ -1,3 +1,4 @@
+const loader = document.getElementById('loader');
 function displayLoading() {
 	if (loader) {
 		loader.removeAttribute('hidden');
@@ -13,6 +14,7 @@ function hideLoading() {
 	}
 }
 export {
+	loader,
 	displayLoading,
 	hideLoading
 }

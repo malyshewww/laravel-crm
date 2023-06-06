@@ -1,8 +1,5 @@
-@extends('layout.app')
+@extends('layouts.app')
 @section('title','Главная страница')
-@section('header')
-	@include('layout.header')
-@endsection
 @section('content')
 	<div class="container">
 		<div class="main__top"> 

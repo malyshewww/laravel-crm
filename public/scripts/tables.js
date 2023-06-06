@@ -15,6 +15,11 @@ const tableConfig = {
 	sorting: false,
 	searching: false,
 	responsive: true,
+	"aoColumnDefs": [
+		{
+			'bSortable': false,
+			'aTargets': [0, 1, 2, 3, 4, 5, 6, 7]
+		}],
 	"language": {
 		"emptyTable": "Данные в таблице отсутствуют",
 		"lengthMenu": "Элементов на странице _MENU_",
@@ -58,6 +63,7 @@ function initDataTable(data) {
 		"columns": [
 			{
 				"data": 'number',
+				"orderable": false,
 				"render": function (data, type, row, meta) {
 					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}">${row.id}</a>`;
 				}
@@ -127,6 +133,7 @@ function initDataTable(data) {
 			initBootstrapTooltip();
 		}
 	})
+	tourTable.columns().order(false)
 }
 function initBootstrapTooltip() {
 	let tooltipTriggerList = [].slice.call(

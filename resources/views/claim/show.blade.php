@@ -1,9 +1,6 @@
-@extends('layout.app')
+@extends('layouts.app')
 @section('title')
 	Страница заявки № {{$claim->id}}
-@endsection
-@section('header')
-	@include('layout.header')
 @endsection
 @section('content')
 	<section class="claim">
