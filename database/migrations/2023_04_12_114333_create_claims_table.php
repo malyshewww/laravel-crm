@@ -18,6 +18,7 @@ class CreateClaimsTable extends Migration
             $table->date('date_start')->nullable(false);
             $table->date('date_end')->nullable(false);
             $table->text('comment')->nullable(true);
+            $table->string('manager')->nullable(true);
             $table->boolean('is_published')->default(1);
             $table->timestamps();
             $table->softDeletes();

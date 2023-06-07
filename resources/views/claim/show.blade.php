@@ -33,7 +33,14 @@
 					</div>
 					<div class="claim__comment comment-claim">
 						<div class="comment-claim__box">
-							<button class="claim__button btn-blue btn-redact" type="button" data-bs-toggle="modal" data-bs-target="#comment" data-url="">
+							<button class="claim__button btn-blue btn-redact" 
+								type="button" data-bs-toggle="modal" data-bs-target="#commentModal"
+								data-id="{{$claim->id}}" 
+								data-type="update"
+								data-claim-id="{{$claim->id}}"
+								data-url="{{route('claim.store')}}"
+								data-path="{{route('claim.loadModal', [$claim->id, 'update'])}}"
+								data-title="{{$claim->comment ? 'Комментарий (редактирование)' : 'Комментарий'}}">
 								<span>{{$claim->comment ? 'редактировать комментарий' : 'добавить комментарий'}}</span>
 							</button>
 							@if ($claim->comment)
@@ -507,10 +514,10 @@
 	</section>
 @endsection
 @section('page-modal')
-	@include('claim.showmodals.comment')
 	@include('claim.showmodals.file')
 	
 	@include('claim.customer.modal_customer')
+	@include('claim.comment.modals.modal_comment')
 
 	@include('claim.contract.modals.contract')
 	@include('claim.touroperator.modals.touroperator')

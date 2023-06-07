@@ -84,7 +84,11 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-
+    public function loadModal($id, $action)
+    {
+        $claim = Claim::findOrFail($id);
+        return view('claim.comment.modals.modal_comment_update', compact('claim'))->render();
+    }
     // Fetch DataTable data
     public function records(Request $request)
     {
@@ -194,6 +198,7 @@ class ClaimController extends Controller
             }
             $arr[] = [
                 'id' => $claim->id,
+                'claim_number' => $claim->id . '-' . date('Y'),
                 'date_start' => $claim->date_start,
                 'date_end' => $claim->date_end,
                 'manager' => $claim->manager,
@@ -204,7 +209,7 @@ class ClaimController extends Controller
                 'city' => $city,
                 'country' => $country,
                 'customer' => $customer,
-                'manager' => $manager
+                'manager' => $manager,
             ];
         }
         return json_encode($arr, true);

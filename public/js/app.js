@@ -4729,6 +4729,8 @@ function modalUpdate(modalUpdateId, formId) {
     });
   }
 }
+// КОММЕНТАРИЙ
+modalUpdate('commentModal', 'formComment');
 // ИНФОРМАЦИЯ О ТУРПАКЕТЕ
 modalUpdate('tourpackageModal', 'formTourpackage');
 // ИНФОРМАЦИЯ О ТУРОПЕРАТОРЕ

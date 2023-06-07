@@ -65,7 +65,7 @@ function initDataTable(data) {
 				"data": 'number',
 				"orderable": false,
 				"render": function (data, type, row, meta) {
-					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}">${row.id}</a>`;
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.claim_number}">${row.claim_number}</a>`;
 				}
 			},
 			{
@@ -133,7 +133,7 @@ function initDataTable(data) {
 			initBootstrapTooltip();
 		}
 	})
-	tourTable.columns().order(false)
+	// tourTable.columns().order(false)
 }
 function initBootstrapTooltip() {
 	let tooltipTriggerList = [].slice.call(
@@ -157,21 +157,21 @@ function fetchTable(form) {
 	})
 		.then(response => response.status == 200 ? response.json() : console.log('status error'))
 		.then((data) => {
-			newArr = data.map((element) => {
-				return {
-					"id": element['id'],
-					"date_start": element['date_start'],
-					"date_end": element['date_end'],
-					"manager": element['manager'],
-					"created_at": element['created_at'],
-					"countTourists": element['countTourists'],
-					"country": element['country'],
-					"city": element['city'],
-					"night": element['night'],
-					"tourists": element['tourists'],
-					"customer": element['customer'],
-				}
-			})
+			// newArr = data.map((element) => {
+			// 	return {
+			// 		"id": element['id'],
+			// 		"date_start": element['date_start'],
+			// 		"date_end": element['date_end'],
+			// 		"manager": element['manager'],
+			// 		"created_at": element['created_at'],
+			// 		"countTourists": element['countTourists'],
+			// 		"country": element['country'],
+			// 		"city": element['city'],
+			// 		"night": element['night'],
+			// 		"tourists": element['tourists'],
+			// 		"customer": element['customer'],
+			// 	}
+			// })
 			initDataTable(data);
 			hideLoading();
 		})

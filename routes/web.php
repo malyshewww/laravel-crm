@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-// Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index');
 
 // Авторизация
 Auth::routes();
@@ -57,15 +57,15 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 // Заявка
-Route::middleware('auth')->group(function () {
-    Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
-    Route::get('/claims/create/{id}', [ClaimController::class, 'create'])->name('claim.create');
-    Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
-    Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
-    Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
-    Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
-    Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
-});
+Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
+Route::get('/claims/create', [ClaimController::class, 'create'])->name('claim.create');
+Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
+Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
+Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
+Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
+Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
+Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
+
 
 // Информация о туроператоре
 Route::post('/touroperators/{touroperator}/store', [TourOperatorController::class, 'store'])->name('touroperator.store');

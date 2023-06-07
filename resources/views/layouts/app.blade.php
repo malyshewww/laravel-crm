@@ -29,7 +29,6 @@
             <div class="loader__icon"></div>
         </div>
     </div>
-	{{-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> --}}
     <script src="{{asset('scripts/bootstrap.bundle.min.js')}}"></script>
     @yield('page-script')
     <script src="{{asset('js/app.js')}}"></script>
