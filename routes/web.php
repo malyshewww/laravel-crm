@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', [HomeController::class, 'index']);
 
 // Авторизация
 Auth::routes();

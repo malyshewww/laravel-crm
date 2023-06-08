@@ -6,6 +6,32 @@ import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
+
+function checkFormFields() {
+	const formAllInputs = document.querySelectorAll('.field-group__input');
+	const formAllSelects = document.querySelectorAll('select');
+	function removeErrorClass(event) {
+		if (!event.target.classList.contains('error')) {
+			return false;
+		}
+		event.target.classList.remove('error');
+	};
+	function removeErrorClassSelect(event) {
+		const parent = event.target.parentNode;
+		if (!parent.classList.contains('error')) {
+			return false;
+		}
+		parent.classList.remove('error');
+	};
+	[...formAllInputs].forEach((item) => {
+		item.addEventListener('input', removeErrorClass);
+		item.addEventListener('change', removeErrorClass);
+	});
+	[...formAllSelects].forEach((select) => {
+		select.addEventListener('change', removeErrorClassSelect);
+	})
+}
+checkFormFields();
 function formHandler(formId) {
 	const form = document.getElementById(formId);
 	if (form) {
@@ -85,6 +111,8 @@ function formHandler(formId) {
 formHandler('formCreateClaim');
 // Создание/редактировани комментария
 formHandler('formComment');
+// Добавить туриста
+formHandler('formTourist');
 // ДЕТАЛИ ТУРА
 formHandler('formFlights');
 formHandler('formInsurance');
@@ -140,6 +168,7 @@ function modalUpdate(modalUpdateId, formId) {
 					hiddenField();
 					numberFormatted();
 					changeCustomer();
+					checkFormFields();
 					let selects = document.querySelectorAll('[data-select]');
 					[...selects].forEach((select) => {
 						if (select) {

@@ -4571,6 +4571,33 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+function checkFormFields() {
+  var formAllInputs = document.querySelectorAll('.field-group__input');
+  var formAllSelects = document.querySelectorAll('select');
+  function removeErrorClass(event) {
+    if (!event.target.classList.contains('error')) {
+      return false;
+    }
+    event.target.classList.remove('error');
+  }
+  ;
+  function removeErrorClassSelect(event) {
+    var parent = event.target.parentNode;
+    if (!parent.classList.contains('error')) {
+      return false;
+    }
+    parent.classList.remove('error');
+  }
+  ;
+  _toConsumableArray(formAllInputs).forEach(function (item) {
+    item.addEventListener('input', removeErrorClass);
+    item.addEventListener('change', removeErrorClass);
+  });
+  _toConsumableArray(formAllSelects).forEach(function (select) {
+    select.addEventListener('change', removeErrorClassSelect);
+  });
+}
+checkFormFields();
 function formHandler(formId) {
   var form = document.getElementById(formId);
   if (form) {
@@ -4650,6 +4677,8 @@ function formHandler(formId) {
 formHandler('formCreateClaim');
 // Создание/редактировани комментария
 formHandler('formComment');
+// Добавить туриста
+formHandler('formTourist');
 // ДЕТАЛИ ТУРА
 formHandler('formFlights');
 formHandler('formInsurance');
@@ -4704,6 +4733,7 @@ function modalUpdate(modalUpdateId, formId) {
         (0,_currency_js__WEBPACK_IMPORTED_MODULE_4__.hiddenField)();
         (0,_number_format_js__WEBPACK_IMPORTED_MODULE_5__.numberFormatted)();
         (0,_tabs_js__WEBPACK_IMPORTED_MODULE_6__.changeCustomer)();
+        checkFormFields();
         var selects = document.querySelectorAll('[data-select]');
         _toConsumableArray(selects).forEach(function (select) {
           if (select) {
@@ -34700,6 +34730,8 @@ console.log('app.js');
 
 
 
+
+// import './modules/mask-phone.js';
 
 
 document.addEventListener('click', documentActions);

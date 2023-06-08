@@ -30,6 +30,8 @@ class ClaimController extends Controller
     }
     public function show(Claim $claim)
     {
+        // $claimId = $claim->getIdProductAttribute($claim->id);
+        // $claim = Claim::find($claim->setIdProductAttribute($claim->id));
         $tourpackages = TourPackage::all();
         $tourists = Tourist::get();
         $customers = Customer::get();

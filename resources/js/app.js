@@ -9,6 +9,7 @@ import './modules/currency.js';
 import './modules/choices.js';
 import './modules/uploadFiles.js';
 import './modules/number-format.js';
+// import './modules/mask-phone.js';
 
 import './modules/ajax.js';
 

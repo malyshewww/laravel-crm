@@ -19,6 +19,14 @@ class Claim extends Model
     ];
     protected $dates = ['date_start', 'date_end', 'created_at'];
     protected $fillable = ['date_start', 'date_end', 'comment', 'manager'];
+    public function getIdProductAttribute($value)
+    {
+        return encrypt($value);
+    }
+    public function setIdProductAttribute($value)
+    {
+        $this->attributes['id'] = decrypt($value);
+    }
     // protected $dateFormat = 'd.m.Y';
     // public function setDateStartAttribute($value)
     // {

@@ -65,7 +65,7 @@ function initDataTable(data) {
 				"data": 'number',
 				"orderable": false,
 				"render": function (data, type, row, meta) {
-					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.claim_number}">${row.claim_number}</a>`;
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}">${row.claim_number}</a>`;
 				}
 			},
 			{
@@ -133,7 +133,6 @@ function initDataTable(data) {
 			initBootstrapTooltip();
 		}
 	})
-	// tourTable.columns().order(false)
 }
 function initBootstrapTooltip() {
 	let tooltipTriggerList = [].slice.call(
@@ -144,6 +143,7 @@ function initBootstrapTooltip() {
 	});
 }
 var newArr = [];
+
 function fetchTable(form) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
@@ -173,47 +173,86 @@ function fetchTable(form) {
 			// 	}
 			// })
 			initDataTable(data);
-			hideLoading();
 		})
+		.catch(error => console.log(error))
+		.finally(() => hideLoading())
+
 }
 
 window.addEventListener('DOMContentLoaded', () => {
 	fetchTable();
 })
 
+function filterQuery(form) {
+	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	const formData = new FormData(form);
+	fetch('/claims/records', {
+		headers: {
+			"X-CSRF-Token": token
+		},
+		method: 'POST',
+		body: formData,
+	})
+		.then(response => response.status == 200 ? response.json() : console.log('status error'))
+		.then((data) => {
+			console.log(data);
+			tourTable.clear();
+			tourTable.rows.add(data);
+			tourTable.draw();
+			initBootstrapTooltip();
+		})
+		.catch(error => console.log(error))
+		.finally(() => hideLoading())
+}
+
 function filterTable() {
 	const formFilter = document.getElementById('formFilter');
+	const buttonReset = formFilter.querySelector('button[type="reset"]')
 	formFilter.addEventListener('submit', (event) => {
 		event.preventDefault();
 		const thisForm = event.target;
-		// tourTable.rows().every(function () {
-		// 	var d = this.data();
-		// 	d.counter++; // update data source for the row
-		// 	this.invalidate(); // invalidate the data DataTables has cached for this row
-		// });
-		let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-		const formData = new FormData(thisForm);
 		displayLoading();
-		fetch('/claims/records', {
-			headers: {
-				"X-CSRF-Token": token
-			},
-			method: 'POST',
-			body: formData,
-		})
-			.then(response => response.status == 200 ? response.json() : console.log('status error'))
-			.then((data) => {
-				console.log(data);
-				tourTable.clear();
-				tourTable.rows.add(data);
-				tourTable.draw();
-				initBootstrapTooltip();
-				hideLoading();
-			})
+		filterQuery(thisForm)
+		setURLSearchParam(thisForm);
+	})
+	buttonReset.addEventListener('click', (event) => {
+		formFilter.reset();
+		if (location.href.includes('?')) {
+			history.pushState({}, null, location.href.split('?')[0]);
+		}
+		const inputFio = formFilter.fio;
+		const inputDateStart = formFilter.date_start;
+		const inputDateEnd = formFilter.date_end;
+		inputFio.value = '';
+		inputDateStart.value = '';
+		inputDateEnd.value = '';
+		displayLoading();
+		filterQuery(formFilter);
 	})
 }
 filterTable();
 
+// function setURLSearchParam(key, value) {
+// 	const url = new URL(window.location.href);
+// 	url.searchParams.set(key, value);
+// 	window.history.pushState({ path: url.href }, '', url.href);
+// }
+function setURLSearchParam(form) {
+	const inputFio = form.fio;
+	const inputDateStart = form.date_start;
+	const inputDateEnd = form.date_end;
+	const obj = {
+		fio: inputFio.value,
+		date_start: inputDateStart.value,
+		date_end: inputDateEnd.value
+	}
+	// const result = '?' + new URLSearchParams(obj).toString();
+	const url = new URL(window.location.href);
+	for (const [k, v] of Object.entries(obj)) {
+		url.searchParams.set(k, v)
+		window.history.pushState({ path: url.href }, '', url.href);
+	}
+}
 
 function changePostitionControlsDataTable() {
 	const dataTablesWrapper = document.querySelector('.dataTables_wrapper');
