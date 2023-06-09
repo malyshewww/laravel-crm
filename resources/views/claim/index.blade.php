@@ -8,10 +8,9 @@
 				<button class="btn btn-request" type="button" data-bs-toggle="modal" data-bs-target="#createClaim">Создать заявку</button>
 			</div>
 		</div>
-		{{-- {{$phone}} --}}
 		<div class="filters">
 			<form action="{{route('claim.records')}}" id="formFilter">
-				{{-- @csrf --}}
+				@csrf
 				<div class="filters__top">
 					<div class="filters__column">
 						<div class="filters__row field-group" style="--col: 3">

@@ -65,6 +65,7 @@ Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim
 Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
 Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
 Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
+Route::post('/claims/{claim}/replicate', [ClaimController::class, 'replicate'])->name('claim.replicate');
 
 
 // Информация о туроператоре

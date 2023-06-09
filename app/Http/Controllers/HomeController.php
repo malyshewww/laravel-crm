@@ -25,8 +25,6 @@ class HomeController extends Controller
     public function index()
     {
         $claims = Claim::get();
-        $tel = '+ 7 (952) 761 65 81 dsad';
-        $phone = preg_replace('![^0-9]+!', '', $tel);
-        return view('claim.index', compact('claims', 'phone'));
+        return view('claim.index', compact('claims'));
     }
 }

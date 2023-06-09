@@ -13,22 +13,7 @@
 						</h1>
 						<button class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
 						<div class="claim__subtitle">
-							<div>
-								@if ($claim->manager)
-									<div>
-										@if ($claim->manager == 'test@mail.ru')
-											<strong>Алексей</strong>
-										@elseif ($claim->manager == 'tch.sezona@yandex.ru')
-											<strong>Канатова И.</strong>
-										@elseif ($claim->manager == 'info@4sezonatravel.ru')
-											<strong>Тихановская И.</strong>
-										@endif
-										создана: {{$claim->created_at->format('d.m.Y H:i:s')}} МСК.
-									</div>
-								@else
-									<div class="font-weight-bold">Менеджер не указан</div>
-								@endif
-							</div>
+							<strong>{{Auth::user()->name}}</strong> создана: {{$claim->created_at->format('d.m.Y H:i:s')}} МСК.
 						</div>
 					</div>
 					<div class="claim__comment comment-claim">

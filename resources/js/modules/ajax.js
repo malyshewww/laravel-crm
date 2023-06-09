@@ -32,6 +32,7 @@ function checkFormFields() {
 	})
 }
 checkFormFields();
+numberFormatted();
 function formHandler(formId) {
 	const form = document.getElementById(formId);
 	if (form) {

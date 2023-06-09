@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\View;
 
 class TouristController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, Claim $claim)
     {
         $validator = Validator::make($request->all(), [
             'tourist_surname' => 'required',
@@ -29,24 +29,9 @@ class TouristController extends Controller
         $errors = $validator->errors();
         $json = [];
         if ($validator->fails()) {
-            $json['status'] =  'error';
-            if ($errors->has('tourist_surname')) {
-                $json['tourist_surname'] = 'error';
-            }
-            if ($errors->has('tourist_name')) {
-                $json['tourist_name'] = 'error';
-            }
-            if ($errors->has('tourist_gender')) {
-                $json['tourist_gender'] = 'error';
-            }
-            if ($errors->has('tourist_nationality')) {
-                $json['tourist_nationality'] = 'error';
-            }
-            if ($errors->has('tourist_birthday')) {
-                $json['tourist_birthday'] = 'error';
-            }
-            if ($errors->has('visa_info')) {
-                $json['visa_info'] = 'error';
+            $json['status'] = 'error';
+            foreach ($errors->getMessages() as $key => $message) {
+                $json[$key] = 'error';
             }
             return response()->json($json);
         }
@@ -58,8 +43,8 @@ class TouristController extends Controller
             'claim_id' => $request->claim_id
         ];
         Tourist::create($touristFields);
-
         // Общие данные: Пол, Фамилия (LAT), Имя (LAT), Гражданство, Дата рождения, Адрес, Телефон, E-mail, Необходимость визы, Город подачи визы
+        $tourist_phone = $claim->validateNumber($request->tourist_phone);
         $touristDataCommonFields = [
             'tourist_gender' => $request->tourist_gender,
             'tourist_surname_lat' => $request->tourist_surname_lat,
@@ -67,14 +52,13 @@ class TouristController extends Controller
             'tourist_nationality' => $request->tourist_nationality,
             'tourist_birthday' => $request->tourist_birthday,
             'tourist_address' => $request->tourist_address,
-            'tourist_phone' => $request->tourist_phone,
+            'tourist_phone' => $tourist_phone,
             'tourist_email' => $request->tourist_email,
             'visa_info' => $request->visa_info,
             'visa_city' => $request->visa_city,
             'tourist_id' => $request->tourist_id
         ];
         TouristDataCommons::create($touristDataCommonFields);
-
         // Паспортные данные: серия, номер, дата выдачи, кем выдан, код подразделения, адрес регистрации
         $touristDataPassportFields = [
             'tourist_passport_series' => $request->tourist_passport_series,
@@ -112,7 +96,7 @@ class TouristController extends Controller
         ]);
     }
 
-    public function update(Request $request, Tourist $tourist)
+    public function update(Request $request, Claim $claim)
     {
         $validator = Validator::make($request->all(), [
             'tourist_surname' => 'required',
@@ -125,28 +109,12 @@ class TouristController extends Controller
         $errors = $validator->errors();
         $json = [];
         if ($validator->fails()) {
-            $json['status'] =  'error';
-            if ($errors->has('tourist_surname')) {
-                $json['tourist_surname'] = 'error';
-            }
-            if ($errors->has('tourist_name')) {
-                $json['tourist_name'] = 'error';
-            }
-            if ($errors->has('tourist_gender')) {
-                $json['tourist_gender'] = 'error';
-            }
-            if ($errors->has('tourist_nationality')) {
-                $json['tourist_nationality'] = 'error';
-            }
-            if ($errors->has('tourist_birthday')) {
-                $json['tourist_birthday'] = 'error';
-            }
-            if ($errors->has('visa_info')) {
-                $json['visa_info'] = 'error';
+            $json['status'] = 'error';
+            foreach ($errors->getMessages() as $key => $message) {
+                $json[$key] = 'error';
             }
             return response()->json($json);
         }
-
         // Фамилия, Имя, Отчество
         Tourist::updateOrCreate([
             'id'  => $request->tourist_id,
@@ -157,6 +125,7 @@ class TouristController extends Controller
         ]);
 
         // Общие данные: Пол, Фамилия (LAT), Имя (LAT), Гражданство, Дата рождения, Адрес, Телефон, E-mail, Необходимость визы, Город подачи визы
+        $tourist_phone = $claim->validateNumber($request->tourist_phone);
         TouristDataCommons::updateOrCreate([
             'tourist_id'  => $request->tourist_id,
         ], [
@@ -166,7 +135,7 @@ class TouristController extends Controller
             'tourist_nationality' => $request->tourist_nationality,
             'tourist_birthday' => $request->tourist_birthday,
             'tourist_address' => $request->tourist_address,
-            'tourist_phone' => $request->tourist_phone,
+            'tourist_phone' => $tourist_phone,
             'tourist_email' => $request->tourist_email,
             'visa_info' => $request->visa_info,
             'visa_city' => $request->visa_city,

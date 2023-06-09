@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Person;
 use App\Models\Tourist;
+use App\Models\Touroperator;
 use App\Models\TourPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,8 +31,6 @@ class ClaimController extends Controller
     }
     public function show(Claim $claim)
     {
-        // $claimId = $claim->getIdProductAttribute($claim->id);
-        // $claim = Claim::find($claim->setIdProductAttribute($claim->id));
         $tourpackages = TourPackage::all();
         $tourists = Tourist::get();
         $customers = Customer::get();
@@ -54,12 +53,9 @@ class ClaimController extends Controller
         $json = [];
         $errors = $validator->errors();
         if ($validator->fails()) {
-            $json['status'] =  'error';
-            if ($errors->has('date_start')) {
-                $json['date_start'] = 'error';
-            }
-            if ($errors->has('date_end')) {
-                $json['date_end'] = 'error';
+            $json['status'] = 'error';
+            foreach ($errors->getMessages() as $key => $message) {
+                $json[$key] = 'error';
             }
             return response()->json($json);
         }
@@ -90,6 +86,15 @@ class ClaimController extends Controller
     {
         $claim = Claim::findOrFail($id);
         return view('claim.comment.modals.modal_comment_update', compact('claim'))->render();
+    }
+    public function replicate(Request $request)
+    {
+        $id = $request->claim_id;
+        $claim = Claim::findOrFail($id)->replicate();
+        $claim->save();
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
     // Fetch DataTable data
     public function records(Request $request)

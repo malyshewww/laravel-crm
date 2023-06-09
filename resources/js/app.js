@@ -41,32 +41,59 @@ function showHide(target, contentBlock) {
 	}
 }
 
+function createAlert() {
+	let alert = document.createElement('div');
+	let className = 'alert alert-success alert-number';
+	let text = 'Номер заявки скопирован в буфер обмена';
+	let styles = {
+		position: 'fixed',
+		top: '0',
+		left: '50%',
+		transform: 'translate(-50%, -150%)',
+		'max-width': '280px',
+		'text-align': 'center',
+		transition: 'transform .3s ease 0s',
+	}
+	const toString = key => `${key}: ${styles[key]}`;
+	let html = `<div class="${className}" style="${Object.keys(styles).map(toString).join(';')}">${text}</div>`;
+	return { html };
+}
+const { html: alertHtml } = createAlert();
+document.body.insertAdjacentHTML('beforeend', alertHtml);
+
 const btnCopy = document.getElementById('btn-copy');
 if (btnCopy) {
-	const claimNumber = document.querySelector('.claim-number')
+	const claimNumber = document.querySelector('.claim-number');
+	const alertNumber = document.querySelector('.alert-number');
 	btnCopy.addEventListener('click', () => {
 		navigator.clipboard.writeText(claimNumber.textContent)
 		btnCopy.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
+		if (alertNumber) {
+			alertNumber.style.transform = 'translate(-50%, 0%)';
+			setTimeout(() => {
+				alertNumber.style.transform = 'translate(-50%, -150%)';
+				btnCopy.querySelector("i").setAttribute("class", "fa-regular fa-paste");
+			}, 2000)
+		}
 	})
 }
-
 // Draggable Modal
-// if ($('.modal__header')) {
-// 	$(".modal__header").on("mousedown", function (mousedownEvt) {
-// 		var $draggable = $(this);
-// 		var x = mousedownEvt.pageX - $draggable.offset().left,
-// 			y = mousedownEvt.pageY - $draggable.offset().top;
-// 		$("body").on("mousemove.draggable", function (mousemoveEvt) {
-// 			$draggable.closest(".modal-content").offset({
-// 				"left": mousemoveEvt.pageX - x,
-// 				"top": mousemoveEvt.pageY - y
-// 			});
-// 		});
-// 		$("body").one("mouseup", function () {
-// 			$("body").off("mousemove.draggable");
-// 		});
-// 		$draggable.closest(".modal").one("bs.modal.hide", function () {
-// 			$("body").off("mousemove.draggable");
-// 		});
-// 	});
-// }
+if ($('.modal__header')) {
+	$(".modal__header").on("mousedown", function (mousedownEvt) {
+		var $draggable = $(this);
+		var x = mousedownEvt.pageX - $draggable.offset().left,
+			y = mousedownEvt.pageY - $draggable.offset().top;
+		$("body").on("mousemove.draggable", function (mousemoveEvt) {
+			$draggable.closest(".modal-content").offset({
+				"left": mousemoveEvt.pageX - x,
+				"top": mousemoveEvt.pageY - y
+			});
+		});
+		$("body").one("mouseup", function () {
+			$("body").off("mousemove.draggable");
+		});
+		$draggable.closest(".modal").one("bs.modal.hide", function () {
+			$("body").off("mousemove.draggable");
+		});
+	});
+}

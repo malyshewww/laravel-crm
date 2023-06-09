@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerRequest;
 use App\Models\Claim;
 use App\Models\Company;
 use App\Models\CompanyDataBank;
@@ -15,10 +16,11 @@ use App\Models\PersonInternationalPassport;
 use App\Models\PersonPassport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\Foreach_;
 
 class CustomerController extends Controller
 {
-    public function store(Request $request)
+    public function store(Request $request, Claim $claim)
     {
         // Тип заказчик - Физ. лицо / Юр. лицо
         $customerFields = [
@@ -31,30 +33,18 @@ class CustomerController extends Controller
         // Если заказчик - Физ. лицо
         if ($request->input('type') == 'person') {
             $validator = Validator::make($request->all(), [
-                'person_surname' => 'required',
-                'person_name' => 'required',
-                'person_gender' => 'required',
-                'person_nationality' => 'required',
+                'person_surname' => 'bail|required',
+                'person_name' => 'bail|required',
+                'person_gender' => 'bail|required',
+                'person_nationality' => 'bail|required',
                 'person_birthday' => 'required',
             ]);
             $errors = $validator->errors();
             $json = [];
             if ($validator->fails()) {
-                $json['status'] =  'error';
-                if ($errors->has('person_surname')) {
-                    $json['person_surname'] = 'error';
-                }
-                if ($errors->has('person_name')) {
-                    $json['person_name'] = 'error';
-                }
-                if ($errors->has('person_gender')) {
-                    $json['person_gender'] = 'error';
-                }
-                if ($errors->has('person_nationality')) {
-                    $json['person_nationality'] = 'error';
-                }
-                if ($errors->has('person_birthday')) {
-                    $json['person_birthday'] = 'error';
+                $json['status'] = 'error';
+                foreach ($errors->getMessages() as $key => $message) {
+                    $json[$key] = 'error';
                 }
                 return response()->json($json);
             }
@@ -68,6 +58,7 @@ class CustomerController extends Controller
                 'claim_id' => $request->claim_id
             ], $personFields);
             // Общие данные о заказчике
+            $person_phone = $claim->validateNumber($request->person_phone);
             $personCommonsFields = [
                 'person_gender' => $request->person_gender,
                 'person_surname_lat' => $request->person_surname_lat,
@@ -75,7 +66,7 @@ class CustomerController extends Controller
                 'person_nationality' => $request->person_nationality,
                 'person_birthday' => $request->person_birthday,
                 'person_address' => $request->person_address,
-                'person_phone' => $request->person_phone,
+                'person_phone' => $person_phone,
                 'person_email' => $request->person_email,
                 'person_id' => $request->person_id,
             ];
@@ -150,11 +141,12 @@ class CustomerController extends Controller
             CompanyDataBank::updateOrCreate([
                 'company_id' => $request->company_id
             ], $companyBankFields);
+            $company_phone = $claim->validateNumber($request->company_phone);
             $companyContactFields = [
                 'company_address' => $request->company_address,
                 'company_actual_address' => $request->company_actual_address,
                 'company_director' => $request->company_director,
-                'company_phone' => $request->company_phone,
+                'company_phone' => $company_phone,
                 'company_email' => $request->company_email,
                 'company_id' => $request->company_id
             ];

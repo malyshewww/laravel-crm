@@ -145,6 +145,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'person_surname' => [
+            'required' => 'Поле обязательно для заполнения',
+        ],
     ],
 
     /*
@@ -158,6 +161,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'person_surname' => 'person_surname',
+    ],
 
 ];

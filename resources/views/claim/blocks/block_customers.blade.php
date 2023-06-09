@@ -25,11 +25,11 @@
 							{{$claim->person->person_name ?: 'Имя'}}
 							{{$claim->person->person_patronymic ?: 'Отчество'}}</span>
 						<div class="area-group__labels"> 
-							@if ($claim->customer->commons)
-								@if ($claim->customer->commons->person_phone)
+							@if ($claim->person->commons)
+								@if ($claim->person->commons->person_phone)
 								<div class="area-group__label">
 									<i class="fa-solid fa-phone"></i>
-									<span class="area-group__phone">{{$claim->person->commons->person_phone}}</span>
+									<span class="area-group__phone">+{{$claim->person->commons->person_phone}}</span>
 								</div>
 								@endif
 								@if ($claim->person->commons->person_email)

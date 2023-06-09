@@ -4598,6 +4598,7 @@ function checkFormFields() {
   });
 }
 checkFormFields();
+(0,_number_format_js__WEBPACK_IMPORTED_MODULE_5__.numberFormatted)();
 function formHandler(formId) {
   var form = document.getElementById(formId);
   if (form) {
@@ -5348,22 +5349,60 @@ function numberFormatted() {
     input.addEventListener('keypress', function (event) {
       check(event, input.value);
     });
+    input.addEventListener('change', validateQtyWithDot);
+    input.addEventListener('input', validateQtyWithDot);
     input.addEventListener('blur', function (event) {
       input.value = parseInt(input.value * 100) / 100;
-      console.log(input.value);
+      if (isNaN(input.value)) {
+        input.value = input.value.replace(/[^0-9\.]/g, '');
+      }
       // input.value = input.value.replace(/[^0-9.\d ]/g, "");
     });
   });
+
+  var inputsTel = document.querySelectorAll('input[type="tel"]');
+  _toConsumableArray(inputsTel).forEach(function (tel) {
+    tel.addEventListener('keypress', function (event) {
+      var target = event.target;
+      decimalNumber(event, target);
+      validateQty(event);
+    });
+    tel.addEventListener('change', validateQty);
+    tel.addEventListener('input', validateQty);
+  });
 }
 
+// Ввод только цифр и точки
 function check(event, value) {
   if (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46 || event.charCode == 0) {
     if (value.indexOf('.') > -1) {
       if (event.charCode == 46) event.preventDefault();
     }
-  } else event.preventDefault();
+  } else {
+    event.preventDefault();
+  }
 }
 ;
+// Ввод только цифр и плюса
+function decimalNumber(event, target) {
+  if (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 43 || event.charCode == 0) {
+    if (target.value.indexOf('+') > -1) {
+      if (event.charCode == 43) event.preventDefault();
+    }
+  } else {
+    event.preventDefault();
+  }
+}
+function validateQty(event) {
+  if (isNaN(event.target.value)) {
+    event.target.value = event.target.value.replace(/[^0-9+]/g, '');
+  }
+}
+function validateQtyWithDot(event) {
+  if (isNaN(event.target.value)) {
+    event.target.value = event.target.value.replace(/[^0-9\.]/g, '');
+  }
+}
 
 /***/ }),
 
@@ -34758,35 +34797,66 @@ function showHide(target, contentBlock) {
     content.hasAttribute('hidden') ? content.removeAttribute('hidden') : content.setAttribute('hidden', 'true');
   }
 }
+function createAlert() {
+  var alert = document.createElement('div');
+  var className = 'alert alert-success alert-number';
+  var text = 'Номер заявки скопирован в буфер обмена';
+  var styles = {
+    position: 'fixed',
+    top: '0',
+    left: '50%',
+    transform: 'translate(-50%, -150%)',
+    'max-width': '280px',
+    'text-align': 'center',
+    transition: 'transform .3s ease 0s'
+  };
+  var toString = function toString(key) {
+    return "".concat(key, ": ").concat(styles[key]);
+  };
+  var html = "<div class=\"".concat(className, "\" style=\"").concat(Object.keys(styles).map(toString).join(';'), "\">").concat(text, "</div>");
+  return {
+    html: html
+  };
+}
+var _createAlert = createAlert(),
+  alertHtml = _createAlert.html;
+document.body.insertAdjacentHTML('beforeend', alertHtml);
 var btnCopy = document.getElementById('btn-copy');
 if (btnCopy) {
   var claimNumber = document.querySelector('.claim-number');
+  var alertNumber = document.querySelector('.alert-number');
   btnCopy.addEventListener('click', function () {
     navigator.clipboard.writeText(claimNumber.textContent);
     btnCopy.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
+    if (alertNumber) {
+      alertNumber.style.transform = 'translate(-50%, 0%)';
+      setTimeout(function () {
+        alertNumber.style.transform = 'translate(-50%, -150%)';
+        btnCopy.querySelector("i").setAttribute("class", "fa-regular fa-paste");
+      }, 2000);
+    }
   });
 }
-
 // Draggable Modal
-// if ($('.modal__header')) {
-// 	$(".modal__header").on("mousedown", function (mousedownEvt) {
-// 		var $draggable = $(this);
-// 		var x = mousedownEvt.pageX - $draggable.offset().left,
-// 			y = mousedownEvt.pageY - $draggable.offset().top;
-// 		$("body").on("mousemove.draggable", function (mousemoveEvt) {
-// 			$draggable.closest(".modal-content").offset({
-// 				"left": mousemoveEvt.pageX - x,
-// 				"top": mousemoveEvt.pageY - y
-// 			});
-// 		});
-// 		$("body").one("mouseup", function () {
-// 			$("body").off("mousemove.draggable");
-// 		});
-// 		$draggable.closest(".modal").one("bs.modal.hide", function () {
-// 			$("body").off("mousemove.draggable");
-// 		});
-// 	});
-// }
+if ($('.modal__header')) {
+  $(".modal__header").on("mousedown", function (mousedownEvt) {
+    var $draggable = $(this);
+    var x = mousedownEvt.pageX - $draggable.offset().left,
+      y = mousedownEvt.pageY - $draggable.offset().top;
+    $("body").on("mousemove.draggable", function (mousemoveEvt) {
+      $draggable.closest(".modal-content").offset({
+        "left": mousemoveEvt.pageX - x,
+        "top": mousemoveEvt.pageY - y
+      });
+    });
+    $("body").one("mouseup", function () {
+      $("body").off("mousemove.draggable");
+    });
+    $draggable.closest(".modal").one("bs.modal.hide", function () {
+      $("body").off("mousemove.draggable");
+    });
+  });
+}
 })();
 
 /******/ })()

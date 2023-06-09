@@ -19,6 +19,10 @@ class Claim extends Model
     ];
     protected $dates = ['date_start', 'date_end', 'created_at'];
     protected $fillable = ['date_start', 'date_end', 'comment', 'manager'];
+    public function validateNumber($tel)
+    {
+        return preg_replace('![^0-9]+!', '', $tel);
+    }
     public function getIdProductAttribute($value)
     {
         return encrypt($value);

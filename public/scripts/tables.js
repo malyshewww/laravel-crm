@@ -117,20 +117,32 @@ function initDataTable(data) {
 			{
 				"data": null,
 				"render": function (data, type, row, meta) {
-					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
-						<button class="btn-archive" type="button" 
-							data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-							data-type="delete" data-id="${row.id}" 
-							data-url="${BASE_URL}/claims/${row.id}" data-title="Вы действительно хотите удалить заявку № ${row.id}">
-							<i class="fa-solid fa-box-archive"></i>
-						</button>
-					</div>`;
+					return `<div class="table__buttons">
+						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+							<button class="btn-archive" type="button" 
+								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
+								data-type="delete" data-id="${row.id}" 
+								data-url="${BASE_URL}/claims/${row.id}" data-title="Вы действительно хотите удалить заявку № ${row.id}">
+								<i class="fa-solid fa-box-archive"></i>
+							</button>
+						</div>
+						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
+							<form action="${BASE_URL}/claims/${row.id}/replicate" method="post" data-form-replicate>
+								<input type="hidden" name="claim_id" value="${row.id}">
+								<button class="btn-copy" type="submit">
+									<i class="fa-regular fa-copy"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+					`;
 				},
 			},
 		],
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
 			initBootstrapTooltip();
+			replicateHandler();
 		}
 	})
 }
@@ -249,7 +261,9 @@ function setURLSearchParam(form) {
 	// const result = '?' + new URLSearchParams(obj).toString();
 	const url = new URL(window.location.href);
 	for (const [k, v] of Object.entries(obj)) {
-		url.searchParams.set(k, v)
+		if (obj[k] !== '') {
+			url.searchParams.set(k, v)
+		}
 		window.history.pushState({ path: url.href }, '', url.href);
 	}
 }
@@ -274,3 +288,34 @@ function changePostitionControlsDataTable() {
 		filtersButtons.insertAdjacentElement('beforeend', dataTableButtons);
 	}
 }
+
+function replicateHandler() {
+	const formsReplicate = document.querySelectorAll('[data-form-replicate]');
+	[...formsReplicate].forEach((form) => {
+		if (form) {
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				const thisForm = event.target;
+				let id = thisForm.claim_id;
+				const formData = new FormData(thisForm);
+				const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+				fetch(`/claims/${id}/replicate`, {
+					headers: {
+						"X-CSRF-Token": token
+					},
+					method: 'POST',
+					body: formData,
+				})
+					.then(response => response.json())
+					.then((result) => {
+						console.log(result);
+						if (result.status == 'success') {
+							window.location.reload();
+						}
+					})
+					.catch(error => console.log(error))
+			})
+		}
+	})
+}
+replicateHandler();
