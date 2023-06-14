@@ -67,6 +67,7 @@
 			<table class="tour-table table" id="tour-table">
 				<thead> 
 					<tr>
+						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto !important; padding: 0 !important;"></th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:130px;">Номер</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Начало тура</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Cтраны назначения</th>
@@ -91,11 +92,8 @@
 	@include('claim.showmodals.delete_record')
 @endsection
 @section('page-script')
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
-	<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js"></script>
+	{{-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> --}}
+	<script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-	<script src="{{asset('scripts/tables.js')}}"></script>
+	<script src="{{asset('js/tables.js')}}"></script>
 @endsection

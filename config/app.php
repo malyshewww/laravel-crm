@@ -236,5 +236,6 @@ return [
         'ServiceHelper' => App\Helpers\ServiceHelper::class,
         'FileHelper' => App\Helpers\FileHelper::class,
         'FinanceHelper' => App\Helpers\FinanceHelper::class,
+        'Hashids' => Vinkla\Hashids\Facades\Hashids::class
     ],
 ];

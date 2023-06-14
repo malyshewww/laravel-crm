@@ -9,7 +9,7 @@
 				<div class="claim__header">
 					<div class="claim__top"> 
 						<h1 class="claim__title">
-							Заявка № <span class="claim-number">{{$claim->id}}</span>
+							Заявка № <span class="claim-number">{{$claim->id}}-{{date('Y')}}</span>
 						</h1>
 						<button class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
 						<div class="claim__subtitle">
@@ -115,7 +115,6 @@
 																			<span class="item-group__price">{{$claim->payment->tour_price}} ₽</span>
 																	@endswitch
 																@endif --}}
-																стоимость с учетом курса
 																{{-- <span class="item-group__price">151 300,28 ₽</span>
 																<span>/</span>
 																<span class="item-group__price">1 939,25 $</span> --}}
@@ -234,7 +233,7 @@
 																		<td>
 																			{{$itemInvoice->date_invoices ? $itemInvoice->date_invoices->format('d.m.Y H:i') : ''}}
 																		</td>
-																		<td>№ {{$claim->id}}-{{$key+1}}</td>
+																		<td>№ {{$claim->id}}-{{date('Y')}}-{{$key+1}}</td>
 																		<td>
 																			{{$itemInvoice->sum ?: ''}}
 																			@switch($itemInvoice->currency)

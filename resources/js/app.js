@@ -11,6 +11,8 @@ import './modules/uploadFiles.js';
 import './modules/number-format.js';
 // import './modules/mask-phone.js';
 
+// import './modules/tables.js';
+
 import './modules/ajax.js';
 
 document.addEventListener('click', documentActions);

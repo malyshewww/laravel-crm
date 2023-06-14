@@ -87,15 +87,6 @@ class ClaimController extends Controller
         $claim = Claim::findOrFail($id);
         return view('claim.comment.modals.modal_comment_update', compact('claim'))->render();
     }
-    public function replicate(Request $request)
-    {
-        $id = $request->claim_id;
-        $claim = Claim::findOrFail($id)->replicate();
-        $claim->save();
-        return response()->json([
-            'status' => 'success'
-        ]);
-    }
     // Fetch DataTable data
     public function records(Request $request)
     {

@@ -34772,6 +34772,8 @@ console.log('app.js');
 
 // import './modules/mask-phone.js';
 
+// import './modules/tables.js';
+
 
 document.addEventListener('click', documentActions);
 function documentActions(event) {

@@ -29,7 +29,8 @@
             <div class="loader__icon"></div>
         </div>
     </div>
-    <script src="{{asset('scripts/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('js/jquery.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
     @yield('page-script')
     <script src="{{asset('js/app.js')}}"></script>
 </body>

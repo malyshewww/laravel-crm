@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\Hashidable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ class Claim extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Hashidable;
     protected $table = 'claims';
     protected $casts = [
         'date_start' => 'date:d.m.Y', // Свой формат

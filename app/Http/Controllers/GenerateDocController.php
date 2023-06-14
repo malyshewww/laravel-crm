@@ -13,6 +13,7 @@ use PhpOffice\PhpWord\Element\TextRun;
 use PhpOffice\PhpWord\SimpleType\TblWidth as SimpleTypeTblWidth;
 use Ramsey\Uuid\Type\Decimal;
 
+// use PhpOffice\PhpWord\IOFactory;
 // use PhpOffice\PhpWord\PhpWord;
 // use PhpOffice\PhpWord\Writer\Word2007;
 
@@ -380,6 +381,7 @@ class GenerateDocController extends Controller
             // единицы, тысячи, миллионы и т.д.
             $parts = array_reverse(str_split($rub, 3));
             $copecksParts = array_reverse(str_split($kop, 3));
+            $separator = '';
             // бежим по каждой части
             foreach ($parts as $i => $part) {
                 // если часть не равна нулю, нам надо преобразовать ее в текст
@@ -410,16 +412,17 @@ class GenerateDocController extends Controller
                     }
                     // добавляем обозначение порядка или валюту
                     $digits[] = $dic[1][$i][(($last %= 100) > 4 && $last < 20) ? 2 : $dic[2][min($last % 10, 5)]];
+
                     // объединяем составные числа в единый текст и добавляем в переменную, которую вернет функция
                     array_unshift($string, join(' ', $digits));
                 }
             }
-            foreach ($copecksParts as $i => $part) {
+            foreach ($copecksParts as $uk => $part) {
                 // если часть не равна нулю, нам надо преобразовать ее в текст
                 if ($part > 0) {
                     // обозначаем переменную в которую будем писать составные числа для текущей части
                     $out = array();
-                    $uk = sizeof($unit) - $i - 1;
+                    $uk = sizeof($unit) - $uk - 1;
                     $gender = $unit[$uk][3];
                     list($i2, $i3) = array_map('intval', str_split($part, 1));
                     // mega-logic
@@ -435,7 +438,7 @@ class GenerateDocController extends Controller
                     array_push($stringCopecks, join(' ', $out));
                 }
             }
-            $separator = ', ';
+
             // преобразуем переменную в текст и возвращаем из функции!
             $resultSum = join(' ', $string) . $separator . join(' ', $stringCopecks);
             return $resultSum;
@@ -453,6 +456,68 @@ class GenerateDocController extends Controller
             if ($n == 1) return $f1;
             return $f5;
         }
+        function num2str($num)
+        {
+            $nul = 'ноль';
+            $ten = array(
+                array('', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'),
+                array('', 'одна', 'две', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять')
+            );
+            $a20 = array('десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать');
+            $tens = array(2 => 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто');
+            $hundred = array('', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот');
+            $unit = array(
+                array('копейка', 'копейки',   'копеек',     1),
+                array('рубль',    'рубля',     'рублей',     0),
+                array('тысяча',   'тысячи',    'тысяч',      1),
+                array('миллион',  'миллиона',  'миллионов',  0),
+                array('миллиард', 'миллиарда', 'миллиардов', 0),
+            );
+
+            list($rub, $kop) = explode('.', sprintf("%015.2f", floatval($num)));
+            $out = array();
+            $kopArray = array();
+            $str = array();
+            if (intval($rub) > 0) {
+                foreach (str_split($rub, 3) as $uk => $v) {
+                    if (!intval($v)) continue;
+                    $uk = sizeof($unit) - $uk - 1;
+                    $gender = $unit[$uk][3];
+                    list($i1, $i2, $i3) = array_map('intval', str_split($v, 1));
+                    // mega-logic
+                    $out[] = $hundred[$i1]; // 1xx-9xx
+                    if ($i2 > 1) $out[] = $tens[$i2] . ' ' . $ten[$gender][$i3]; // 20-99
+                    else $out[] = $i2 > 0 ? $a20[$i3] : $ten[$gender][$i3]; // 10-19 | 1-9
+                    // units without rub & kop
+                    if ($uk > 1) $out[] = morph($v, $unit[$uk][0], $unit[$uk][1], $unit[$uk][2]);
+                }
+            } else {
+                $out[] = $nul;
+            }
+            if (intval($kop) > 0) {
+                foreach (str_split($kop, 3) as $uk => $v) {
+                    $uk = sizeof($unit) - $uk - 1;
+                    $gender = $unit[$uk][3];
+                    list($i2, $i3) = array_map('intval', str_split($v, 1));
+                    // mega-logic
+                    if ($i2 > 1) {
+                        $kopArray[] = $tens[$i2] . ' ' . $ten[$gender][$i3]; // 20-99
+                    } else {
+                        $kopArray[] = $i2 > 0 ? $a20[$i3] : $ten[$gender][$i3]; // 10-19 | 1-9
+                    }
+                    // добавляем обозначение порядка или валюту
+                    $kopArray[] = morph($kop, $unit[0][0], $unit[0][1], $unit[0][2]);
+                    // объединяем составные числа в единый текст и добавляем в переменную, которую вернет функция
+                    array_push($str, join(' ', $kopArray));
+                }
+            } else {
+                $kopArray[] = $nul;
+            }
+            $res = join(' ', $str);
+            $out[] = morph(intval($rub), $unit[1][0], $unit[1][1], $unit[1][2]); // rub
+            // $out[] = $kop . ' ' . morph($kop, $unit[0][0], $unit[0][1], $unit[0][2]); // kop
+            return trim(preg_replace('/ {2,}/', ' ', join(' ', $out))) . ' ' . $res;
+        }
         $resultSumRUB = '';
         if (count($claim->paymentInvoices) > 0) {
             $currencyRUB = [];
@@ -467,12 +532,12 @@ class GenerateDocController extends Controller
         $int_part = number_format(intval($num), 0, ' ', ' ');
         $dec_part = $num * 100 % 100;
         $strPriceNumber = $int_part . ' руб.' . ', ' . $dec_part . ' коп.';
-        $strPriceWord = number2string('1123');
-        $explode = preg_replace('/,/', 'руб.', $strPriceWord);
+        $strPriceWord = num2str('10.12');
         $phpWord->setValue('priceNumber', $strPriceNumber);
         $phpWord->setValue('priceWord', $strPriceWord);
-
-
+        // $wordPdf = \PhpOffice\PhpWord\IOFactory::load($fileName . ".docx");
+        // $pdfWriter = \PhpOffice\PhpWord\IOFactory::createWriter($wordPdf, 'PDF');
+        // $pdfWriter->save($fileName . ".pdf");
         $phpWord->saveAs($fileName . '.docx');
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }

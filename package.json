@@ -27,7 +27,12 @@
         "animejs": "^3.2.1",
         "bootstrap": "^5.2.3",
         "choices.js": "^10.2.0",
+        "datatables.net-buttons-dt": "^2.3.6",
+        "datatables.net-dt": "^1.13.4",
         "gost-transliteration": "^0.1.2",
-        "moment": "^2.29.4"
+        "jquery": "^3.6.1",
+        "jszip": "^3.10.1",
+        "moment": "^2.29.4",
+        "pdfmake": "^0.2.7"
     }
 }

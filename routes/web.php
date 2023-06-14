@@ -20,6 +20,7 @@ use App\Http\Controllers\HabitationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\OtherServiceController;
+use App\Http\Controllers\ReplicateController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\TouristController;
 use App\Http\Controllers\TourOperatorController;
@@ -65,8 +66,9 @@ Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim
 Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
 Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
 Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
-Route::post('/claims/{claim}/replicate', [ClaimController::class, 'replicate'])->name('claim.replicate');
 
+// Клонирование заявки
+Route::post('/replicates/{replicate}', [ReplicateController::class, 'index'])->name('replicate.index');
 
 // Информация о туроператоре
 Route::post('/touroperators/{touroperator}/store', [TourOperatorController::class, 'store'])->name('touroperator.store');

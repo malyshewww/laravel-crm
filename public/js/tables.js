@@ -57,15 +57,25 @@ const tableConfig = {
 }
 let tourTable;
 function initDataTable(data) {
+	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	tourTable = new DataTable(mainTable, {
 		...tableConfig,
 		"data": data,
 		"columns": [
 			{
+				"data": null,
+				"orderable": false,
+				"render": function (data, type, row, meta) {
+					return `
+						<span hidden>${row.id}</span>
+					`;
+				}
+			},
+			{
 				"data": 'number',
 				"orderable": false,
 				"render": function (data, type, row, meta) {
-					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}">${row.claim_number}</a>`;
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}" target="_blank">${row.claim_number}</a>`;
 				}
 			},
 			{
@@ -127,8 +137,9 @@ function initDataTable(data) {
 							</button>
 						</div>
 						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
-							<form action="${BASE_URL}/claims/${row.id}/replicate" method="post" data-form-replicate>
+							<form action="${BASE_URL}/replicates/${row.id}" method="post" data-form-replicate>
 								<input type="hidden" name="claim_id" value="${row.id}">
+								<input type="hidden" name="_token" value=${token}>
 								<button class="btn-copy" type="submit">
 									<i class="fa-regular fa-copy"></i>
 								</button>
@@ -191,7 +202,7 @@ function fetchTable(form) {
 
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('load', () => {
 	fetchTable();
 })
 
@@ -296,10 +307,10 @@ function replicateHandler() {
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();
 				const thisForm = event.target;
-				let id = thisForm.claim_id;
+				const claimId = thisForm.claim_id;
+				const token = thisForm._token;
 				const formData = new FormData(thisForm);
-				const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-				fetch(`/claims/${id}/replicate`, {
+				fetch(`/replicates/${claimId}`, {
 					headers: {
 						"X-CSRF-Token": token
 					},
@@ -308,7 +319,6 @@ function replicateHandler() {
 				})
 					.then(response => response.json())
 					.then((result) => {
-						console.log(result);
 						if (result.status == 'success') {
 							window.location.reload();
 						}
