@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\OtherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,13 +47,10 @@ class OtherServiceController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $claimId, $action)
     {
         $other = OtherService::findOrFail($id);
-        $tourists = DB::table('tourists')
-            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
-            ->select('tourists.*')
-            ->get();
-        return view('claim.services.modals.modal_update_other', compact('other', 'tourists'))->render();
+        $claim = Claim::find($claimId);
+        return view('claim.services.modals.modal_update_other', compact('other', 'claim'))->render();
     }
 }

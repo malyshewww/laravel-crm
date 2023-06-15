@@ -310,20 +310,29 @@ function replicateHandler() {
 				const claimId = thisForm.claim_id;
 				const token = thisForm._token;
 				const formData = new FormData(thisForm);
-				fetch(`/replicates/${claimId}`, {
-					headers: {
-						"X-CSRF-Token": token
-					},
-					method: 'POST',
-					body: formData,
-				})
-					.then(response => response.json())
-					.then((result) => {
+				const fetchReplicate = async () => {
+					displayLoading();
+					try {
+						const response = await fetch(`/replicates/${claimId}`, {
+							headers: {
+								"X-CSRF-Token": token
+							},
+							method: 'POST',
+							body: formData,
+						})
+						const data = await response.json();
+						const result = await data;
 						if (result.status == 'success') {
 							window.location.reload();
 						}
-					})
-					.catch(error => console.log(error))
+					} catch (error) {
+						console.log('Произошла ошибка', error)
+						hideLoading();
+					} finally {
+						hideLoading();
+					}
+				}
+				fetchReplicate();
 			})
 		}
 	})

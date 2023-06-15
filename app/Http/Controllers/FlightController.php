@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\Flight;
+use App\Models\Tourist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -56,13 +58,10 @@ class FlightController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $claimId, $action)
     {
         $flight = Flight::findOrFail($id);
-        $tourists = DB::table('tourists')
-            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
-            ->select('tourists.*')
-            ->get();
-        return view('claim.services.modals.modal_update_flight', compact('flight', 'tourists'))->render();
+        $claim = Claim::find($claimId);
+        return view('claim.services.modals.modal_update_flight', compact('flight', 'claim'))->render();
     }
 }

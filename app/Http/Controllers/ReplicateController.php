@@ -10,17 +10,19 @@ class ReplicateController extends Controller
     public function index(Request $request)
     {
         $id = $request->claim_id;
-        $claim = Claim::findOrFail($id);
-        $claim->load('tourpackage', 'touroperator', 'contract');
-        $newModel = $claim->replicate();
-        $newModel->push();
-        $newModel->save();
-        // foreach ($claim->getRelations() as $relation => $items) {
-        //     foreach ($items as $item) {
-        //         unset($item->id);
-        //         $newModel->{$relation}()->create($item->toArray());
-        //     }
+        $claim = Claim::find($id);
+        $clone = $claim->duplicate();
+        // foreach ($claim->touroperator as $item) {
+        //     $clone->touroperator()->attach($item);
         // }
+        // foreach ($item->tourpackage as $item) {
+        //     $clone->tourpackage()->attach($item);
+        // }
+        // foreach ($item->contract as $item) {
+        //     $clone->contract()->attach($item);
+        // }
+        $clone->push();
+        // $clone->save();
         return response()->json([
             'status' => 'success'
         ]);

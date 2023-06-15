@@ -4930,6 +4930,11 @@ function getNumberOfDays(start, end) {
   return diffInDays;
 }
 function initDatePicker(type) {
+  var removeError = function removeError(input) {
+    if (input.classList.contains('error')) {
+      input.classList.remove('error');
+    }
+  };
   var rangeDateConfig = {
     position: 'bottom right',
     buttons: ['today', 'clear'],
@@ -5040,16 +5045,6 @@ function initDatePicker(type) {
     var inputAltFieldStart = form.querySelector('[data-name="date_start"]');
     var inputAltFieldEnd = form.querySelector('[data-name="date_end"]');
     if (inputTriggerStart && inputTriggerEnd && inputAltFieldStart && inputAltFieldEnd) {
-      // if (inputAltFieldStart.value != "") {
-      // 	startConfig = {
-      // 		selectedDates: [inputAltFieldStart?.value]
-      // 	}
-      // }
-      // if (inputAltFieldEnd.value != "") {
-      // 	endConfig = {
-      // 		selectedDates: [inputAltFieldEnd?.value]
-      // 	}
-      // }
       var inputAltFieldStartFormat = inputAltFieldStart.dataset.format;
       var inputAltFieldEndFormat = inputAltFieldEnd.dataset.format;
       var datepickerStart = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](inputTriggerStart, _objectSpread(_objectSpread(_objectSpread({
@@ -5065,6 +5060,7 @@ function initDatePicker(type) {
           datepickerEnd.update({
             minDate: date
           });
+          removeError(inputAltFieldStart);
         }
       }, startConfig));
       var datepickerEnd = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](inputTriggerEnd, _objectSpread(_objectSpread(_objectSpread({
@@ -5080,6 +5076,7 @@ function initDatePicker(type) {
           datepickerStart.update({
             maxDate: date
           });
+          removeError(inputAltFieldEnd);
         }
       }, endConfig));
     }

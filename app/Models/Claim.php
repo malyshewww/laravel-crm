@@ -13,6 +13,29 @@ class Claim extends Model
     use HasFactory;
     use SoftDeletes;
     use Hashidable;
+    use \Bkwld\Cloner\Cloneable;
+    protected $cloneable_relations = [
+        'touroperator',
+        'tourpackage',
+        'contract',
+        'customer',
+        'person',
+        'company',
+        'tourist',
+        'service',
+        'serviceFlight',
+        'serviceInsurance',
+        'serviceTransfer',
+        'serviceVisa',
+        'serviceHabitation',
+        'serviceFuelSurchange',
+        'serviceExcursion',
+        'serviceOther',
+        'file',
+        'prepayment',
+        'payment',
+        'paymentInvoices',
+    ];
     protected $table = 'claims';
     protected $casts = [
         'date_start' => 'date:d.m.Y', // Свой формат
@@ -33,15 +56,14 @@ class Claim extends Model
     {
         $this->attributes['id'] = decrypt($value);
     }
-    // protected $dateFormat = 'd.m.Y';
-    // public function setDateStartAttribute($value)
-    // {
-    //     $this->attributes['date_start'] = (new Carbon($value))->format('d.m.Y');
-    // }
-    // public function setDateEndAttribute($value)
-    // {
-    //     $this->attributes['date_end'] = (new Carbon($value))->format('d.m.Y');
-    // }
+    function getFullNameAttribute()
+    {
+        return $this->attributes['date_start'];
+    }
+    public function latestClaim()
+    {
+        return $this->hasOne(Claim::class)->latest();
+    }
     public function person()
     {
         return $this->hasOne(Person::class);
@@ -49,14 +71,6 @@ class Claim extends Model
     public function company()
     {
         return $this->hasOne(Company::class);
-    }
-    public function latestClaim()
-    {
-        return $this->hasOne(Claim::class)->latest();
-    }
-    function getFullNameAttribute()
-    {
-        return $this->attributes['date_start'];
     }
     // Данные туроператора
     public function touroperator()

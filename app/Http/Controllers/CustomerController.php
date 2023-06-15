@@ -31,7 +31,7 @@ class CustomerController extends Controller
             'claim_id' => $request->claim_id
         ], $customerFields);
         // Если заказчик - Физ. лицо
-        if ($request->input('type') == 'person') {
+        if ($request->type == 'person') {
             $validator = Validator::make($request->all(), [
                 'person_surname' => 'bail|required',
                 'person_name' => 'bail|required',
@@ -113,46 +113,29 @@ class CustomerController extends Controller
                 'status' => 'success'
             ]);
             // Если заказчик - Юр. лицо
-        } else if ($request->input('type') == 'company') {
+        }
+        if ($request->type == 'company') {
+            $company_phone = $claim->validateNumber($request->company_phone);
             $companyFields = [
                 'company_fullname' => $request->company_fullname,
                 'company_shortname' => $request->company_shortname,
-                'claim_id' => $request->claim_id
-            ];
-            Company::updateOrCreate([
-                'claim_id' => $request->claim_id
-            ], $companyFields);
-            $companyRegisterFields = [
                 'company_kpp' => $request->company_kpp,
                 'company_inn' => $request->company_inn,
                 'company_ogrn' => $request->company_ogrn,
-                'company_id' => $request->company_id
-            ];
-            CompanyDataRegister::updateOrCreate([
-                'company_id' => $request->company_id
-            ], $companyRegisterFields);
-            $companyBankFields = [
                 'company_bank' => $request->company_bank,
                 'company_bik' => $request->company_bik,
                 'company_rs' => $request->company_rs,
                 'company_ks' => $request->company_ks,
-                'company_id' => $request->company_id
-            ];
-            CompanyDataBank::updateOrCreate([
-                'company_id' => $request->company_id
-            ], $companyBankFields);
-            $company_phone = $claim->validateNumber($request->company_phone);
-            $companyContactFields = [
                 'company_address' => $request->company_address,
                 'company_actual_address' => $request->company_actual_address,
                 'company_director' => $request->company_director,
                 'company_phone' => $company_phone,
                 'company_email' => $request->company_email,
-                'company_id' => $request->company_id
+                'claim_id' => $request->claim_id
             ];
-            CompanyDataContact::updateOrCreate([
-                'company_id' => $request->company_id
-            ], $companyContactFields);
+            Company::updateOrCreate([
+                'claim_id' => $request->claim_id
+            ], $companyFields);
             return response()->json([
                 'status' => 'success'
             ]);

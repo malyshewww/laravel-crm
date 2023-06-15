@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('habitation.update', $habitation->id)}}"
-							data-path="{{route('habitation.loadModal', [$habitation->id, 'update'])}}"
+							data-path="{{route('habitation.loadModal', [$habitation->id, $claim->id, 'update'])}}"
 							data-title="Проживание (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

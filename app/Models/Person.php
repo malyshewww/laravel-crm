@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Person extends Model
 {
     use HasFactory;
+    use \Bkwld\Cloner\Cloneable;
+    protected $cloneable_relations = [
+        'commons',
+        'passport',
+        'certificate',
+        'internationalPassport',
+    ];
     protected $table = 'persons';
     protected $fillable = [
         'person_surname',

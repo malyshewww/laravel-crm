@@ -25,6 +25,11 @@ function getNumberOfDays(start, end) {
 }
 
 export function initDatePicker(type) {
+	const removeError = (input) => {
+		if (input.classList.contains('error')) {
+			input.classList.remove('error');
+		}
+	}
 	const rangeDateConfig = {
 		position: 'bottom right',
 		buttons: ['today', 'clear'],
@@ -135,16 +140,6 @@ export function initDatePicker(type) {
 		let inputAltFieldStart = form.querySelector('[data-name="date_start"]');
 		let inputAltFieldEnd = form.querySelector('[data-name="date_end"]');
 		if (inputTriggerStart && inputTriggerEnd && inputAltFieldStart && inputAltFieldEnd) {
-			// if (inputAltFieldStart.value != "") {
-			// 	startConfig = {
-			// 		selectedDates: [inputAltFieldStart?.value]
-			// 	}
-			// }
-			// if (inputAltFieldEnd.value != "") {
-			// 	endConfig = {
-			// 		selectedDates: [inputAltFieldEnd?.value]
-			// 	}
-			// }
 			let inputAltFieldStartFormat = inputAltFieldStart.dataset.format;
 			let inputAltFieldEndFormat = inputAltFieldEnd.dataset.format;
 			let datepickerStart = new AirDatepicker(inputTriggerStart, {
@@ -159,6 +154,7 @@ export function initDatePicker(type) {
 					datepickerEnd.update({
 						minDate: date
 					})
+					removeError(inputAltFieldStart);
 				},
 				...startConfig
 				// selectDates: [inputAltFieldStart.value != '' ? inputAltFieldStart.value : '']
@@ -175,6 +171,7 @@ export function initDatePicker(type) {
 					datepickerStart.update({
 						maxDate: date
 					})
+					removeError(inputAltFieldEnd);
 				},
 				...endConfig
 				// selectDates: [inputAltFieldEnd.value != '' ? inputAltFieldEnd.value : '']

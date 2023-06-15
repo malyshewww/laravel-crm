@@ -47,7 +47,7 @@
 						@endphp
 						@foreach ($genders as $gender)
 							<option
-								{{$tourist->common->tourist_gender === $gender['value'] ? ' selected' : ''}}
+								{{$tourist->common && $tourist->common->tourist_gender === $gender['value'] ? ' selected' : ''}}
 								value="{{$gender['value']}}">
 								{{$gender['title']}}
 							</option>
@@ -60,7 +60,7 @@
 				<label class="field-group__label">Фамилия (LAT)</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="surname_lat" name="tourist_surname_lat"
-					value="{{$tourist->common->tourist_surname_lat ?: ''}}">
+					value="{{$tourist->common && $tourist->common->tourist_surname_lat ? $tourist->common->tourist_surname_lat : ''}}">
 				</div>
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 				<label class="field-group__label">Имя (LAT)</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="name_lat" name="tourist_name_lat"
-					value="{{$tourist->common->tourist_name_lat ?: ''}}">
+					value="{{$tourist->common && $tourist->common->tourist_name_lat ? $tourist->common->tourist_name_lat : ''}}">
 				</div>
 			</div>
 		</div>
@@ -83,7 +83,7 @@
 					@endphp
 					@foreach ($nationalities as $nationality)
 						<option
-							{{$tourist->common->tourist_nationality === $nationality['value'] ? ' selected' : ''}}
+							{{$tourist->common && $tourist->common->tourist_nationality === $nationality['value'] ? ' selected' : ''}}
 							value="{{$nationality['value']}}">{{$nationality['title']}}
 						</option>
 					@endforeach
@@ -95,7 +95,7 @@
 				<label class="field-group__label required">Дата рождения</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="tourist_birthday"
-					value="{{$tourist->common->tourist_birthday ?: ''}}">
+					value="{{$tourist->common && $tourist->common->tourist_birthday ? $tourist->common->tourist_birthday : ''}}">
 				</div>
 			</div>
 		</div>
@@ -104,7 +104,7 @@
 				<label class="field-group__label">Фактический адрес</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="tourist_address"
-					value="{{$tourist->common->tourist_address ?: ''}}">
+					value="{{$tourist->common && $tourist->common->tourist_address ? $tourist->common->tourist_address : ''}}">
 				</div>
 			</div>
 		</div>
@@ -113,7 +113,7 @@
 				<label class="field-group__label">Телефон</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="tel" name="tourist_phone"
-					value="{{$tourist->common->tourist_phone ?: ''}}">
+					value="{{$tourist->common && $tourist->common->tourist_phone ? $tourist->common->tourist_phone : ''}}">
 				</div>
 			</div>
 		</div>
@@ -122,7 +122,7 @@
 				<label class="field-group__label">Email</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="email" name="tourist_email"
-					value="{{$tourist->common->tourist_email ?: ''}}">
+					value="{{$tourist->common && $tourist->common->tourist_email ? $tourist->common->tourist_email : ''}}">
 				</div>
 			</div>
 		</div>
@@ -311,7 +311,7 @@
 						@endphp
 						@foreach ($visaOptions as $visaOpt)
 							<option
-								{{$tourist->common->visa_info === $visaOpt['value'] ? ' selected' : ''}}
+								{{$tourist->common && $tourist->common->visa_info === $visaOpt['value'] ? ' selected' : ''}}
 								value="{{$visaOpt['value']}}">{{$visaOpt['title']}}
 							</option>
 						@endforeach
@@ -320,14 +320,15 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Город подачи визы</label>
 					<select name="visa_city" data-select 
-						{{$tourist->common->visa_info === 'not' ? ' disabled' : ''}}>
+						{{$tourist->common && $tourist->common->visa_info === 'not' ? ' disabled' : ''}}>
 						<option value=""></option>
 						@php
 							$cities = TouristHelper::city();
 						@endphp
 						@foreach ($cities as $key => $city)
 							<option
-								{{$tourist->common->visa_info == 'yes' 
+								{{$tourist->common 
+								&& $tourist->common->visa_info == 'yes' 
 								&& $tourist->common->visa_city 
 								&& $key == $tourist->common->visa_city 
 								? ' selected' 

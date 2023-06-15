@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Claim;
 use App\Models\Habitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,13 +59,10 @@ class HabitationController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $claimId, $action)
     {
         $habitation = Habitation::findOrFail($id);
-        $tourists = DB::table('tourists')
-            ->join('claims', 'tourists.claim_id', '=', 'claims.id')
-            ->select('tourists.*')
-            ->get();
-        return view('claim.services.modals.modal_update_habitation', compact('habitation', 'tourists'))->render();
+        $claim = Claim::find($claimId);
+        return view('claim.services.modals.modal_update_habitation', compact('habitation', 'claim'))->render();
     }
 }

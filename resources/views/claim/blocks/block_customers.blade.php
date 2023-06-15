@@ -43,22 +43,20 @@
 						@elseif($claim->customer->type === 'company' && $claim->company)
 							Юридическое лицо:
 							<span>{{$claim->company->company_fullname ?: 'Наименование юридического лица'}}</span>
-							@if ($claim->company->contact)
-								<div class="area-group__labels"> 
-								@if ($claim->company->contact->company_phone)
+							<div class="area-group__labels"> 
+								@if ($claim->company->company_phone)
 									<div class="area-group__label">
 										<i class="fa-solid fa-phone"></i>
-										<span class="area-group__phone">{{$claim->company->contact->company_phone}}</span>
+										<span class="area-group__phone">+{{$claim->company->company_phone}}</span>
 									</div>
 								@endif
-								@if ($claim->company->contact->company_email)
+								@if ($claim->company->company_email)
 									<div class="area-group__label">
 										<i class="fa-solid fa-envelope"></i>
-										<span class="area-group__phone">{{$claim->company->contact->company_email}}</span>
+										<span class="area-group__phone">{{$claim->company->company_email}}</span>
 									</div>
 								@endif
-								</div>
-							@endif
+							</div>
 					@endif
 				</div>
 			</header>
@@ -121,80 +119,62 @@
 								<li> 
 									<div class="list__label">ИНН:</div>
 									<div class="list__value">
-										{{$claim->company->register && $claim->company->register->company_inn 
-										? $claim->company->register->company_inn : 'Не указан'}}</div>
+										{{$claim->company->company_inn ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">КПП:</div>
 									<div class="list__value">
-										{{$claim->company->register && $claim->company->register->company_kpp 
-										? $claim->company->register->company_kpp : 'Не указан'}}</div>
+										{{$claim->company->company_kpp ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">ОГРН:</div>
 									<div class="list__value">
-										{{$claim->company->register && $claim->company->register->company_ogrn 
-										? $claim->company->register->company_ogrn : 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">ОГРН:</div>
-									<div class="list__value">
-										{{$claim->company->register && $claim->company->register->company_ogrn 
-										? $claim->company->register->company_ogrn : 'Не указан'}}</div>
+										{{$claim->company->company_ogrn ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">Наименование банка:</div>
 									<div class="list__value">
-										{{$claim->company->bank && $claim->company->bank->company_bank 
-										? $claim->company->bank->company_bank : 'Не указан'}}</div>
+										{{$claim->company->company_bank ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">БИК:</div>
 									<div class="list__value">
-										{{$claim->company->bank && $claim->company->bank->company_bik 
-										? $claim->company->bank->company_bik : 'Не указан'}}</div>
+										{{$claim->company->company_bik ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">Р/С:</div>
 									<div class="list__value">
-										{{$claim->company->bank && $claim->company->bank->company_rs 
-										? $claim->company->bank->company_rs : 'Не указан'}}</div>
+										{{$claim->company->company_rs ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">К/С:</div>
 									<div class="list__value">
-										{{$claim->company->bank && $claim->company->bank->company_ks
-										? $claim->company->bank->company_ks : 'Не указан'}}</div>
+										{{$claim->company->company_ks ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">Юридический адрес:</div>
 									<div class="list__value">
-										{{$claim->company->contact && $claim->company->contact->company_address 
-										? $claim->company->contact->company_address : 'Не указан'}}</div>
+										{{$claim->company->company_address ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">Фактический адрес:</div>
 									<div class="list__value">
-										{{$claim->company->contact && $claim->company->contact->company_actual_address 
-										? $claim->company->contact->company_actual_address : 'Не указан'}}</div>
+										{{$claim->company->company_actual_address ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">ФИО ГЕН. ДИРЕКТОРА:</div>
 									<div class="list__value">
-										{{$claim->company->contact && $claim->company->contact->company_director 
-										? $claim->company->contact->company_director : 'Не указано'}}</div>
+										{{$claim->company->company_director ?: 'Не указано'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">Телефон:</div>
 									<div class="list__value">
-										{{$claim->company->contact && $claim->company->contact->company_phone 
-										? $claim->company->contact->company_phone : 'Не указан'}}</div>
+										{{$claim->company->company_phone ?: 'Не указан'}}</div>
 								</li>
 								<li> 
 									<div class="list__label">E-mail:</div>
 									<div class="list__value">
-										{{$claim->company->contact && $claim->company->contact->company_email 
-										? $claim->company->contact->company_email : 'Не указан'}}</div>
+										{{$claim->company->company_email ?: 'Не указан'}}</div>
 								</li>
 							</ul>
 						</div>

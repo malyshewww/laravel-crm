@@ -9,7 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tourist extends Model
 {
     use HasFactory;
-    // use SoftDeletes;
+    use SoftDeletes;
+    use \Bkwld\Cloner\Cloneable;
+    protected $cloneable_relations = [
+        'common',
+        'passport',
+        'certificate',
+        'internationalPassport',
+    ];
     protected $table = 'tourists';
     protected $fillable = [
         'tourist_surname',
@@ -23,15 +30,15 @@ class Tourist extends Model
     }
     public function common()
     {
-        return $this->hasOne(TouristDataCommons::class, 'tourist_id', 'id');
+        return $this->hasOne(TouristDataCommons::class);
     }
     public function passport()
     {
-        return $this->hasOne(TouristDataPassport::class, 'tourist_id', 'id');
+        return $this->hasOne(TouristDataPassport::class);
     }
     public function certificate()
     {
-        return $this->hasOne(TouristDataCertificate::class, 'tourist_id', 'id');
+        return $this->hasOne(TouristDataCertificate::class);
     }
     public function internationalPassport()
     {

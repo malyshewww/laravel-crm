@@ -383,15 +383,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="modal__footer">
-					<div class="modal__buttons">
-						<button class="btn btn-create btn-primary" type="submit">
-							<i class="fa-solid fa-check"></i>
-							Сохранить (ФЛ)
-						</button>
-						<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
-					</div>
-				</div>
 			</div>
 			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'company' ? ' isOpen' : ''}}" id="company" data-tab-content="company">
 				<div class="row align-items-end">
@@ -402,8 +393,7 @@
 								<input class="field-group__input" type="text" name="company_bank"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->bank
-								? $claim->company->bank->company_bank : ''}}">
+								? $claim->company->company_bank : ''}}">
 							</div>
 						</div>
 					</div>
@@ -414,8 +404,7 @@
 								<input class="field-group__input" type="text" name="company_bik"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->bank
-								? $claim->company->bank->company_bik : ''}}">
+								? $claim->company->company_bik : ''}}">
 							</div>
 						</div>
 					</div>
@@ -426,8 +415,7 @@
 								<input class="field-group__input" type="text" name="company_rs"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->bank
-								? $claim->company->bank->company_rs : ''}}">
+								? $claim->company->company_rs : ''}}">
 							</div>
 						</div>
 					</div>
@@ -438,8 +426,7 @@
 								<input class="field-group__input" type="text" name="company_ks"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->bank
-								? $claim->company->bank->company_ks : ''}}">
+								? $claim->company->company_ks : ''}}">
 							</div>
 						</div>
 					</div>
@@ -472,8 +459,7 @@
 								<input class="field-group__input" type="text" name="company_address"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->contact
-								? $claim->company->contact->company_address : ''}}">
+								? $claim->company->company_address : ''}}">
 							</div>
 						</div>
 					</div>
@@ -484,8 +470,7 @@
 								<input class="field-group__input" type="text" name="company_actual_address"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->contact
-								? $claim->company->contact->company_actual_address : ''}}">
+								? $claim->company->company_actual_address : ''}}">
 							</div>
 						</div>
 					</div>
@@ -499,8 +484,7 @@
 								<input class="field-group__input" type="text" name="company_kpp"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->register
-								? $claim->company->register->company_kpp : ''}}">
+								? $claim->company->company_kpp : ''}}">
 							</div>
 						</div>
 					</div>
@@ -511,8 +495,7 @@
 								<input class="field-group__input" type="text" name="company_inn"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->register
-								? $claim->company->register->company_inn : ''}}">
+								? $claim->company->company_inn : ''}}">
 							</div>
 						</div>
 					</div>
@@ -523,8 +506,7 @@
 								<input class="field-group__input" type="text" name="company_ogrn"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->company->register
-								? $claim->company->register->company_ogrn : ''}}">
+								? $claim->company->company_ogrn : ''}}">
 							</div>
 						</div>
 					</div>
@@ -535,8 +517,7 @@
 								<input class="field-group__input" type="text" name="company_director"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->customer->contact 
-								? $claim->company->contact->company_director : ''}}">
+								? $claim->company->company_director : ''}}">
 							</div>
 						</div>
 					</div>
@@ -547,8 +528,7 @@
 								<input class="field-group__input" type="tel" name="company_phone"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->customer->contact 
-								? $claim->company->contact->company_phone : ''}}">
+								? $claim->company->company_phone : ''}}">
 							</div>
 						</div>
 					</div>
@@ -559,19 +539,9 @@
 								<input class="field-group__input" type="email" name="company_email"
 								value="{{$claim->customer 
 								&& $claim->company 
-								&& $claim->customer->contact 
-								? $claim->company->contact->company_email : ''}}">
+								? $claim->company->company_email : ''}}">
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="modal__footer">
-					<div class="modal__buttons">
-						<button class="btn btn-create btn-primary" type="submit">
-							<i class="fa-solid fa-check"></i>
-							Сохранить (ЮЛ)
-						</button>
-						<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
 					</div>
 				</div>
 			</div>

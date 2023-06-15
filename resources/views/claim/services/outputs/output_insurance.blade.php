@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('insurance.update', $insurance->id)}}"
-							data-path="{{route('insurance.loadModal', [$insurance->id, 'update'])}}"
+							data-path="{{route('insurance.loadModal', [$insurance->id, $claim->id, 'update'])}}"
 							data-title="Страховка (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

@@ -49,10 +49,10 @@
 										{{$tourist->tourist_patronymic ?: ''}}
 									</td>
 									<td class="tourist-table__gender">
-										{{$tourist->common->tourist_gender == 'male' ? 'М' : 'Ж'}}
+										{{$tourist->common && $tourist->common->tourist_gender == 'male' ? 'М' : 'Ж'}}
 									</td>
 									<td class="tourist-table__date">
-										{{$tourist->common->tourist_birthday ?: ''}}
+										{{$tourist->common && $tourist->common->tourist_birthday ? $tourist->common->tourist_birthday : ''}}
 									</td>
 									<td class="tourist-table__passport">
 										@if ($tourist->passport || $tourist->certificate)
@@ -81,7 +81,7 @@
 										@endif
 									</td>
 									<td class="tourist-table__contacts">
-										@if ($tourist->common && $tourist->common->tourist_phone || $tourist->common->tourist_email)
+										@if ($tourist->common)
 											<ul>
 												@if ($tourist->common->tourist_phone)
 													<li>
@@ -115,7 +115,7 @@
 										@endphp
 										<ul>
 											<li>
-												<span>{{$tourist->common->visa_info == 'not' ? 'не требуется' : 'надо оформить визу'}}</span>
+												<span>{{$tourist->common && $tourist->common->visa_info == 'not' ? 'не требуется' : 'надо оформить визу'}}</span>
 											</li>
 											@if ($tourist->common && $tourist->common->visa_info == 'yes' )
 												<li>

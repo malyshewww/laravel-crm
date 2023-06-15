@@ -34,7 +34,7 @@ class GenerateDocController extends Controller
         $contractData = [];
         $claimId = $request->id;
         $claim = Claim::find($claimId);
-        $claimId = $claim->id;
+        $claimId = $claim->id . '-' . date('Y');
         $claimDate = $claim->date_start->format('d.m.Y');
         $phpWord->setValue('claimId', $claimId);
         $phpWord->setValue('claimDate', $claimDate);
@@ -110,13 +110,7 @@ class GenerateDocController extends Controller
                 'claimDateStart' => $claim->date_start->format('d.m.Y'),
                 'claimDateEnd' => $claim->date_end->format('d.m.Y')
             ];
-            // $tourPackageTableData['tourpackageName'] = $claim->tourpackage->name;
-            // $tourPackageTableData['claimDateStart'] = $claim->date_start->format('d.m.Y');
-            // $tourPackageTableData['claimDateEnd'] = $claim->date_end->format('d.m.Y');
         }
-        // $phpWord->setValue('tourpackageName', $tourpackageName);
-        // $phpWord->setValue('claimDateStart', $claimDateStart);
-        // $phpWord->setValue('claimDateEnd', $claimDateEnd);
         // Услуга "Проживание"
         $habitationTableData = [];
         if (count($claim->serviceHabitation) > 0) {
@@ -171,17 +165,6 @@ class GenerateDocController extends Controller
                 ];
             }
         }
-        // Услуга "Трансфер"
-        // $transferTableData = [];
-        // $serviceTransferHelperType = ServiceHelper::transferType();
-        // if (count($claim->serviceTransfer) > 0) {
-        //     foreach ($claim->serviceTransfer as $item) {
-        //         $transferTableData[] = [
-        //             'transferName' => 'Трансфер',
-        //             'transferDescr' => $item->transfer_route_start . ',' . $item->transfer_route_end,
-        //         ];
-        //     }
-        // }
         // Услуга "Топливный сбор"
         $fuelSurchangeTableData = [];
         if (count($claim->serviceFuelSurchange) > 0) {
@@ -223,6 +206,7 @@ class GenerateDocController extends Controller
                 ];
             }
         }
+        // Услуга "Трансфер"
         $transferTableData = [];
         $transferTypes = ServiceHelper::transferType();
         if (count($claim->serviceTransfer) > 0) {
@@ -242,7 +226,6 @@ class GenerateDocController extends Controller
                 ];
             }
         }
-        // dd($visaTableData);
         // Данные о туристах
         $touristTableData = [];
         $genders = TouristHelper::gender();

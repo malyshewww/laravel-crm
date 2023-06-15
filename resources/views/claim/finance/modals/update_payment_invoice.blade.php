@@ -12,9 +12,7 @@
 				@method('patch')
 				<input type="hidden" name="claim_id" value="">
 				<input type="hidden" name="record_id" value="">
-				<div class="modal__body">
-					{{-- Разметка с данными из шаблона modal_update_invoice --}}
-				</div>
+				<div class="modal__body"></div>
 				<div class="modal__footer">
 					<div class="modal__buttons">
 						<button class="btn btn-create btn-primary" type="submit">

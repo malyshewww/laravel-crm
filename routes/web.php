@@ -98,49 +98,49 @@ Route::get('/tourists/{tourist}/loadModal-{action}', [TouristController::class, 
 Route::post('/flights', [FlightController::class, 'store'])->name('flight.store');
 Route::patch('/flights/{flight}/update', [FlightController::class, 'update'])->name('flight.update');
 Route::delete('/flights/{flight}/delete', [FlightController::class, 'destroy'])->name('flight.destroy');
-Route::get('/flights/{flight}/loadModal-{action}', [FlightController::class, 'loadModal'])->name('flight.loadModal');
+Route::get('/flights/{flight}/{claimId}/loadModal-{action}', [FlightController::class, 'loadModal'])->name('flight.loadModal');
 
 // Услуга Страховка
 Route::post('/insurances', [InsuranceController::class, 'store'])->name('insurance.store');
 Route::patch('/insurances/{insurance}/update', [InsuranceController::class, 'update'])->name('insurance.update');
 Route::delete('/insurances/{insurance}/delete', [InsuranceController::class, 'destroy'])->name('insurance.destroy');
-Route::get('/insurances/{insurance}/loadModal-{action}', [InsuranceController::class, 'loadModal'])->name('insurance.loadModal');
+Route::get('/insurances/{insurance}/{claimId}/loadModal-{action}', [InsuranceController::class, 'loadModal'])->name('insurance.loadModal');
 
 // Услуга Трансфер
 Route::post('/transfers', [TransferController::class, 'store'])->name('transfer.store');
 Route::patch('/transfers/{transfer}/update', [TransferController::class, 'update'])->name('transfer.update');
 Route::delete('/transfers/{transfer}/delete', [TransferController::class, 'destroy'])->name('transfer.destroy');
-Route::get('/transfers/{transfer}/loadModal-{action}', [TransferController::class, 'loadModal'])->name('transfer.loadModal');
+Route::get('/transfers/{transfer}/{claimId}/loadModal-{action}', [TransferController::class, 'loadModal'])->name('transfer.loadModal');
 
 // Услуга виза
 Route::post('/visas', [VisaController::class, 'store'])->name('visa.store');
 Route::patch('/visas/{visa}/update', [VisaController::class, 'update'])->name('visa.update');
 Route::delete('/visas/{visa}/delete', [VisaController::class, 'destroy'])->name('visa.destroy');
-Route::get('/visas/{visa}/loadModal-{action}', [VisaController::class, 'loadModal'])->name('visa.loadModal');
+Route::get('/visas/{visa}/{claimId}/loadModal-{action}', [VisaController::class, 'loadModal'])->name('visa.loadModal');
 
 // Услуга Проживание
 Route::post('/habitations', [HabitationController::class, 'store'])->name('habitation.store');
 Route::patch('/habitations/{habitation}/update', [HabitationController::class, 'update'])->name('habitation.update');
 Route::delete('/habitations/{habitation}/delete', [HabitationController::class, 'destroy'])->name('habitation.destroy');
-Route::get('/habitations/{habitation}/loadModal-{action}', [HabitationController::class, 'loadModal'])->name('habitation.loadModal');
+Route::get('/habitations/{habitation}/{claimId}/loadModal-{action}', [HabitationController::class, 'loadModal'])->name('habitation.loadModal');
 
 // Услуга Топливный сбор
 Route::post('/fuelsurchanges', [FuelSurchangeController::class, 'store'])->name('fuelsurchange.store');
 Route::patch('/fuelsurchanges/{fuelsurchange}/update', [FuelSurchangeController::class, 'update'])->name('fuelsurchange.update');
 Route::delete('/fuelsurchanges/{fuelsurchange}/delete', [FuelSurchangeController::class, 'destroy'])->name('fuelsurchange.destroy');
-Route::get('/fuelsurchanges/{fuelsurchange}/loadModal-{action}', [FuelSurchangeController::class, 'loadModal'])->name('fuelsurchange.loadModal');
+Route::get('/fuelsurchanges/{fuelsurchange}/{claimId}/loadModal-{action}', [FuelSurchangeController::class, 'loadModal'])->name('fuelsurchange.loadModal');
 
 // Услуга Экскурсионная программа
 Route::post('/excursions', [ExcursionController::class, 'store'])->name('excursion.store');
 Route::patch('/excursions/{excursion}/update', [ExcursionController::class, 'update'])->name('excursion.update');
 Route::delete('/excursions/{excursion}/delete', [ExcursionController::class, 'destroy'])->name('excursion.destroy');
-Route::get('/excursions/{excursion}/loadModal-{action}', [ExcursionController::class, 'loadModal'])->name('excursion.loadModal');
+Route::get('/excursions/{excursion}/{claimId}/loadModal-{action}', [ExcursionController::class, 'loadModal'])->name('excursion.loadModal');
 
 // Услуга  "Другая услуга"
 Route::post('/otherservices', [OtherServiceController::class, 'store'])->name('otherservice.store');
 Route::patch('/otherservices/{otherservice}/update', [OtherServiceController::class, 'update'])->name('otherservice.update');
 Route::delete('/otherservices/{otherservice}/delete', [OtherServiceController::class, 'destroy'])->name('otherservice.destroy');
-Route::get('/otherservices/{otherservice}/loadModal-{action}', [OtherServiceController::class, 'loadModal'])->name('otherservice.loadModal');
+Route::get('/otherservices/{otherservice}/{claimId}/loadModal-{action}', [OtherServiceController::class, 'loadModal'])->name('otherservice.loadModal');
 
 // Добавление/Удаление файлов
 Route::post('/files/store', [FileController::class, 'store'])->name('file.store');
