@@ -76,6 +76,7 @@
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Заказчик, стоимость и долг заказчика</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto">Менеджер</th>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
+						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto"></th>
 					</tr>
 				</thead>
 				<tbody></tbody>

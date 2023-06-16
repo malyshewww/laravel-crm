@@ -4574,6 +4574,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function checkFormFields() {
   var formAllInputs = document.querySelectorAll('.field-group__input');
   var formAllSelects = document.querySelectorAll('select');
+  var inputsFile = document.querySelectorAll('.upload-file__input');
   function removeErrorClass(event) {
     if (!event.target.classList.contains('error')) {
       return false;
@@ -4596,6 +4597,16 @@ function checkFormFields() {
   _toConsumableArray(formAllSelects).forEach(function (select) {
     select.addEventListener('change', removeErrorClassSelect);
   });
+  _toConsumableArray(inputsFile).forEach(function (input) {
+    input.addEventListener('change', function (event) {
+      var parent = event.target.closest('.upload-file');
+      if (!parent.classList.contains('error')) {
+        return false;
+      }
+      ;
+      parent.classList.remove('error');
+    });
+  });
 }
 checkFormFields();
 (0,_number_format_js__WEBPACK_IMPORTED_MODULE_5__.numberFormatted)();
@@ -4605,13 +4616,11 @@ function formHandler(formId) {
     var _formId = form.getAttribute('id');
     var route = form.getAttribute('action');
     form.addEventListener('submit', function (event) {
-      var _thisForm$id;
       event.preventDefault();
       var thisForm = event.target;
       var currentModal = thisForm.closest('.modal');
       var formData = new FormData(thisForm);
       var buttonSubmit = thisForm.querySelector('button[type="submit"]');
-      var formGroup = thisForm.querySelector('.field-group');
       buttonSubmit.setAttribute('disabled', 'true');
       var inputDateStart = thisForm.date_start;
       var inputDateEnd = thisForm.date_end;
@@ -4623,9 +4632,7 @@ function formHandler(formId) {
       var inputBirthday = _formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
       var selectVisa = thisForm.visa_info;
       var token = thisForm._token;
-      var inputId = (_thisForm$id = thisForm.id) === null || _thisForm$id === void 0 ? void 0 : _thisForm$id.value;
-      var formInputs = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('input');
-      var formSelects = formGroup === null || formGroup === void 0 ? void 0 : formGroup.querySelectorAll('select');
+      var inputFileName = thisForm.file_name;
       fetch(route, {
         headers: {
           "X-CSRF-Token": token
@@ -4640,7 +4647,7 @@ function formHandler(formId) {
           inputDateEnd ? inputDateEnd.value = '' : null;
           inputComment ? inputComment.value = '' : null;
           $(currentModal).modal('hide');
-          window.location.reload();
+          updateHtmlData(_formId);
         } else {
           if (result.date_start) {
             inputDateStart.classList.add('error');
@@ -4666,12 +4673,70 @@ function formHandler(formId) {
           if (result.visa_info) {
             selectVisa.parentNode.classList.add('error');
           }
+          if (result.file_name) {
+            inputFileName.closest('.upload-file').classList.add('error');
+          }
         }
         buttonSubmit.removeAttribute('disabled');
       })["catch"](function (error) {
         buttonSubmit.removeAttribute('disabled');
       });
     });
+  }
+}
+function updateHtmlData(formId) {
+  switch (formId) {
+    case 'formComment':
+      elementUpdate('.comment-claim__box');
+      break;
+    case 'formStatusDoc':
+      elementUpdate('#groupDataStatusDocs');
+      break;
+    case 'formTourpackage':
+      elementUpdate('#groupDataTourpackage');
+      break;
+    case 'formTouroperator':
+      elementUpdate('#groupDataTouroperator');
+      break;
+    case 'formContract':
+      elementUpdate('#groupDataContract');
+      break;
+    case 'formCustomer':
+      elementUpdate('#groupDataCustomer');
+      break;
+    case 'formTouristUpdate':
+      elementUpdate('#groupDataTourist');
+      break;
+    case 'formTourist':
+      elementUpdate('#groupDataTourist');
+      break;
+    case 'formFile':
+      elementUpdate('#groupDataFile');
+      break;
+    case 'formPaymentInvoice':
+      elementUpdate('#groupDataCalculation');
+      break;
+    case 'formPaymentInvoiceUpdate':
+      elementUpdate('#groupDataCalculation');
+      break;
+    case 'formPayment':
+      elementUpdate('#groupDataCost');
+      elementUpdate('#groupDataCalculation');
+      break;
+    case 'formFlights':
+    case 'formInsurance':
+    case 'formTransfer':
+    case 'formVisa':
+    case 'formHabitation':
+    case 'formFuelSurchange':
+    case 'formExcursion':
+    case 'formOtherService':
+    case 'formServiceUpdate':
+      elementUpdate('#groupDataServices');
+      break;
+    default:
+      window.location.reload();
+      break;
   }
 }
 // Создание заявки
@@ -4762,6 +4827,8 @@ function modalUpdate(modalUpdateId, formId) {
 }
 // КОММЕНТАРИЙ
 modalUpdate('commentModal', 'formComment');
+// ДОКУМЕНТЫ ТУРИСТУ
+modalUpdate('docModal', 'formStatusDoc');
 // ИНФОРМАЦИЯ О ТУРПАКЕТЕ
 modalUpdate('tourpackageModal', 'formTourpackage');
 // ИНФОРМАЦИЯ О ТУРОПЕРАТОРЕ
@@ -5610,6 +5677,7 @@ if (formFile) {
     var parentNode = event.target.closest('.upload-file__item');
     // Удаляем файл из разметки
     parentNode.remove();
+    files = [];
     checkEmptyList(files);
   };
   var checkEmptyList = function checkEmptyList(files) {

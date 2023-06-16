@@ -15,26 +15,11 @@ class Claim extends Model
     use Hashidable;
     use \Bkwld\Cloner\Cloneable;
     protected $cloneable_relations = [
-        'touroperator',
-        'tourpackage',
-        'contract',
-        'customer',
-        'person',
-        'company',
-        'tourist',
-        'service',
-        'serviceFlight',
-        'serviceInsurance',
-        'serviceTransfer',
-        'serviceVisa',
-        'serviceHabitation',
-        'serviceFuelSurchange',
-        'serviceExcursion',
-        'serviceOther',
-        'file',
-        'prepayment',
-        'payment',
-        'paymentInvoices',
+        'touroperator', 'tourpackage', 'contract', 'customer', 'person',
+        'company', 'tourist', 'service', 'serviceFlight', 'serviceInsurance',
+        'serviceTransfer', 'serviceVisa', 'serviceHabitation', 'serviceFuelSurchange', 'serviceExcursion',
+        'serviceOther', 'file', 'prepayment', 'payment', 'paymentInvoices',
+        'doc'
     ];
     protected $table = 'claims';
     protected $casts = [
@@ -63,6 +48,10 @@ class Claim extends Model
     public function latestClaim()
     {
         return $this->hasOne(Claim::class)->latest();
+    }
+    public function doc()
+    {
+        return $this->hasOne(StatusDoc::class);
     }
     public function person()
     {

@@ -1,4 +1,4 @@
-<div class="group-data__item item-group">
+<div class="group-data__item item-group" id="groupDataContract">
 	<div class="item-group__top"> 
 		<div class="item-group__title">ДАННЫЕ ДОГОВОРА И БРОНИРОВАНИЯ</div>
 		<button class="item-group__button btn-blue btn-redact" type="button" 

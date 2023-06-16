@@ -16,7 +16,7 @@
 					</ul>
 				</div>
 			@endif
-			<form action="{{route('tourist.store', $claim->id)}}" method="post" id="formTourist" class="form">
+			<form action="{{route('tourist.store', $claim->id)}}" method="post" id="formTourist">
 				@csrf
 				<input type="hidden" name="claim_id" value="{{$claim->id}}">
 				<input type="hidden" name="tourist_id" value="{{count($tourists) > 0 ? count($tourists) + 1 : 1}}">

@@ -20427,6 +20427,7 @@ input[type=date]::before {
 
 .table ul {
   list-style: none;
+  margin-bottom: 0;
 }
 
 .table ul li {
@@ -20730,6 +20731,10 @@ div.dt-buttons button {
   display: flex;
   min-height: 30px;
   border: 1px solid #dbdbea;
+}
+
+.upload-file.error {
+  border: 1px solid #db2828;
 }
 
 .upload-file__item {

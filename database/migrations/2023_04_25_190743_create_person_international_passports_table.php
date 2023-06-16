@@ -22,7 +22,8 @@ class CreatePersonInternationalPassportsTable extends Migration
             $table->date('person_international_passport_period')->nullable(true);
             $table->text('person_international_passport_issued')->nullable(true);
 
-            $table->foreignId('person_id')->onDelete()->constrained('persons');
+            $table->unsignedBigInteger('person_id')->nullable();
+            $table->foreign('person_id')->references('id')->on('persons')->onDelete('cascade');
 
             $table->timestamps();
         });

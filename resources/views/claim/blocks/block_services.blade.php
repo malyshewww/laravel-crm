@@ -1,4 +1,4 @@
-<div class="data-claim__group group-data">
+<div class="data-claim__group group-data" id="groupDataServices">
 	<header class="group-data__header">
 		<h1 class="group-data__title">Детали тура</h1>
 		<div class="group-data__buttons">

@@ -22,6 +22,7 @@ use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\OtherServiceController;
 use App\Http\Controllers\ReplicateController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\StatusDocController;
 use App\Http\Controllers\TouristController;
 use App\Http\Controllers\TourOperatorController;
 use App\Http\Controllers\TourPackageController;
@@ -62,10 +63,15 @@ Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
 Route::get('/claims/create', [ClaimController::class, 'create'])->name('claim.create');
 Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
 Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
-Route::patch('/claims/{claim}', [ClaimController::class, 'update'])->name('claim.update');
-Route::delete('/claims/{claim}', [ClaimController::class, 'destroy'])->name('claim.destroy');
+Route::post('/claims/{claim}/update', [ClaimController::class, 'update'])->name('claim.update');
+Route::delete('/claims/{claim}/delete', [ClaimController::class, 'destroy'])->name('claim.destroy');
 Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
 Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
+
+// Статус отправки документов
+Route::post('/statusDocs', [StatusDocController::class, 'store'])->name('statusDoc.store');
+Route::get('/statusDocs/{statusDoc}/loadModal-{action}', [StatusDocController::class, 'loadModal'])->name('statusDoc.loadModal');
+
 
 // Клонирование заявки
 Route::post('/replicates/{replicate}', [ReplicateController::class, 'index'])->name('replicate.index');
@@ -83,7 +89,7 @@ Route::post('/contracts/{contract}/store', [ContractController::class, 'store'])
 Route::get('/contracts/{contract}/loadModal-{action}', [ContractController::class, 'loadModal'])->name('contract.loadModal');
 
 // Данные о заказчике (Физическое|Юридическое лицо)
-Route::post('/customers/{customer}/store', [CustomerController::class, 'store'])->name('customer.store');
+Route::post('/customers', [CustomerController::class, 'store'])->name('customer.store');
 Route::get('/customers/{customer}/loadModal-{action}', [CustomerController::class, 'loadModal'])->name('customer.loadModal');
 
 // Данные о туристе

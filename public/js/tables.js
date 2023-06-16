@@ -127,8 +127,7 @@ function initDataTable(data) {
 			{
 				"data": null,
 				"render": function (data, type, row, meta) {
-					return `<div class="table__buttons">
-						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
 							<button class="btn-archive" type="button" 
 								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
 								data-type="delete" data-id="${row.id}" 
@@ -136,7 +135,13 @@ function initDataTable(data) {
 								<i class="fa-solid fa-box-archive"></i>
 							</button>
 						</div>
-						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
+					`;
+				},
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
 							<form action="${BASE_URL}/replicates/${row.id}" method="post" data-form-replicate>
 								<input type="hidden" name="claim_id" value="${row.id}">
 								<input type="hidden" name="_token" value=${token}>
@@ -145,7 +150,6 @@ function initDataTable(data) {
 								</button>
 							</form>
 						</div>
-					</div>
 					`;
 				},
 			},
@@ -332,7 +336,9 @@ function replicateHandler() {
 						hideLoading();
 					}
 				}
-				fetchReplicate();
+				if (window.confirm("Вы действительно хотите клонировать заявку?")) {
+					fetchReplicate();
+				}
 			})
 		}
 	})

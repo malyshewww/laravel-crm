@@ -40,7 +40,8 @@
             "app/Helpers/TouristHelper.php",
             "app/Helpers/ServiceHelper.php",
             "app/Helpers/FileHelper.php",
-            "app/Helpers/FinanceHelper.php"
+            "app/Helpers/FinanceHelper.php",
+            "app/Helpers/DocsHelper.php"
         ]
     },
     "autoload-dev": {

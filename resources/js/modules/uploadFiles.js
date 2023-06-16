@@ -29,6 +29,7 @@ if (formFile) {
 		const parentNode = event.target.closest('.upload-file__item');
 		// Удаляем файл из разметки
 		parentNode.remove();
+		files = [];
 		checkEmptyList(files);
 	}
 	function checkEmptyList(files) {

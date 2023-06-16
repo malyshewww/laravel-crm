@@ -72,7 +72,7 @@
 								<div class="data-claim__group">
 									<div class="row">
 										<div class="col col-xl-6 col-12">
-											<div class="group-data__item item-group">
+											<div class="group-data__item item-group" id="groupDataCalculation">
 												<div class="item-group__top"> 
 													<div class="item-group__title">ВЗАИМОРАСЧЁТЫ С ТУРИСТОМ</div>
 													<div class="item-group__status status-full">
@@ -335,7 +335,7 @@
 													</button>
 												</div>
 											</div>
-											<div class="group-data__item item-group">
+											<div class="group-data__item item-group" id="groupDataCost">
 												<div class="item-group__top"> 
 													<div class="item-group__title">ФИНАНСОВЫЕ РАСЧЁТЫ</div>
 												</div>
@@ -499,10 +499,11 @@
 @endsection
 @section('page-modal')
 	@include('claim.showmodals.file')
-	
-	@include('claim.customer.modal_customer')
-	@include('claim.comment.modals.modal_comment')
 
+	@include('claim.customer.modal_customer')
+	
+	@include('claim.comment.modals.modal_comment')
+	@include('claim.doc.modal_doc')
 	@include('claim.contract.modals.contract')
 	@include('claim.touroperator.modals.touroperator')
 	@include('claim.tourpackage.modals.tourpackage')

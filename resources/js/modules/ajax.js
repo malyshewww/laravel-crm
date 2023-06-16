@@ -10,6 +10,7 @@ import * as Loader from "./loader.js";
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
 	const formAllSelects = document.querySelectorAll('select');
+	const inputsFile = document.querySelectorAll('.upload-file__input');
 	function removeErrorClass(event) {
 		if (!event.target.classList.contains('error')) {
 			return false;
@@ -29,6 +30,15 @@ function checkFormFields() {
 	});
 	[...formAllSelects].forEach((select) => {
 		select.addEventListener('change', removeErrorClassSelect);
+	});
+	[...inputsFile].forEach((input) => {
+		input.addEventListener('change', (event) => {
+			const parent = event.target.closest('.upload-file');
+			if (!parent.classList.contains('error')) {
+				return false;
+			};
+			parent.classList.remove('error');
+		});
 	})
 }
 checkFormFields();
@@ -44,7 +54,6 @@ function formHandler(formId) {
 			const currentModal = thisForm.closest('.modal');
 			const formData = new FormData(thisForm);
 			const buttonSubmit = thisForm.querySelector('button[type="submit"]');
-			const formGroup = thisForm.querySelector('.field-group')
 			buttonSubmit.setAttribute('disabled', 'true');
 			const inputDateStart = thisForm.date_start;
 			const inputDateEnd = thisForm.date_end;
@@ -56,9 +65,7 @@ function formHandler(formId) {
 			const inputBirthday = formId == 'formCustomer' ? thisForm.person_birthday : thisForm.tourist_birthday;
 			const selectVisa = thisForm.visa_info;
 			const token = thisForm._token;
-			const inputId = thisForm.id?.value;
-			const formInputs = formGroup?.querySelectorAll('input');
-			const formSelects = formGroup?.querySelectorAll('select');
+			const inputFileName = thisForm.file_name;
 			fetch(route, {
 				headers: {
 					"X-CSRF-Token": token
@@ -73,7 +80,7 @@ function formHandler(formId) {
 						inputDateEnd ? inputDateEnd.value = '' : null;
 						inputComment ? inputComment.value = '' : null;
 						$(currentModal).modal('hide');
-						window.location.reload();
+						updateHtmlData(formId);
 					} else {
 						if (result.date_start) {
 							inputDateStart.classList.add('error');
@@ -99,6 +106,9 @@ function formHandler(formId) {
 						if (result.visa_info) {
 							selectVisa.parentNode.classList.add('error');
 						}
+						if (result.file_name) {
+							inputFileName.closest('.upload-file').classList.add('error');
+						}
 					}
 					buttonSubmit.removeAttribute('disabled');
 				})
@@ -106,6 +116,61 @@ function formHandler(formId) {
 					buttonSubmit.removeAttribute('disabled');
 				})
 		})
+	}
+}
+function updateHtmlData(formId) {
+	switch (formId) {
+		case 'formComment':
+			elementUpdate('.comment-claim__box')
+			break;
+		case 'formStatusDoc':
+			elementUpdate('#groupDataStatusDocs')
+			break;
+		case 'formTourpackage':
+			elementUpdate('#groupDataTourpackage')
+			break;
+		case 'formTouroperator':
+			elementUpdate('#groupDataTouroperator')
+			break;
+		case 'formContract':
+			elementUpdate('#groupDataContract')
+			break;
+		case 'formCustomer':
+			elementUpdate('#groupDataCustomer')
+			break;
+		case 'formTouristUpdate':
+			elementUpdate('#groupDataTourist')
+			break;
+		case 'formTourist':
+			elementUpdate('#groupDataTourist')
+			break;
+		case 'formFile':
+			elementUpdate('#groupDataFile')
+			break;
+		case 'formPaymentInvoice':
+			elementUpdate('#groupDataCalculation')
+			break;
+		case 'formPaymentInvoiceUpdate':
+			elementUpdate('#groupDataCalculation')
+			break;
+		case 'formPayment':
+			elementUpdate('#groupDataCost')
+			elementUpdate('#groupDataCalculation')
+			break;
+		case 'formFlights':
+		case 'formInsurance':
+		case 'formTransfer':
+		case 'formVisa':
+		case 'formHabitation':
+		case 'formFuelSurchange':
+		case 'formExcursion':
+		case 'formOtherService':
+		case 'formServiceUpdate':
+			elementUpdate('#groupDataServices')
+			break;
+		default:
+			window.location.reload();
+			break;
 	}
 }
 // Создание заявки
@@ -198,6 +263,8 @@ function modalUpdate(modalUpdateId, formId) {
 }
 // КОММЕНТАРИЙ
 modalUpdate('commentModal', 'formComment');
+// ДОКУМЕНТЫ ТУРИСТУ
+modalUpdate('docModal', 'formStatusDoc');
 // ИНФОРМАЦИЯ О ТУРПАКЕТЕ
 modalUpdate('tourpackageModal', 'formTourpackage');
 // ИНФОРМАЦИЯ О ТУРОПЕРАТОРЕ
@@ -265,8 +332,8 @@ deleteRecord();
 
 async function elementUpdate(selector) {
 	try {
-		var html = await (await fetch(location.href)).text();
-		var newdoc = new DOMParser().parseFromString(html, 'text/html');
+		let html = await (await fetch(location.href)).text();
+		let newdoc = new DOMParser().parseFromString(html, 'text/html');
 		document.querySelector(selector).outerHTML = newdoc.querySelector(selector).outerHTML;
 		console.log('Элемент ' + selector + ' был успешно обновлен');
 		return true;

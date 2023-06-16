@@ -1,4 +1,4 @@
-<div class="data-claim__group group-data">
+<div class="data-claim__group group-data" id="groupDataFile">
 	<header class="group-data__header">
 		<h2 class="group-data__title">Файлы</h2>
 		<div class="group-data__buttons">

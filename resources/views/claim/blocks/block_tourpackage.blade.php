@@ -1,4 +1,4 @@
-<div class="group-data__item item-group">
+<div class="group-data__item item-group" id="groupDataTourpackage">
 	<div class="item-group__top">
 		<div class="item-group__title">ИНФОРМАЦИЯ О ТУРПАКЕТЕ</div>
 		<button class="item-group__button btn-blue btn-redact" type="button" 
