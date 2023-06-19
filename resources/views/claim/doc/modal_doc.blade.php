@@ -1,4 +1,4 @@
-@component('layout.modal')
+@component('components.modal')
 	@slot('modal_id', 'docModal')
 	@slot('modal_class', null)
 	<x-slot name="modal_title">

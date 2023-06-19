@@ -1,4 +1,4 @@
-@component('layout.modal')
+@component('components.modal')
 	@slot('modal_id', 'serviceUpdateModal')
 	@slot('modal_class', ' modal-extended')
 	@slot('modal_title', null)

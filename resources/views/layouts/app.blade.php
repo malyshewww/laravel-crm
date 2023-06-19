@@ -17,13 +17,13 @@
 <body>
     <div id="app">
         <div class="wrapper">
-            @include('header')
+            @include('components.header')
             <main class="main">
                 @yield('content')
             </main>
-            @include('footer')
+            @include('components.footer')
         </div>
-        @include('layout.modals')
+        @include('layouts.modals')
         @yield('page-modal')
         <div class="loader fixed" id="loader" hidden>
             <div class="loader__icon"></div>

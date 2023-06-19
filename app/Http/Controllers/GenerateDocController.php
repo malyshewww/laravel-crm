@@ -187,22 +187,22 @@ class GenerateDocController extends Controller
         }
         // Данные об услуге "Виза"
         $visaTableData = [];
-        $visaOptions = TouristHelper::visa();
         if (count($claim->tourist) > 0) {
+            $visaOptions = TouristHelper::visa();
             $isNeedVisa = '';
             foreach ($claim->tourist as $tourist) {
                 if ($tourist->common) {
                     foreach ($visaOptions as $item) {
-                        if ($tourist->common->visa_info == $item['value']) {
+                        if ($tourist->common->visa_info === $item['value']) {
                             $isNeedVisa = $item['title'];
                         }
                     }
                 }
                 $visaTableData[] = [
-                    'touristSurname' => $tourist->tourist_surname,
-                    'touristName' => $tourist->tourist_name,
-                    'touristPatronymic' => $tourist->tourist_patronymic,
-                    'visaInfo' => $isNeedVisa
+                    'touristSurname' => $tourist->tourist_surname ?: '',
+                    'touristName' => $tourist->tourist_name ?: '',
+                    'touristPatronymic' => $tourist->tourist_patronymic ?: '',
+                    'visaInfo' => $isNeedVisa ?: ''
                 ];
             }
         }
@@ -232,12 +232,15 @@ class GenerateDocController extends Controller
         if (count($claim->tourist) > 0) {
             $genderStr = '';
             foreach ($claim->tourist as $tourist) {
-                foreach ($genders as $genderItem) {
-                    if ($tourist->common->tourist_gender == $genderItem['value']) {
-                        $genderStr = $genderItem['title'];
+                if ($tourist->common) {
+                    foreach ($genders as $genderItem) {
+                        if ($tourist->common->tourist_gender === $genderItem['value']) {
+                            $genderStr = $genderItem['title'];
+                        }
                     }
                 }
                 $touristTableData[] = [
+                    'id' => $tourist->id ?: '',
                     'touristSurname' => $tourist->tourist_surname ?: '',
                     'touristName' => $tourist->tourist_name ?: '',
                     'touristPatronymic' => $tourist->tourist_patronymic ?: '',
@@ -262,14 +265,6 @@ class GenerateDocController extends Controller
                 ];
             }
         }
-        // dd($otherServiceTableData);
-        // dd($contractData);
-        $values = [
-            ['userId' => 1, 'userName' => 'Batman', 'userAddress' => 'Gotham City'],
-            ['userId' => 2, 'userName' => 'Superman', 'userAddress' => 'Metropolis'],
-        ];
-        $phpWord->cloneRowAndSetValues('userName', $values);
-
         $phpWord->cloneRowAndSetValues('excursionDescription', $excursionTableData);
         $phpWord->cloneRowAndSetValues('habitationHotel', $habitationTableData);
         $phpWord->cloneRowAndSetValues('insuranceCompany', $insuranceTableData);
@@ -277,6 +272,7 @@ class GenerateDocController extends Controller
         $phpWord->cloneRowAndSetValues('fuelsurchangeName', $fuelSurchangeTableData);
         $phpWord->cloneRowAndSetValues('otherServiceName', $otherServiceTableData);
         $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
+
         $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
         $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
         $phpWord->cloneRowAndSetValues('tourpackageName', $tourPackageTableData);
@@ -521,7 +517,7 @@ class GenerateDocController extends Controller
         // $wordPdf = \PhpOffice\PhpWord\IOFactory::load($fileName . ".docx");
         // $pdfWriter = \PhpOffice\PhpWord\IOFactory::createWriter($wordPdf, 'PDF');
         // $pdfWriter->save($fileName . ".pdf");
-        $phpWord->saveAs($fileName . '.docx');
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        $phpWord->saveAs('123' . '.docx');
+        return response()->download('123' . '.docx')->deleteFileAfterSend(true);
     }
 }
