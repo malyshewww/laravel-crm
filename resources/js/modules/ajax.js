@@ -6,6 +6,7 @@ import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
+import bootstrapTooltip from "./bootstrapTooltip.js";
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -81,6 +82,7 @@ function formHandler(formId) {
 						inputComment ? inputComment.value = '' : null;
 						$(currentModal).modal('hide');
 						updateHtmlData(formId);
+						bootstrapTooltip();
 					} else {
 						if (result.date_start) {
 							inputDateStart.classList.add('error');

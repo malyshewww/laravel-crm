@@ -31,12 +31,8 @@ class ClaimController extends Controller
     }
     public function show(Claim $claim)
     {
-        $tourpackages = TourPackage::all();
         $tourists = Tourist::get();
-        $customers = Customer::get();
-        $persons = Person::get();
-        $companies = Company::get();
-        return view('claim.show', compact('claim', 'tourpackages', 'tourists', 'customers', 'persons', 'companies'));
+        return view('claim.show', compact('claim', 'tourists'));
     }
     public function store(Request $request)
     {
@@ -82,6 +78,22 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
+    public function archived(Claim $claim)
+    {
+        return view('claim.archived', compact('claim'));
+    }
+    public function recordsArchived(Request $request)
+    {
+        $status = $request->status;
+        $claims = Claim::onlyTrashed()->get();
+        $arr = [];
+        foreach ($claims as $key => $claim) {
+            $arr[] = [
+                'id' => $claim->id,
+            ];
+        }
+        return json_encode($claims, true);
+    }
     public function loadModal($id, $action)
     {
         $claim = Claim::findOrFail($id);
@@ -90,16 +102,21 @@ class ClaimController extends Controller
     // Fetch DataTable data
     public function records(Request $request)
     {
+        $status = $request->status;
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
         $fioTourist = $request->input('fio');
-        $result = Claim::get();
+        $result = $status === 'all' ? Claim::get() : Claim::onlyTrashed()->get();
         $now = date('Y-m-d');
         if (isset($dateStart) || isset($dateEnd) || isset($fioTourist)) {
             $from = $dateStart ? date($dateStart) : '';
             $to = $dateEnd ? date($dateEnd) : '';
             $fio = $fioTourist ? $fioTourist : '';
-            $query = Claim::select('claims.*');
+            if ($status === 'all') {
+                $query = Claim::select('claims.*');
+            } elseif ($status === 'archived') {
+                $query = Claim::onlyTrashed()->select('claims.*');
+            }
             $query
                 ->where(function ($query) use ($from, $to) {
                     return $query->where('date_start', '>=', $from)

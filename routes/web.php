@@ -67,6 +67,8 @@ Route::post('/claims/{claim}/update', [ClaimController::class, 'update'])->name(
 Route::delete('/claims/{claim}/delete', [ClaimController::class, 'destroy'])->name('claim.destroy');
 Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
 Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
+Route::get('/archived', [ClaimController::class, 'archived'])->name('claim.archived');
+Route::post('/claims/recordsArchived', [ClaimController::class, 'recordsArchived'])->name('claim.recordsArchived');
 
 // Статус отправки документов
 Route::post('/statusDocs', [StatusDocController::class, 'store'])->name('statusDoc.store');

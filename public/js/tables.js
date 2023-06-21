@@ -1,4 +1,5 @@
 const mainTable = document.getElementById('tour-table');
+const archivedTable = document.getElementById('tour-table-archived');
 const loader = document.getElementById('loader');
 function displayLoading() {
 	loader.removeAttribute('hidden');
@@ -56,6 +57,8 @@ const tableConfig = {
 	]
 }
 let tourTable;
+let tourTableArchived;
+
 function initDataTable(data) {
 	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	tourTable = new DataTable(mainTable, {
@@ -94,8 +97,7 @@ function initDataTable(data) {
 				"data": 'customer',
 				"render": function (data, type, row, meta) {
 					return `${row.customer != ""
-						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>`
-						: `<div class="fw-600">Заказчик не указан</div>`
+						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>` : `<div class="fw-600">Заказчик не указан</div>`
 						}`
 				}
 			},
@@ -131,7 +133,7 @@ function initDataTable(data) {
 							<button class="btn-archive" type="button" 
 								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
 								data-type="delete" data-id="${row.id}" 
-								data-url="${BASE_URL}/claims/${row.id}" data-title="Вы действительно хотите удалить заявку № ${row.id}">
+								data-url="${BASE_URL}/claims/${row.id}/delete" data-title="Вы действительно переместить заявку № ${row.id} в архив">
 								<i class="fa-solid fa-box-archive"></i>
 							</button>
 						</div>
@@ -161,6 +163,110 @@ function initDataTable(data) {
 		}
 	})
 }
+function initDataTableArchived(data) {
+	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	tourTableArchived = new DataTable(archivedTable, {
+		...tableConfig,
+		"data": data,
+		"columns": [
+			{
+				"data": null,
+				"orderable": false,
+				"render": function (data, type, row, meta) {
+					return `
+						<span hidden>${row.id}</span>
+					`;
+				}
+			},
+			{
+				"data": 'number',
+				"orderable": false,
+				"render": function (data, type, row, meta) {
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}" target="_blank">${row.claim_number}</a>`;
+				}
+			},
+			{
+				"data": 'date_start',
+				"render": function (data, type, row, meta) {
+					return `<strong>${moment(row.date_start).format('DD.MM.YYYY')}</strong> </br> (${row.night})`;
+				}
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `${row.city ? row.city : 'Не указано'} - ${row.country ? row.country : 'Не указано'}`
+				}
+			},
+			{
+				"data": 'customer',
+				"render": function (data, type, row, meta) {
+					return `${row.customer != ""
+						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>` : `<div class="fw-600">Заказчик не указан</div>`
+						}`
+				}
+			},
+			{
+				"data": 'tourists',
+				"render": function (data, type, row, meta) {
+					return `${row.countTourists > 0
+						? `<div class="text-clamp" title="${row.tourists}">
+								<strong>${row.countTourists}:</strong>
+								${row.tourists}
+							</div>`
+						: `Туристы не указаны`
+						}`
+				}
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return '';
+				}
+			},
+			{
+				"data": 'manager',
+				"render": function (data, type, row, meta) {
+					return `<div class="text-primary">${row.manager}</div> 
+					<div>${moment(row.created_at).format('DD.MM.YYYY HH:mm:ss')}</div>`;
+				}
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Восстановить в активные">
+							<button class="btn-archive" type="button" 
+								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
+								data-type="delete" data-id="${row.id}" 
+								data-url="${BASE_URL}/claims/${row.id}" data-title="Вы действительно хотите удалить заявку № ${row.id}">
+								<i class="fa-solid fa-box-archive"></i>
+							</button>
+						</div>
+					`;
+				},
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
+							<form action="${BASE_URL}/replicates/${row.id}" method="post" data-form-replicate>
+								<input type="hidden" name="claim_id" value="${row.id}">
+								<input type="hidden" name="_token" value=${token}>
+								<button class="btn-copy" type="submit">
+									<i class="fa-regular fa-copy"></i>
+								</button>
+							</form>
+						</div>
+					`;
+				},
+			},
+		],
+		"initComplete": function (settings, json) {
+			changePostitionControlsDataTable();
+			initBootstrapTooltip();
+			replicateHandler();
+		}
+	})
+}
 function initBootstrapTooltip() {
 	let tooltipTriggerList = [].slice.call(
 		document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -171,11 +277,12 @@ function initBootstrapTooltip() {
 }
 var newArr = [];
 
-function fetchTable(form) {
+function fetchTable(path, tableId, form) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
+	formData.append('status', (tableId === 'tour-table' ? 'all' : 'archived'))
 	displayLoading();
-	fetch('/claims/records', {
+	fetch(path, {
 		headers: {
 			"X-CSRF-Token": token
 		},
@@ -199,20 +306,26 @@ function fetchTable(form) {
 			// 		"customer": element['customer'],
 			// 	}
 			// })
-			initDataTable(data);
+			tableId === 'tour-table' ? initDataTable(data) : initDataTableArchived(data);
+
 		})
 		.catch(error => console.log(error))
 		.finally(() => hideLoading())
-
 }
 
 window.addEventListener('load', () => {
-	fetchTable();
+	if (mainTable) {
+		fetchTable('/claims/records', 'tour-table');
+	}
+	if (archivedTable) {
+		fetchTable('/claims/records', 'tour-table-archived');
+	}
 })
 
-function filterQuery(form) {
+function filterQuery(form, tableId) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
+	formData.append('status', (tableId === 'tour-table' ? 'all' : 'archived'))
 	fetch('/claims/records', {
 		headers: {
 			"X-CSRF-Token": token
@@ -226,6 +339,9 @@ function filterQuery(form) {
 			tourTable.clear();
 			tourTable.rows.add(data);
 			tourTable.draw();
+			tourTableArchived.clear();
+			tourTableArchived.rows.add(data);
+			tourTableArchived.draw();
 			initBootstrapTooltip();
 		})
 		.catch(error => console.log(error))
@@ -239,7 +355,12 @@ function filterTable() {
 		event.preventDefault();
 		const thisForm = event.target;
 		displayLoading();
-		filterQuery(thisForm)
+		if (mainTable) {
+			filterQuery(thisForm, 'tour-table')
+		}
+		if (archivedTable) {
+			filterQuery(thisForm, 'tour-table-archived')
+		}
 		setURLSearchParam(thisForm);
 	})
 	buttonReset.addEventListener('click', (event) => {
