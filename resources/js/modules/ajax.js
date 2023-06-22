@@ -42,6 +42,9 @@ function checkFormFields() {
 		});
 	})
 }
+const reloadPage = () => {
+	return window.location.reload();
+}
 checkFormFields();
 numberFormatted();
 function formHandler(formId) {
@@ -171,7 +174,7 @@ function updateHtmlData(formId) {
 			elementUpdate('#groupDataServices')
 			break;
 		default:
-			window.location.reload();
+			reloadPage();
 			break;
 	}
 }
@@ -320,6 +323,7 @@ function deleteRecord() {
 				.then((result) => {
 					if (result.status === 'success') {
 						$(currentModal).modal('hide');
+						reloadPage();
 					}
 					buttonSubmit.removeAttribute('disabled');
 				})

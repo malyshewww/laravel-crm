@@ -1,19 +1,16 @@
 // require('./bootstrap');
-console.log('app.js');
+console.log('app init');
 
-import './modules/bootstrapTooltip.js';
-
-import './modules/tabs.js';
-import './modules/calendar.js';
-import './modules/currency.js';
-import './modules/choices.js';
-import './modules/uploadFiles.js';
-import './modules/number-format.js';
-// import './modules/mask-phone.js';
-
-// import './modules/tables.js';
-
-import './modules/ajax.js';
+import './modules/bootstrapTooltip';
+import './modules/tabs';
+import './modules/calendar';
+import './modules/currency';
+import './modules/choices';
+import './modules/uploadFiles';
+import './modules/number-format';
+// import './modules/mask-phone';
+// import './modules/tables';
+import './modules/ajax';
 
 document.addEventListener('click', documentActions);
 

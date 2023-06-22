@@ -1,12 +1,10 @@
 @component('components.modal')
 	@slot('modal_id', 'docModal')
+	@slot('modal_title', 'Статус отправки документов')
 	@slot('modal_class', null)
-	<x-slot name="modal_title">
-		Статус отправки документов
-	</x-slot>
 	<form action="" id="formStatusDoc" method="post">
 		@csrf
-		<input type="hidden" name="claim_id" value="{{$claim->id}}">
+		<input type="hidden" name="claim_id" value="">
 		<div class="modal__body"></div>
 		<div class="modal__footer">
 			<div class="modal__buttons">

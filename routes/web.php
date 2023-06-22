@@ -59,16 +59,19 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 // Заявка
-Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
-Route::get('/claims/create', [ClaimController::class, 'create'])->name('claim.create');
-Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
-Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
-Route::post('/claims/{claim}/update', [ClaimController::class, 'update'])->name('claim.update');
-Route::delete('/claims/{claim}/delete', [ClaimController::class, 'destroy'])->name('claim.destroy');
-Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
-Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
-Route::get('/archived', [ClaimController::class, 'archived'])->name('claim.archived');
-Route::post('/claims/recordsArchived', [ClaimController::class, 'recordsArchived'])->name('claim.recordsArchived');
+Route::middleware('auth')->group(function () {
+    Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
+    Route::get('/claims/create', [ClaimController::class, 'create'])->name('claim.create');
+    Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
+    Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
+    Route::post('/claims/{claim}/update', [ClaimController::class, 'update'])->name('claim.update');
+    Route::delete('/claims/{claim}/delete', [ClaimController::class, 'destroy'])->name('claim.destroy');
+    Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
+    Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
+    Route::get('/archived', [ClaimController::class, 'archived'])->name('claim.archived');
+    Route::post('/claims/{claim}/restore', [ClaimController::class, 'restore'])->name('claim.restore');
+    Route::delete('claims/{claim}/force-delete', [ClaimController::class, 'forceDelete'])->name('claim.force-delete');
+});
 
 // Статус отправки документов
 Route::post('/statusDocs', [StatusDocController::class, 'store'])->name('statusDoc.store');

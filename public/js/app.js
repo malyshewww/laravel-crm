@@ -4610,6 +4610,9 @@ function checkFormFields() {
     });
   });
 }
+var reloadPage = function reloadPage() {
+  return window.location.reload();
+};
 checkFormFields();
 (0,_number_format_js__WEBPACK_IMPORTED_MODULE_5__.numberFormatted)();
 function formHandler(formId) {
@@ -4738,7 +4741,7 @@ function updateHtmlData(formId) {
       elementUpdate('#groupDataServices');
       break;
     default:
-      window.location.reload();
+      reloadPage();
       break;
   }
 }
@@ -4884,6 +4887,7 @@ function deleteRecord() {
       }).then(function (result) {
         if (result.status === 'success') {
           $(currentModal).modal('hide');
+          reloadPage();
         }
         buttonSubmit.removeAttribute('disabled');
       })["catch"](function (error) {
@@ -34828,17 +34832,17 @@ var __webpack_exports__ = {};
   !*** ./resources/js/app.js ***!
   \*****************************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_bootstrapTooltip_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/bootstrapTooltip.js */ "./resources/js/modules/bootstrapTooltip.js");
-/* harmony import */ var _modules_tabs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs.js */ "./resources/js/modules/tabs.js");
-/* harmony import */ var _modules_calendar_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/calendar.js */ "./resources/js/modules/calendar.js");
-/* harmony import */ var _modules_currency_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/currency.js */ "./resources/js/modules/currency.js");
-/* harmony import */ var _modules_choices_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/choices.js */ "./resources/js/modules/choices.js");
-/* harmony import */ var _modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/uploadFiles.js */ "./resources/js/modules/uploadFiles.js");
-/* harmony import */ var _modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_modules_uploadFiles_js__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _modules_number_format_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/number-format.js */ "./resources/js/modules/number-format.js");
-/* harmony import */ var _modules_ajax_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/ajax.js */ "./resources/js/modules/ajax.js");
+/* harmony import */ var _modules_bootstrapTooltip__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/bootstrapTooltip */ "./resources/js/modules/bootstrapTooltip.js");
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs */ "./resources/js/modules/tabs.js");
+/* harmony import */ var _modules_calendar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/calendar */ "./resources/js/modules/calendar.js");
+/* harmony import */ var _modules_currency__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/currency */ "./resources/js/modules/currency.js");
+/* harmony import */ var _modules_choices__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/choices */ "./resources/js/modules/choices.js");
+/* harmony import */ var _modules_uploadFiles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/uploadFiles */ "./resources/js/modules/uploadFiles.js");
+/* harmony import */ var _modules_uploadFiles__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_modules_uploadFiles__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _modules_number_format__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/number-format */ "./resources/js/modules/number-format.js");
+/* harmony import */ var _modules_ajax__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/ajax */ "./resources/js/modules/ajax.js");
 // require('./bootstrap');
-console.log('app.js');
+console.log('app init');
 
 
 
@@ -34846,10 +34850,8 @@ console.log('app.js');
 
 
 
-// import './modules/mask-phone.js';
-
-// import './modules/tables.js';
-
+// import './modules/mask-phone';
+// import './modules/tables';
 
 document.addEventListener('click', documentActions);
 function documentActions(event) {

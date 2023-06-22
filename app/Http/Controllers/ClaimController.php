@@ -82,17 +82,20 @@ class ClaimController extends Controller
     {
         return view('claim.archived', compact('claim'));
     }
-    public function recordsArchived(Request $request)
+    public function restore(Request $request)
     {
-        $status = $request->status;
-        $claims = Claim::onlyTrashed()->get();
-        $arr = [];
-        foreach ($claims as $key => $claim) {
-            $arr[] = [
-                'id' => $claim->id,
-            ];
-        }
-        return json_encode($claims, true);
+        $id = $request->claim_id;
+        Claim::where('id', $id)->withTrashed()->restore();
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+    public function forceDelete($id)
+    {
+        Claim::where('id', $id)->withTrashed()->forceDelete();
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
     public function loadModal($id, $action)
     {
@@ -107,15 +110,17 @@ class ClaimController extends Controller
         $dateEnd = $request->input('date_end');
         $fioTourist = $request->input('fio');
         $result = $status === 'all' ? Claim::get() : Claim::onlyTrashed()->get();
-        $now = date('Y-m-d');
-        if (isset($dateStart) || isset($dateEnd) || isset($fioTourist)) {
+        if (isset($dateStart) || isset($dateEnd) || isset($fioTourist) || isset($status)) {
             $from = $dateStart ? date($dateStart) : '';
             $to = $dateEnd ? date($dateEnd) : '';
             $fio = $fioTourist ? $fioTourist : '';
-            if ($status === 'all') {
-                $query = Claim::select('claims.*');
-            } elseif ($status === 'archived') {
-                $query = Claim::onlyTrashed()->select('claims.*');
+            switch ($status) {
+                case 'archived':
+                    $query = Claim::select('claims.*')->onlyTrashed();
+                    break;
+                default:
+                    $query = Claim::select('claims.*');
+                    break;
             }
             $query
                 ->where(function ($query) use ($from, $to) {
@@ -136,24 +141,6 @@ class ClaimController extends Controller
                 });
             }
             $result = $query->get();
-            // $query->where(function ($query) use ($from, $to) {
-            //     return $query->where(
-            //         ['date_start', '>=', $from],
-            //         ['date_end', '<=', $to]
-            //     );
-            // });
-            // $query->where(function ($query) use ($from, $to) {
-            //     return $query->where('date_start', '>=', $from)
-            //         ->orWhere('date_end', '<=', $to);
-            //     // ->orWhere('tourists.tourist_surname', 'LIKE', '%' . $fio . '%')
-            //     // ->orWhere('tourists.tourist_name', 'LIKE', '%' . $fio . '%')
-            //     // ->orWhere('tourists.tourist_patronymic', 'LIKE', '%' . $fio . '%');
-            // });
-            // $claims = Claim::whereHas('tourist', $filter = function ($query) {
-            //     $query->where('claim_id', '=', '2');
-            // })
-            //     ->with(['tourist' => $filter])
-            //     ->get();
         }
         $arr = [];
         foreach ($result as $claim) {

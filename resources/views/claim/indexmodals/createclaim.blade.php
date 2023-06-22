@@ -52,9 +52,6 @@
 				</div>
 			</div>
 		</div>
-		{{-- <x-slot name="modal_footer">
-			footer
-   	</x-slot> --}}
 		<div class="modal__footer">
 			<div class="modal__buttons">
 				<button class="btn btn-create btn-primary" type="submit">

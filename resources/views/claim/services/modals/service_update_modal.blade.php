@@ -1,7 +1,7 @@
 @component('components.modal')
 	@slot('modal_id', 'serviceUpdateModal')
-	@slot('modal_class', ' modal-extended')
 	@slot('modal_title', null)
+	@slot('modal_class', ' modal-extended')
 	<form action="" method="post" id="formServiceUpdate">
 		@csrf
 		@method('patch')

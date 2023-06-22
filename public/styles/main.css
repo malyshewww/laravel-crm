@@ -20479,6 +20479,10 @@ input[type=date]::before {
   color: #0092ff;
 }
 
+.table-btn button i {
+  font-size: 18px;
+}
+
 .table > :not(:last-child) > :last-child > * {
   border: none;
 }

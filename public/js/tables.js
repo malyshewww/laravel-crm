@@ -1,5 +1,4 @@
 const mainTable = document.getElementById('tour-table');
-const archivedTable = document.getElementById('tour-table-archived');
 const loader = document.getElementById('loader');
 function displayLoading() {
 	loader.removeAttribute('hidden');
@@ -45,7 +44,7 @@ const tableConfig = {
 	},
 	"pagingType": "full_numbers",
 	"aLengthMenu": [[1, 5, 10, 15, 25, 50, 100, 200 - 1], [1, 5, 10, 15, 25, 50, 100, 200, "All"]],
-	"iDisplayLength": 5,
+	"iDisplayLength": 10,
 	order: [[0, 'desc']],
 	"dom": 'lBfrtip',
 	buttons: [
@@ -57,10 +56,65 @@ const tableConfig = {
 	]
 }
 let tourTable;
-let tourTableArchived;
+
+const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+const tableAdditionalColumns = {
+	columnActionFirst: (status, data) => {
+		let dataItem = data
+		switch (status) {
+			case 'all':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+									<button class="btn-archive" type="button" 
+										data-bs-toggle="modal" data-bs-target="#deleteRecord" 
+										data-type="delete" data-id="${dataItem.id}" 
+										data-url="${BASE_URL}/claims/${dataItem.id}/delete" data-title="Вы действительно хотите переместить заявку № ${dataItem.claim_number} в архив">
+										<i class="fa-solid fa-box-archive"></i>
+									</button>
+								</div>
+							`;
+			case 'archived':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Восстановить в активные">
+							<form action="${BASE_URL}/claims/${dataItem.id}/restore" method="post" data-form-restore>
+								<input type="hidden" name="claim_id" value="${dataItem.id}">
+								<input type="hidden" name="_token" value=${token}>
+								<button class="btn-copy" type="submit">
+									<i class="fa-solid fa-reply"></i>
+								</button>
+							</form>
+					</div>
+				`
+		};
+	},
+	columnActionTwo: (status, data) => {
+		let dataItem = data;
+		switch (status) {
+			case 'all':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
+							<form action="${BASE_URL}/replicates/${dataItem.id}" method="post" data-form-replicate>
+								<input type="hidden" name="claim_id" value="${dataItem.id}">
+								<input type="hidden" name="_token" value=${token}>
+								<button class="btn-copy" type="submit">
+									<i class="fa-regular fa-copy"></i>
+								</button>
+							</form>
+						</div>
+					`;
+			case 'archived':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
+						<button class="btn-archive" type="button" 
+							data-bs-toggle="modal" data-bs-target="#deleteRecord" 
+							data-type="delete" data-id="${dataItem.id}" 
+							data-url="${BASE_URL}/claims/${dataItem.id}/force-delete" data-title="Вы действительно хотите удалить заявку № ${dataItem.claim_number}">
+							<i class="fa-regular fa-trash-can"></i>
+						</button>
+					</div>
+				`;
+		}
+	}
+}
 
 function initDataTable(data) {
-	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	let tableStatus = mainTable.dataset.status;
 	tourTable = new DataTable(mainTable, {
 		...tableConfig,
 		"data": data,
@@ -129,37 +183,21 @@ function initDataTable(data) {
 			{
 				"data": null,
 				"render": function (data, type, row, meta) {
-					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
-							<button class="btn-archive" type="button" 
-								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-								data-type="delete" data-id="${row.id}" 
-								data-url="${BASE_URL}/claims/${row.id}/delete" data-title="Вы действительно переместить заявку № ${row.id} в архив">
-								<i class="fa-solid fa-box-archive"></i>
-							</button>
-						</div>
-					`;
+					return tableAdditionalColumns.columnActionFirst(tableStatus, row);
 				},
 			},
 			{
 				"data": null,
 				"render": function (data, type, row, meta) {
-					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
-							<form action="${BASE_URL}/replicates/${row.id}" method="post" data-form-replicate>
-								<input type="hidden" name="claim_id" value="${row.id}">
-								<input type="hidden" name="_token" value=${token}>
-								<button class="btn-copy" type="submit">
-									<i class="fa-regular fa-copy"></i>
-								</button>
-							</form>
-						</div>
-					`;
+					return tableAdditionalColumns.columnActionTwo(tableStatus, row);;
 				},
 			},
 		],
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
 			initBootstrapTooltip();
-			replicateHandler();
+			replicateFormHandler();
+			restoreFormHandler();
 		}
 	})
 }
@@ -263,7 +301,6 @@ function initDataTableArchived(data) {
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
 			initBootstrapTooltip();
-			replicateHandler();
 		}
 	})
 }
@@ -275,12 +312,11 @@ function initBootstrapTooltip() {
 		return new bootstrap.Tooltip(tooltipTriggerEl);
 	});
 }
-var newArr = [];
-
-function fetchTable(path, tableId, form) {
+let newArr = [];
+function fetchTable(path, status, form) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
-	formData.append('status', (tableId === 'tour-table' ? 'all' : 'archived'))
+	formData.append('status', (status === 'all' ? 'all' : 'archived'))
 	displayLoading();
 	fetch(path, {
 		headers: {
@@ -306,26 +342,30 @@ function fetchTable(path, tableId, form) {
 			// 		"customer": element['customer'],
 			// 	}
 			// })
-			tableId === 'tour-table' ? initDataTable(data) : initDataTableArchived(data);
-
+			initDataTable(data);
 		})
 		.catch(error => console.log(error))
 		.finally(() => hideLoading())
 }
 
 window.addEventListener('load', () => {
-	if (mainTable) {
-		fetchTable('/claims/records', 'tour-table');
-	}
-	if (archivedTable) {
-		fetchTable('/claims/records', 'tour-table-archived');
+	let tableStatus = mainTable.dataset.status;
+	switch (tableStatus) {
+		case 'all':
+			fetchTable('/claims/records', 'all');
+			break;
+		case 'archived':
+			fetchTable('/claims/records', 'archived');
+			break;
+		default:
+			break;
 	}
 })
 
-function filterQuery(form, tableId) {
+function filterQuery(form, status) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
-	formData.append('status', (tableId === 'tour-table' ? 'all' : 'archived'))
+	formData.append('status', (status === 'all' ? 'all' : 'archived'))
 	fetch('/claims/records', {
 		headers: {
 			"X-CSRF-Token": token
@@ -339,44 +379,39 @@ function filterQuery(form, tableId) {
 			tourTable.clear();
 			tourTable.rows.add(data);
 			tourTable.draw();
-			tourTableArchived.clear();
-			tourTableArchived.rows.add(data);
-			tourTableArchived.draw();
 			initBootstrapTooltip();
 		})
-		.catch(error => console.log(error))
+		.catch(error => console.log(error.message))
 		.finally(() => hideLoading())
 }
 
 function filterTable() {
 	const formFilter = document.getElementById('formFilter');
-	const buttonReset = formFilter.querySelector('button[type="reset"]')
-	formFilter.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const thisForm = event.target;
-		displayLoading();
-		if (mainTable) {
-			filterQuery(thisForm, 'tour-table')
-		}
-		if (archivedTable) {
-			filterQuery(thisForm, 'tour-table-archived')
-		}
-		setURLSearchParam(thisForm);
-	})
-	buttonReset.addEventListener('click', (event) => {
-		formFilter.reset();
-		if (location.href.includes('?')) {
-			history.pushState({}, null, location.href.split('?')[0]);
-		}
-		const inputFio = formFilter.fio;
-		const inputDateStart = formFilter.date_start;
-		const inputDateEnd = formFilter.date_end;
-		inputFio.value = '';
-		inputDateStart.value = '';
-		inputDateEnd.value = '';
-		displayLoading();
-		filterQuery(formFilter);
-	})
+	let tableStatus = mainTable.dataset.status;
+	if (formFilter) {
+		const buttonReset = formFilter.querySelector('button[type="reset"]')
+		formFilter.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const thisForm = event.target;
+			displayLoading();
+			tableStatus === 'all' ? filterQuery(thisForm, 'all') : filterQuery(thisForm, 'archived')
+			setURLSearchParam(thisForm);
+		})
+		buttonReset.addEventListener('click', (event) => {
+			formFilter.reset();
+			if (location.href.includes('?')) {
+				history.pushState({}, null, location.href.split('?')[0]);
+			}
+			const inputFio = formFilter.fio;
+			const inputDateStart = formFilter.date_start;
+			const inputDateEnd = formFilter.date_end;
+			inputFio.value = '';
+			inputDateStart.value = '';
+			inputDateEnd.value = '';
+			displayLoading();
+			filterQuery(formFilter);
+		})
+	}
 }
 filterTable();
 
@@ -425,7 +460,7 @@ function changePostitionControlsDataTable() {
 	}
 }
 
-function replicateHandler() {
+function replicateFormHandler() {
 	const formsReplicate = document.querySelectorAll('[data-form-replicate]');
 	[...formsReplicate].forEach((form) => {
 		if (form) {
@@ -464,4 +499,44 @@ function replicateHandler() {
 		}
 	})
 }
-replicateHandler();
+replicateFormHandler();
+function restoreFormHandler() {
+	const formsRestore = document.querySelectorAll('[data-form-restore]');
+	[...formsRestore].forEach((form) => {
+		if (form) {
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				const thisForm = event.target;
+				const claimId = thisForm.claim_id;
+				const token = thisForm._token;
+				const formData = new FormData(thisForm);
+				const fetchRestore = async () => {
+					displayLoading();
+					try {
+						const response = await fetch(`claims/${claimId}/restore`, {
+							headers: {
+								"X-CSRF-Token": token
+							},
+							method: 'POST',
+							body: formData,
+						})
+						const data = await response.json();
+						const result = await data;
+						if (result.status == 'success') {
+							window.location.reload();
+						}
+					} catch (error) {
+						console.log('Произошла ошибка', error.message)
+						hideLoading();
+					} finally {
+						hideLoading();
+					}
+				}
+				if (window.confirm("Вы действительно хотите восстановить заявку?")) {
+					fetchRestore();
+				}
+			})
+		}
+	})
+}
+restoreFormHandler();

@@ -61,7 +61,7 @@
 			</form>
 		</div>
 		<div class="table-responsive">
-			<table class="tour-table table" id="tour-table-archived">
+			<table class="tour-table table" id="tour-table" data-status="archived">
 				<thead> 
 					<tr>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto !important; padding: 0 !important;"></th>
@@ -84,6 +84,9 @@
 			<div class="sorting-block"></div>
 		</div>
 	</div>
+@endsection
+@section('page-modal')
+	@include('claim.showmodals.delete_record')
 @endsection
 @section('page-script')
 	<script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>

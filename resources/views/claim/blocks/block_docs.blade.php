@@ -3,9 +3,9 @@
 		<div class="item-group__title">ДОКУМЕНТЫ ТУРИСТУ</div>
 		<button class="item-group__button btn-blue btn-redact" type="button" 
 			data-bs-toggle="modal" data-bs-target="#docModal"
-			data-id="2" 
+			data-id="{{$claim->id}}" 
 			data-type="update" 
-			data-claim-id="2" 
+			data-claim-id="{{$claim->id}}" 
 			data-url="{{route('statusDoc.store')}}" data-path="{{route('statusDoc.loadModal', [$claim->id, 'update'])}}" data-title="Статус отправки докумнтов">
 		[изменить]
 		</button>

@@ -64,7 +64,7 @@
 			</form>
 		</div>
 		<div class="table-responsive">
-			<table class="tour-table table" id="tour-table">
+			<table class="tour-table table" id="tour-table" data-status="all">
 				<thead> 
 					<tr>
 						<th tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width:auto !important; padding: 0 !important;"></th>
