@@ -31,7 +31,7 @@ class FileController extends Controller
             'file_type' => $request->file_type,
             'claim_id' => $request->claim_id,
         ];
-        // path вернет строку 'files/originalfilename'
+        // path вернет строку 'files/originalFileName'
         $path = $request->file('file_name')->storeAs(
             'files',
             $originalFileName
