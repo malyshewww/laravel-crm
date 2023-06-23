@@ -9,7 +9,7 @@
 			data-url="{{route('contract.store', $claim->id)}}"
 			data-path="{{route('contract.loadModal', [$claim->id, 'update'])}}"
 			data-title="Договор">
-			[изменить]
+			{{$claim->contract ? '[изменить]' : '[добавить]'}}
 		</button>
 	</div>
 	@if ($claim->contract)

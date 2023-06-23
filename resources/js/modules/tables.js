@@ -72,23 +72,24 @@ const tableAdditionalColumns = {
 		switch (status) {
 			case 'all':
 				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
-									<button class="btn-archive" type="button" 
-										data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-										data-type="delete" data-id="${dataItem.id}" 
-										data-url="${BASE_URL}/claims/${dataItem.id}/delete" data-title="Вы действительно хотите переместить заявку № ${dataItem.claim_number} в архив">
-										<i class="fa-solid fa-box-archive"></i>
-									</button>
-								</div>
+								<button class="btn-archive" type="button" 
+									data-bs-toggle="modal" data-bs-target="#modalAction" 
+									data-type="delete" data-id="${dataItem.id}"
+									data-method="DELETE"
+									data-url="${BASE_URL}/claims/${dataItem.id}/delete" data-title="Вы действительно хотите переместить заявку № ${dataItem.claim_number} в архив">
+									<i class="fa-solid fa-box-archive"></i>
+								</button>
+							</div>
 							`;
 			case 'archived':
 				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Восстановить в активные">
-							<form action="${BASE_URL}/claims/${dataItem.id}/restore" method="post" data-form-restore>
-								<input type="hidden" name="claim_id" value="${dataItem.id}">
-								<input type="hidden" name="_token" value=${token}>
-								<button class="btn-copy" type="submit">
-									<i class="fa-solid fa-reply"></i>
-								</button>
-							</form>
+							<button class="btn-archive" type="button" 
+								data-bs-toggle="modal" data-bs-target="#modalAction" 
+								data-type="restore" data-id="${dataItem.id}"
+								data-method="POST"
+								data-url="${BASE_URL}/claims/${dataItem.id}/restore" data-title="Вы действительно хотите восстановить заявку № ${dataItem.claim_number}">
+								<i class="fa-solid fa-reply"></i>
+							</button>
 					</div>
 				`
 		};
@@ -98,20 +99,21 @@ const tableAdditionalColumns = {
 		switch (status) {
 			case 'all':
 				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
-							<form action="${BASE_URL}/replicates/${dataItem.id}" method="post" data-form-replicate>
-								<input type="hidden" name="claim_id" value="${dataItem.id}">
-								<input type="hidden" name="_token" value=${token}>
-								<button class="btn-copy" type="submit">
-									<i class="fa-regular fa-copy"></i>
-								</button>
-							</form>
+							<button class="btn-archive" type="button" 
+								data-bs-toggle="modal" data-bs-target="#modalAction" 
+								data-type="clone" data-id="${dataItem.id}"
+								data-method="POST"
+								data-url="${BASE_URL}/replicates/${dataItem.id}" data-title="Вы действительно хотите клонировать заявку № ${dataItem.claim_number}">
+								<i class="fa-regular fa-copy"></i>
+							</button>
 						</div>
 					`;
 			case 'archived':
 				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
 						<button class="btn-archive" type="button" 
-							data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-							data-type="delete" data-id="${dataItem.id}" 
+							data-bs-toggle="modal" data-bs-target="#modalAction" 
+							data-type="delete" data-id="${dataItem.id}"
+							data-method="DELETE"
 							data-url="${BASE_URL}/claims/${dataItem.id}/force-delete" data-title="Вы действительно хотите удалить заявку № ${dataItem.claim_number}">
 							<i class="fa-regular fa-trash-can"></i>
 						</button>
@@ -206,109 +208,6 @@ function initDataTable(data) {
 			initBootstrapTooltip();
 			replicateFormHandler();
 			restoreFormHandler();
-		}
-	})
-}
-function initDataTableArchived(data) {
-	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-	tourTableArchived = new DataTable(archivedTable, {
-		...tableConfig,
-		"data": data,
-		"columns": [
-			{
-				"data": null,
-				"orderable": false,
-				"render": function (data, type, row, meta) {
-					return `
-						<span hidden>${row.id}</span>
-					`;
-				}
-			},
-			{
-				"data": 'number',
-				"orderable": false,
-				"render": function (data, type, row, meta) {
-					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}" target="_blank">${row.claim_number}</a>`;
-				}
-			},
-			{
-				"data": 'date_start',
-				"render": function (data, type, row, meta) {
-					return `<strong>${moment(row.date_start).format('DD.MM.YYYY')}</strong> </br> (${row.night})`;
-				}
-			},
-			{
-				"data": null,
-				"render": function (data, type, row, meta) {
-					return `${row.city ? row.city : 'Не указано'} - ${row.country ? row.country : 'Не указано'}`
-				}
-			},
-			{
-				"data": 'customer',
-				"render": function (data, type, row, meta) {
-					return `${row.customer != ""
-						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>` : `<div class="fw-600">Заказчик не указан</div>`
-						}`
-				}
-			},
-			{
-				"data": 'tourists',
-				"render": function (data, type, row, meta) {
-					return `${row.countTourists > 0
-						? `<div class="text-clamp" title="${row.tourists}">
-								<strong>${row.countTourists}:</strong>
-								${row.tourists}
-							</div>`
-						: `Туристы не указаны`
-						}`
-				}
-			},
-			{
-				"data": null,
-				"render": function (data, type, row, meta) {
-					return '';
-				}
-			},
-			{
-				"data": 'manager',
-				"render": function (data, type, row, meta) {
-					return `<div class="text-primary">${row.manager}</div> 
-					<div>${moment(row.created_at).format('DD.MM.YYYY HH:mm:ss')}</div>`;
-				}
-			},
-			{
-				"data": null,
-				"render": function (data, type, row, meta) {
-					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Восстановить в активные">
-							<button class="btn-archive" type="button" 
-								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-								data-type="delete" data-id="${row.id}" 
-								data-url="${BASE_URL}/claims/${row.id}" data-title="Вы действительно хотите удалить заявку № ${row.id}">
-								<i class="fa-solid fa-box-archive"></i>
-							</button>
-						</div>
-					`;
-				},
-			},
-			{
-				"data": null,
-				"render": function (data, type, row, meta) {
-					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
-							<form action="${BASE_URL}/replicates/${row.id}" method="post" data-form-replicate>
-								<input type="hidden" name="claim_id" value="${row.id}">
-								<input type="hidden" name="_token" value=${token}>
-								<button class="btn-copy" type="submit">
-									<i class="fa-regular fa-copy"></i>
-								</button>
-							</form>
-						</div>
-					`;
-				},
-			},
-		],
-		"initComplete": function (settings, json) {
-			changePostitionControlsDataTable();
-			initBootstrapTooltip();
 		}
 	})
 }
@@ -471,84 +370,3 @@ function changePostitionControlsDataTable() {
 		filtersButtons.insertAdjacentElement('beforeend', dataTableButtons);
 	}
 }
-
-function replicateFormHandler() {
-	const formsReplicate = document.querySelectorAll('[data-form-replicate]');
-	[...formsReplicate].forEach((form) => {
-		if (form) {
-			form.addEventListener('submit', (event) => {
-				event.preventDefault();
-				const thisForm = event.target;
-				const claimId = thisForm.claim_id;
-				const token = thisForm._token;
-				const formData = new FormData(thisForm);
-				const fetchReplicate = async () => {
-					displayLoading();
-					try {
-						const response = await fetch(`/replicates/${claimId}`, {
-							headers: {
-								"X-CSRF-Token": token
-							},
-							method: 'POST',
-							body: formData,
-						})
-						const data = await response.json();
-						const result = await data;
-						if (result.status == 'success') {
-							window.location.reload();
-						}
-					} catch (error) {
-						console.log('Произошла ошибка', error)
-						hideLoading();
-					} finally {
-						hideLoading();
-					}
-				}
-				if (window.confirm("Вы действительно хотите клонировать заявку?")) {
-					fetchReplicate();
-				}
-			})
-		}
-	})
-}
-replicateFormHandler();
-function restoreFormHandler() {
-	const formsRestore = document.querySelectorAll('[data-form-restore]');
-	[...formsRestore].forEach((form) => {
-		if (form) {
-			form.addEventListener('submit', (event) => {
-				event.preventDefault();
-				const thisForm = event.target;
-				const claimId = thisForm.claim_id;
-				const token = thisForm._token;
-				const formData = new FormData(thisForm);
-				const fetchRestore = async () => {
-					displayLoading();
-					try {
-						const response = await fetch(`claims/${claimId}/restore`, {
-							headers: {
-								"X-CSRF-Token": token
-							},
-							method: 'POST',
-							body: formData,
-						})
-						const data = await response.json();
-						const result = await data;
-						if (result.status == 'success') {
-							window.location.reload();
-						}
-					} catch (error) {
-						console.log('Произошла ошибка', error.message)
-						hideLoading();
-					} finally {
-						hideLoading();
-					}
-				}
-				if (window.confirm("Вы действительно хотите восстановить заявку?")) {
-					fetchRestore();
-				}
-			})
-		}
-	})
-}
-restoreFormHandler();

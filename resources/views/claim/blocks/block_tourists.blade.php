@@ -143,8 +143,9 @@
 												</button>
 											</div>
 											<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить туриста">
-												<button class="btn-trash" type="button" data-type="delete" data-id="{{$tourist->id}}" 
-													data-url="{{route('tourist.force-delete', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord"
+												<button class="btn-trash" type="button" data-type="delete" data-id="{{$tourist->id}}"
+													data-method="DELETE"
+													data-url="{{route('tourist.force-delete', $tourist->id)}}" data-bs-toggle="modal" data-bs-target="#modalAction"
 													data-title="Вы действительно хотите удалить туриста?">
 													<i class="fa-solid fa-trash-can"></i>
 												</button>

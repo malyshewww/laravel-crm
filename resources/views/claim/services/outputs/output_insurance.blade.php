@@ -33,7 +33,8 @@
 					</div>
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить услугу">
 						<button class="btn-trash" type="button" 
-							data-bs-toggle="modal" data-bs-target="#deleteRecord"
+							data-bs-toggle="modal" data-bs-target="#modalAction"
+							data-method="DELETE"
 							data-id="{{$insurance->id}}"
 							data-type="delete" 
 							data-url="{{route('insurance.destroy', $insurance->id)}}" 

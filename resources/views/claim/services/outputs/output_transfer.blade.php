@@ -32,8 +32,11 @@
 						</button>
 					</div>
 					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить услугу">
-						<button class="btn-trash" type="button" data-type="delete" data-id="{{$transfer->id}}" data-url="{{route('transfer.destroy', $transfer->id)}}" 
-							data-bs-toggle="modal" data-bs-target="#deleteRecord"
+						<button class="btn-trash" type="button" 
+							data-type="delete" 
+							data-id="{{$transfer->id}}" data-url="{{route('transfer.destroy', $transfer->id)}}" 
+							data-bs-toggle="modal" data-bs-target="#modalAction"
+							data-method="DELETE"
 							data-title="Вы действительно хотите удалить услугу?">
 							<i class="fa-solid fa-trash-can"></i>
 						</button>

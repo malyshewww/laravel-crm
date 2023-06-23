@@ -86,5 +86,5 @@
 	</div>
 @endsection
 @section('page-modal')
-	@include('claim.showmodals.delete_record')
+	@include('claim.showmodals.record_action')
 @endsection

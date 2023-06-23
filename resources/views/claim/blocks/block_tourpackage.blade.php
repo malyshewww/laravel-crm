@@ -9,7 +9,7 @@
 			data-url="{{route('tourpackage.store', $claim->id)}}"
 			data-path="{{route('tourpackage.loadModal', [$claim->id, 'update'])}}"
 			data-title="Турпакет">
-		[изменить]
+			{{$claim->tourpackage ? '[изменить]' : '[добавить]'}}
 		</button>
 	</div>
 	@php

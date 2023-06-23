@@ -90,5 +90,5 @@
 @endsection
 @section('page-modal')
 	@include('claim.indexmodals.createclaim')
-	@include('claim.showmodals.delete_record')
+	@include('claim.showmodals.record_action')
 @endsection

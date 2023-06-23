@@ -264,7 +264,8 @@
 																					</div>
 																					<div class="table__button-item" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить счет">
 																						<button class="btn-trash" type="button" 
-																							data-bs-toggle="modal" data-bs-target="#deleteRecord"
+																							data-bs-toggle="modal" data-bs-target="#modalAction"
+																							data-method="DELETE"
 																							data-type="delete" 
 																							data-id="{{$itemInvoice->id}}" 
 																							data-url="{{route('payment_invoice.destroy', $itemInvoice->id)}}" 
@@ -526,7 +527,7 @@
 	@include('claim.finance.modals.payment_invoice')
 	@include('claim.finance.modals.update_payment_invoice')
 
-	@include('claim.showmodals.delete_record')
+	@include('claim.showmodals.record_action')
 @endsection
 @section('page-script')
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>

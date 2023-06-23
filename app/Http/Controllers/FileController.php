@@ -45,8 +45,6 @@ class FileController extends Controller
     public function destroy($id)
     {
         $file = FileUpload::findOrFail($id);
-        $originalName = $file->file_name->getClientOriginalName();
-        dd($originalName);
         Storage::disk('public')->delete($file->file_name);
         FileUpload::where('id', $id)->forceDelete();
         return response()->json([

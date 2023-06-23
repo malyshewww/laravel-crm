@@ -9,7 +9,7 @@
 			data-url="{{route('touroperator.store', $claim->id)}}"
 			data-path="{{route('touroperator.loadModal', [$claim->id, 'update'])}}"
 			data-title="Туроператор - поставщик тура">
-			[изменить]
+			{{$claim->touroperator ? '[изменить]' : '[добавить]'}}
 		</button>
 	</div>
 	@if ($claim->touroperator)

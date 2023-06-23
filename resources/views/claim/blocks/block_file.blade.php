@@ -47,8 +47,11 @@
 											</a>
 										</div>
 										<div class="table__button-item" data-bs-toggle="tooltip" title="Удалить файл" data-bs-trigger="hover">
-											<button class="btn-trash" type="button" data-type="delete" data-id="{{$fileItem->id}}" 
-												data-url="{{route('file.destroy', $fileItem->id)}}" data-bs-toggle="modal" data-bs-target="#deleteRecord"
+											<button class="btn-trash" type="button" data-type="delete" 
+												data-id="{{$fileItem->id}}"
+												data-url="{{route('file.destroy', $fileItem->id)}}" 
+												data-bs-toggle="modal" data-bs-target="#modalAction"
+												data-method="DELETE"
 												data-title="Вы действительно хотите удалить файл?">
 												<i class="fa-solid fa-trash-can"></i>
 											</button>

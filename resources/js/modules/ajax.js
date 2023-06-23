@@ -287,9 +287,9 @@ modalUpdate('prepaymentParameters', 'formPrepayment');
 modalUpdate('parametersPayment', 'formPayment');
 modalUpdate('updatePaymentInvoice', 'formPaymentInvoiceUpdate');
 
-const modalDelete = document.getElementById('deleteRecord');
-if (modalDelete) {
-	modalDelete.addEventListener('show.bs.modal', (event) => {
+const modalAction = document.getElementById('modalAction');
+if (modalAction) {
+	modalAction.addEventListener('show.bs.modal', (event) => {
 		const thisModal = event.target;
 		const modalTitle = thisModal.querySelector('.modal__title');
 		const form = thisModal.querySelector('form');
@@ -297,15 +297,18 @@ if (modalDelete) {
 		const dataUrl = btn.dataset.url;
 		const dataTitle = btn.dataset.title;
 		const dataId = btn.dataset.id;
+		const dataMethod = btn.dataset.method
 		form.setAttribute('action', dataUrl);
 		const inputClaimId = form.claim_id;
+		const inputMethod = form._method;
 		inputClaimId ? inputClaimId.value = dataId : null;
+		inputMethod ? inputMethod.value = dataMethod : null;
 		modalTitle.textContent = dataTitle !== "" ? dataTitle : "Вы действительно хотите удалить запись?";
 	})
 }
-function deleteRecord() {
-	if (modalDelete) {
-		const form = modalDelete.querySelector('form');
+function formButtonActionHandler() {
+	if (modalAction) {
+		const form = modalAction.querySelector('form');
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
 			const thisForm = event.target;
@@ -337,7 +340,7 @@ function deleteRecord() {
 		})
 	}
 }
-deleteRecord();
+formButtonActionHandler();
 
 async function elementUpdate(selector) {
 	try {

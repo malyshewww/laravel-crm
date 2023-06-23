@@ -65,8 +65,9 @@ const tableAdditionalColumns = {
 			case 'all':
 				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
 									<button class="btn-archive" type="button" 
-										data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-										data-type="delete" data-id="${dataItem.id}" 
+										data-bs-toggle="modal" data-bs-target="#modalAction" 
+										data-type="delete" data-id="${dataItem.id}"
+										data-method="DELETE"
 										data-url="${BASE_URL}/claims/${dataItem.id}/delete" data-title="Вы действительно хотите переместить заявку № ${dataItem.claim_number} в архив">
 										<i class="fa-solid fa-box-archive"></i>
 									</button>
@@ -103,7 +104,8 @@ const tableAdditionalColumns = {
 				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
 						<button class="btn-archive" type="button" 
 							data-bs-toggle="modal" data-bs-target="#deleteRecord" 
-							data-type="delete" data-id="${dataItem.id}" 
+							data-type="delete" data-id="${dataItem.id}"
+							data-method="DELETE"
 							data-url="${BASE_URL}/claims/${dataItem.id}/force-delete" data-title="Вы действительно хотите удалить заявку № ${dataItem.claim_number}">
 							<i class="fa-regular fa-trash-can"></i>
 						</button>
@@ -290,7 +292,7 @@ function initDataTableArchived(data) {
 								<input type="hidden" name="claim_id" value="${row.id}">
 								<input type="hidden" name="_token" value=${token}>
 								<button class="btn-copy" type="submit">
-									<i class="fa-regular fa-copy"></i>
+									<i class="fa-sharp fa-light fa-copy"></i>
 								</button>
 							</form>
 						</div>

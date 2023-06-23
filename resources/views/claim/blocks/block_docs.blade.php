@@ -7,7 +7,7 @@
 			data-type="update" 
 			data-claim-id="{{$claim->id}}" 
 			data-url="{{route('statusDoc.store')}}" data-path="{{route('statusDoc.loadModal', [$claim->id, 'update'])}}" data-title="Статус отправки докумнтов">
-		[изменить]
+		{{$claim->doc ? '[изменить]' : '[добавить]'}}
 		</button>
 		@if ($claim->doc)
 			@switch($claim->doc->status)
