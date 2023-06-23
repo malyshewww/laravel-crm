@@ -16,11 +16,11 @@ class CreateFilesTable extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->string('file_name')->nullable(true);
+            $table->string('file_original_name')->nullable(true);
             $table->string('file_type')->nullable(true);
 
             $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

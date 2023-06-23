@@ -43,8 +43,7 @@ class VisaController extends Controller
     }
     public function destroy($id)
     {
-        $visa = Visa::findOrFail($id);
-        $visa->delete();
+        Visa::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

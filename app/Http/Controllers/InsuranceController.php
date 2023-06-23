@@ -49,8 +49,7 @@ class InsuranceController extends Controller
     }
     public function destroy($id)
     {
-        $insurance = Insurance::findOrFail($id);
-        $insurance->delete();
+        Insurance::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

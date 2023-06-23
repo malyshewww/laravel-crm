@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Habitation extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = 'habitations';
     protected $fillable = [
         'type',

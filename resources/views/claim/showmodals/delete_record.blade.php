@@ -6,6 +6,7 @@
 		<form action="#" method="post">
 			@csrf
 			@method('delete')
+			<input type="hidden" name="claim_id" value="">
 			<div class="row justify-content-center">
 				<div class="col-4">
 					<button class="btn btn-danger" type="submit">Да</button>

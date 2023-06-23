@@ -45,8 +45,7 @@ class TransferController extends Controller
     }
     public function destroy($id)
     {
-        $transfer = Transfer::findOrFail($id);
-        $transfer->delete();
+        Transfer::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

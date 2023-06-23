@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tourist extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     use \Bkwld\Cloner\Cloneable;
     protected $cloneable_relations = [
         'common',

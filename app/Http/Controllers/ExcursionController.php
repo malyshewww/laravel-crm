@@ -43,8 +43,7 @@ class ExcursionController extends Controller
     }
     public function destroy($id)
     {
-        $excursion = Excursion::findOrFail($id);
-        $excursion->delete();
+        Excursion::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

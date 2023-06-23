@@ -1,8 +1,10 @@
-// import DataTable from 'datatables.net-dt';
-// import pdfmake from 'pdfmake';
-// import 'datatables.net-buttons-dt';
-// import 'datatables.net-buttons/js/buttons.html5.mjs';
-// import jszip from 'jszip';
+import DataTable from 'datatables.net-dt';
+import pdfmake from 'pdfmake';
+import 'datatables.net-buttons-dt';
+import 'datatables.net-buttons/js/buttons.html5.mjs';
+import * as JSZip from "jszip";
+import moment from 'moment';
+window.JSZip = JSZip;
 
 const mainTable = document.getElementById('tour-table');
 const loader = document.getElementById('loader');
@@ -50,7 +52,7 @@ const tableConfig = {
 	},
 	"pagingType": "full_numbers",
 	"aLengthMenu": [[1, 5, 10, 15, 25, 50, 100, 200 - 1], [1, 5, 10, 15, 25, 50, 100, 200, "All"]],
-	"iDisplayLength": 5,
+	"iDisplayLength": 10,
 	order: [[0, 'desc']],
 	"dom": 'lBfrtip',
 	buttons: [
@@ -62,16 +64,83 @@ const tableConfig = {
 	]
 }
 let tourTable;
+
+const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+const tableAdditionalColumns = {
+	columnActionFirst: (status, data) => {
+		let dataItem = data
+		switch (status) {
+			case 'all':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+									<button class="btn-archive" type="button" 
+										data-bs-toggle="modal" data-bs-target="#deleteRecord" 
+										data-type="delete" data-id="${dataItem.id}" 
+										data-url="${BASE_URL}/claims/${dataItem.id}/delete" data-title="Вы действительно хотите переместить заявку № ${dataItem.claim_number} в архив">
+										<i class="fa-solid fa-box-archive"></i>
+									</button>
+								</div>
+							`;
+			case 'archived':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Восстановить в активные">
+							<form action="${BASE_URL}/claims/${dataItem.id}/restore" method="post" data-form-restore>
+								<input type="hidden" name="claim_id" value="${dataItem.id}">
+								<input type="hidden" name="_token" value=${token}>
+								<button class="btn-copy" type="submit">
+									<i class="fa-solid fa-reply"></i>
+								</button>
+							</form>
+					</div>
+				`
+		};
+	},
+	columnActionTwo: (status, data) => {
+		let dataItem = data;
+		switch (status) {
+			case 'all':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
+							<form action="${BASE_URL}/replicates/${dataItem.id}" method="post" data-form-replicate>
+								<input type="hidden" name="claim_id" value="${dataItem.id}">
+								<input type="hidden" name="_token" value=${token}>
+								<button class="btn-copy" type="submit">
+									<i class="fa-regular fa-copy"></i>
+								</button>
+							</form>
+						</div>
+					`;
+			case 'archived':
+				return `<div class="table__button table-btn" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
+						<button class="btn-archive" type="button" 
+							data-bs-toggle="modal" data-bs-target="#deleteRecord" 
+							data-type="delete" data-id="${dataItem.id}" 
+							data-url="${BASE_URL}/claims/${dataItem.id}/force-delete" data-title="Вы действительно хотите удалить заявку № ${dataItem.claim_number}">
+							<i class="fa-regular fa-trash-can"></i>
+						</button>
+					</div>
+				`;
+		}
+	}
+}
+
 function initDataTable(data) {
+	let tableStatus = mainTable.dataset.status;
 	tourTable = new DataTable(mainTable, {
 		...tableConfig,
 		"data": data,
 		"columns": [
 			{
+				"data": null,
+				"orderable": false,
+				"render": function (data, type, row, meta) {
+					return `
+						<span hidden>${row.id}</span>
+					`;
+				}
+			},
+			{
 				"data": 'number',
 				"orderable": false,
 				"render": function (data, type, row, meta) {
-					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}">${row.claim_number}</a>`;
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}" target="_blank">${row.claim_number}</a>`;
 				}
 			},
 			{
@@ -90,8 +159,7 @@ function initDataTable(data) {
 				"data": 'customer',
 				"render": function (data, type, row, meta) {
 					return `${row.customer != ""
-						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>`
-						: `<div class="fw-600">Заказчик не указан</div>`
+						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>` : `<div class="fw-600">Заказчик не указан</div>`
 						}`
 				}
 			},
@@ -123,8 +191,95 @@ function initDataTable(data) {
 			{
 				"data": null,
 				"render": function (data, type, row, meta) {
-					return `<div class="table__buttons">
-						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Перенести в архив">
+					return tableAdditionalColumns.columnActionFirst(tableStatus, row);
+				},
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return tableAdditionalColumns.columnActionTwo(tableStatus, row);;
+				},
+			},
+		],
+		"initComplete": function (settings, json) {
+			changePostitionControlsDataTable();
+			initBootstrapTooltip();
+			replicateFormHandler();
+			restoreFormHandler();
+		}
+	})
+}
+function initDataTableArchived(data) {
+	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	tourTableArchived = new DataTable(archivedTable, {
+		...tableConfig,
+		"data": data,
+		"columns": [
+			{
+				"data": null,
+				"orderable": false,
+				"render": function (data, type, row, meta) {
+					return `
+						<span hidden>${row.id}</span>
+					`;
+				}
+			},
+			{
+				"data": 'number',
+				"orderable": false,
+				"render": function (data, type, row, meta) {
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}" target="_blank">${row.claim_number}</a>`;
+				}
+			},
+			{
+				"data": 'date_start',
+				"render": function (data, type, row, meta) {
+					return `<strong>${moment(row.date_start).format('DD.MM.YYYY')}</strong> </br> (${row.night})`;
+				}
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `${row.city ? row.city : 'Не указано'} - ${row.country ? row.country : 'Не указано'}`
+				}
+			},
+			{
+				"data": 'customer',
+				"render": function (data, type, row, meta) {
+					return `${row.customer != ""
+						? `<div class="text-clamp fw-600" title="${row.customer}">${row.customer}</div>` : `<div class="fw-600">Заказчик не указан</div>`
+						}`
+				}
+			},
+			{
+				"data": 'tourists',
+				"render": function (data, type, row, meta) {
+					return `${row.countTourists > 0
+						? `<div class="text-clamp" title="${row.tourists}">
+								<strong>${row.countTourists}:</strong>
+								${row.tourists}
+							</div>`
+						: `Туристы не указаны`
+						}`
+				}
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return '';
+				}
+			},
+			{
+				"data": 'manager',
+				"render": function (data, type, row, meta) {
+					return `<div class="text-primary">${row.manager}</div> 
+					<div>${moment(row.created_at).format('DD.MM.YYYY HH:mm:ss')}</div>`;
+				}
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Восстановить в активные">
 							<button class="btn-archive" type="button" 
 								data-bs-toggle="modal" data-bs-target="#deleteRecord" 
 								data-type="delete" data-id="${row.id}" 
@@ -132,15 +287,21 @@ function initDataTable(data) {
 								<i class="fa-solid fa-box-archive"></i>
 							</button>
 						</div>
-						<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Клонировать заявку">
-							<form action="${BASE_URL}/claims/${row.id}/replicate" method="post" data-form-replicate>
+					`;
+				},
+			},
+			{
+				"data": null,
+				"render": function (data, type, row, meta) {
+					return `<div class="table__button" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Удалить">
+							<form action="${BASE_URL}/replicates/${row.id}" method="post" data-form-replicate>
 								<input type="hidden" name="claim_id" value="${row.id}">
+								<input type="hidden" name="_token" value=${token}>
 								<button class="btn-copy" type="submit">
 									<i class="fa-regular fa-copy"></i>
 								</button>
 							</form>
 						</div>
-					</div>
 					`;
 				},
 			},
@@ -148,7 +309,6 @@ function initDataTable(data) {
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
 			initBootstrapTooltip();
-			replicateHandler();
 		}
 	})
 }
@@ -160,13 +320,13 @@ function initBootstrapTooltip() {
 		return new bootstrap.Tooltip(tooltipTriggerEl);
 	});
 }
-var newArr = [];
-
-function fetchTable(form) {
+let newArr = [];
+function fetchTable(path, status, form) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
+	formData.append('status', (status === 'all' ? 'all' : 'archived'))
 	displayLoading();
-	fetch('/claims/records', {
+	fetch(path, {
 		headers: {
 			"X-CSRF-Token": token
 		},
@@ -194,16 +354,30 @@ function fetchTable(form) {
 		})
 		.catch(error => console.log(error))
 		.finally(() => hideLoading())
-
 }
 
 window.addEventListener('load', () => {
-	fetchTable();
+	{
+		if (mainTable) {
+			let tableStatus = mainTable.dataset.status;
+			switch (tableStatus) {
+				case 'all':
+					fetchTable('/claims/records', 'all');
+					break;
+				case 'archived':
+					fetchTable('/claims/records', 'archived');
+					break;
+				default:
+					break;
+			}
+		}
+	}
 })
 
-function filterQuery(form) {
+function filterQuery(form, status) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	const formData = new FormData(form);
+	formData.append('status', (status === 'all' ? 'all' : 'archived'))
 	fetch('/claims/records', {
 		headers: {
 			"X-CSRF-Token": token
@@ -219,34 +393,37 @@ function filterQuery(form) {
 			tourTable.draw();
 			initBootstrapTooltip();
 		})
-		.catch(error => console.log(error))
+		.catch(error => console.log(error.message))
 		.finally(() => hideLoading())
 }
 
 function filterTable() {
 	const formFilter = document.getElementById('formFilter');
-	const buttonReset = formFilter.querySelector('button[type="reset"]')
-	formFilter.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const thisForm = event.target;
-		displayLoading();
-		filterQuery(thisForm)
-		setURLSearchParam(thisForm);
-	})
-	buttonReset.addEventListener('click', (event) => {
-		formFilter.reset();
-		if (location.href.includes('?')) {
-			history.pushState({}, null, location.href.split('?')[0]);
-		}
-		const inputFio = formFilter.fio;
-		const inputDateStart = formFilter.date_start;
-		const inputDateEnd = formFilter.date_end;
-		inputFio.value = '';
-		inputDateStart.value = '';
-		inputDateEnd.value = '';
-		displayLoading();
-		filterQuery(formFilter);
-	})
+	let tableStatus = mainTable ? mainTable.dataset.status : null;
+	if (formFilter) {
+		const buttonReset = formFilter.querySelector('button[type="reset"]')
+		formFilter.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const thisForm = event.target;
+			displayLoading();
+			tableStatus === 'all' ? filterQuery(thisForm, 'all') : filterQuery(thisForm, 'archived')
+			setURLSearchParam(thisForm);
+		})
+		buttonReset.addEventListener('click', (event) => {
+			formFilter.reset();
+			if (location.href.includes('?')) {
+				history.pushState({}, null, location.href.split('?')[0]);
+			}
+			const inputFio = formFilter.fio;
+			const inputDateStart = formFilter.date_start;
+			const inputDateEnd = formFilter.date_end;
+			inputFio.value = '';
+			inputDateStart.value = '';
+			inputDateEnd.value = '';
+			displayLoading();
+			filterQuery(formFilter);
+		})
+	}
 }
 filterTable();
 
@@ -295,33 +472,83 @@ function changePostitionControlsDataTable() {
 	}
 }
 
-function replicateHandler() {
+function replicateFormHandler() {
 	const formsReplicate = document.querySelectorAll('[data-form-replicate]');
 	[...formsReplicate].forEach((form) => {
 		if (form) {
 			form.addEventListener('submit', (event) => {
 				event.preventDefault();
 				const thisForm = event.target;
-				let id = thisForm.claim_id;
+				const claimId = thisForm.claim_id;
+				const token = thisForm._token;
 				const formData = new FormData(thisForm);
-				const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-				fetch(`/claims/${id}/replicate`, {
-					headers: {
-						"X-CSRF-Token": token
-					},
-					method: 'POST',
-					body: formData,
-				})
-					.then(response => response.json())
-					.then((result) => {
-						console.log(result);
+				const fetchReplicate = async () => {
+					displayLoading();
+					try {
+						const response = await fetch(`/replicates/${claimId}`, {
+							headers: {
+								"X-CSRF-Token": token
+							},
+							method: 'POST',
+							body: formData,
+						})
+						const data = await response.json();
+						const result = await data;
 						if (result.status == 'success') {
 							window.location.reload();
 						}
-					})
-					.catch(error => console.log(error))
+					} catch (error) {
+						console.log('Произошла ошибка', error)
+						hideLoading();
+					} finally {
+						hideLoading();
+					}
+				}
+				if (window.confirm("Вы действительно хотите клонировать заявку?")) {
+					fetchReplicate();
+				}
 			})
 		}
 	})
 }
-replicateHandler();
+replicateFormHandler();
+function restoreFormHandler() {
+	const formsRestore = document.querySelectorAll('[data-form-restore]');
+	[...formsRestore].forEach((form) => {
+		if (form) {
+			form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				const thisForm = event.target;
+				const claimId = thisForm.claim_id;
+				const token = thisForm._token;
+				const formData = new FormData(thisForm);
+				const fetchRestore = async () => {
+					displayLoading();
+					try {
+						const response = await fetch(`claims/${claimId}/restore`, {
+							headers: {
+								"X-CSRF-Token": token
+							},
+							method: 'POST',
+							body: formData,
+						})
+						const data = await response.json();
+						const result = await data;
+						if (result.status == 'success') {
+							window.location.reload();
+						}
+					} catch (error) {
+						console.log('Произошла ошибка', error.message)
+						hideLoading();
+					} finally {
+						hideLoading();
+					}
+				}
+				if (window.confirm("Вы действительно хотите восстановить заявку?")) {
+					fetchRestore();
+				}
+			})
+		}
+	})
+}
+restoreFormHandler();

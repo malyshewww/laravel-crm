@@ -53,8 +53,7 @@ class HabitationController extends Controller
     }
     public function destroy($id)
     {
-        $habitation = Habitation::findOrFail($id);
-        $habitation->delete();
+        Habitation::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

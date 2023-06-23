@@ -41,8 +41,7 @@ class FuelSurchangeController extends Controller
     }
     public function destroy($id)
     {
-        $fuelSurchange = FuelSurchange::findOrFail($id);
-        $fuelSurchange->delete();
+        FuelSurchange::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

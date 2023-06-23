@@ -20,7 +20,7 @@ class CreateTouristDataCertificatesTable extends Migration
             $table->date('tourist_certificate_date')->nullable(true);
             $table->text('tourist_certificate_issued')->nullable(true);
 
-            $table->foreignId('tourist_id')->onDelete()->constrained('tourists');
+            $table->foreignId('tourist_id')->constrained('tourists')->onDelete('cascade');
 
             $table->timestamps();
         });

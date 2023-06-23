@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Claim;
 use App\Models\Flight;
-use App\Models\Tourist;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class FlightController extends Controller
 {
@@ -52,8 +50,7 @@ class FlightController extends Controller
     }
     public function destroy($id)
     {
-        $flight = Flight::findOrFail($id);
-        $flight->delete();
+        Flight::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

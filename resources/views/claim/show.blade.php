@@ -268,7 +268,7 @@
 																							data-type="delete" 
 																							data-id="{{$itemInvoice->id}}" 
 																							data-url="{{route('payment_invoice.destroy', $itemInvoice->id)}}" 
-																							data-title="Вы действительно хотите удалить счёт № {{$claim->id}}-{{$itemInvoice->id}}?">
+																							data-title="Вы действительно хотите удалить счёт № {{$claim->id}}-{{date('Y')}}-{{$itemInvoice->id}}?">
 																							<i class="fa-solid fa-trash-can"></i>
 																						</button>
 																					</div>

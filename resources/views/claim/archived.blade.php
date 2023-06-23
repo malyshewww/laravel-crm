@@ -88,8 +88,3 @@
 @section('page-modal')
 	@include('claim.showmodals.delete_record')
 @endsection
-@section('page-script')
-	<script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.13.4/b-2.3.6/b-html5-2.3.6/datatables.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-	<script src="{{asset('js/tables.js')}}"></script>
-@endsection

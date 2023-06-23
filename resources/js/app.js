@@ -9,7 +9,7 @@ import './modules/choices';
 import './modules/uploadFiles';
 import './modules/number-format';
 // import './modules/mask-phone';
-// import './modules/tables';
+import './modules/tables';
 import './modules/ajax';
 
 document.addEventListener('click', documentActions);

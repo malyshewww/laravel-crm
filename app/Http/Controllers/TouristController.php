@@ -179,8 +179,7 @@ class TouristController extends Controller
     }
     public function destroy($id)
     {
-        $claim = Tourist::findOrFail($id);
-        $claim->delete();
+        Tourist::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

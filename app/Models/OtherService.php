@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class OtherService extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = 'other_services';
     protected $fillable = [
         'type',

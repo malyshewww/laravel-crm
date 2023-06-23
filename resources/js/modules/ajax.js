@@ -296,7 +296,10 @@ if (modalDelete) {
 		const btn = event.relatedTarget;
 		const dataUrl = btn.dataset.url;
 		const dataTitle = btn.dataset.title;
+		const dataId = btn.dataset.id;
 		form.setAttribute('action', dataUrl);
+		const inputClaimId = form.claim_id;
+		inputClaimId ? inputClaimId.value = dataId : null;
 		modalTitle.textContent = dataTitle !== "" ? dataTitle : "Вы действительно хотите удалить запись?";
 	})
 }

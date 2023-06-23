@@ -27,7 +27,7 @@ class CreateTouristDataCommonsTable extends Migration
             $table->string('visa_info')->nullable(false);
             $table->string('visa_city')->nullable(true);
 
-            $table->foreignId('tourist_id')->onDelete()->constrained('tourists');
+            $table->foreignId('tourist_id')->constrained('tourists')->onDelete('cascade');
 
             $table->timestamps();
         });

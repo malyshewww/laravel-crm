@@ -23,7 +23,6 @@ class CreateTouristsTable extends Migration
             $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
 
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

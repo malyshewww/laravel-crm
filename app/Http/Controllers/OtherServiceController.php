@@ -41,8 +41,7 @@ class OtherServiceController extends Controller
     }
     public function destroy($id)
     {
-        $otherservice = OtherService::findOrFail($id);
-        $otherservice->delete();
+        OtherService::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

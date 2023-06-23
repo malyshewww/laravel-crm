@@ -22,7 +22,7 @@ class CreateTouristDataInternationalPassportsTable extends Migration
             $table->date('tourist_international_passport_period')->nullable(true);
             $table->text('tourist_international_passport_issued')->nullable(true);
 
-            $table->foreignId('tourist_id')->onDelete()->constrained('tourists');
+            $table->foreignId('tourist_id')->constrained('tourists')->onDelete('cascade');
 
             $table->timestamps();
         });

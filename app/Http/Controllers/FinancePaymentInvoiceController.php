@@ -40,8 +40,7 @@ class FinancePaymentInvoiceController extends Controller
     }
     public function destroy($id)
     {
-        $payment_invoice = FinancePaymentInvoice::findOrFail($id);
-        $payment_invoice->delete();
+        FinancePaymentInvoice::where('id', $id)->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

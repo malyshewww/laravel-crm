@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FileUpload extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = "files";
     protected $fillable = [
         'file_name',
+        'file_original_name',
         'file_type',
         'claim_id',
     ];

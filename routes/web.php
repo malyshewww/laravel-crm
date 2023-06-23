@@ -100,7 +100,7 @@ Route::get('/customers/{customer}/loadModal-{action}', [CustomerController::clas
 // Данные о туристе
 Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');
 Route::patch('/tourists/{tourist}/update', [TouristController::class, 'update'])->name('tourist.update');
-Route::delete('/tourists/{tourist}/delete', [TouristController::class, 'destroy'])->name('tourist.destroy');
+Route::delete('/tourists/{tourist}/force-delete', [TouristController::class, 'destroy'])->name('tourist.force-delete');
 Route::get('/tourists/{tourist}/data', [TouristController::class, 'touristData'])->name('tourist.data');
 Route::get('/tourists/{tourist}/loadModal-{action}', [TouristController::class, 'loadModal'])->name('tourist.loadModal');
 // Данные об услугах

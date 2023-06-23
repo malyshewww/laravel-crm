@@ -18,7 +18,7 @@ class CreateCustomersTable extends Migration
             $table->string('type');
 
             $table->unsignedBigInteger('claim_id')->index()->nullable();
-            $table->foreign('claim_id')->on('claims')->references('id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
 
             $table->timestamps();
         });

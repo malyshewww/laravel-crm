@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FuelSurchange extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = 'fuel_surchanges';
     protected $fillable = [
         'type',

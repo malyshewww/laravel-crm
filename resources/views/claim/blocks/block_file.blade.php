@@ -28,7 +28,7 @@
 							<tr> 
 								<td>{{$fileItem->created_at->format('d.m.Y H:i:s')}}</td>
 								<td>
-									<span style="word-break: break-all;">{{$fileItem->file_name}}</span>
+									<span style="word-break: break-all;">{{$fileItem->file_original_name}}</span>
 								</td>
 								<td>
 									@if ($fileItem->file_type == 'doc_tourist')

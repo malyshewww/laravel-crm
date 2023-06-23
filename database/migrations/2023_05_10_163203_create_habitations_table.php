@@ -29,7 +29,6 @@ class CreateHabitationsTable extends Migration
 
             $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
