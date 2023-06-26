@@ -1,6 +1,6 @@
 import Choices from "choices.js";
 import { getTranslitValues } from "./translit.js";
-import { initChoices, choiceConfig } from "./choices.js";
+import { initChoices, choiceConfig, getSelectData } from "./choices.js";
 import { initDatePicker } from "./calendar.js";
 import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
@@ -148,6 +148,9 @@ function updateHtmlData(formId) {
 			break;
 		case 'formTourist':
 			elementUpdate('#groupDataTourist')
+			elementUpdate('#formTourist input[name="tourist_id"]')
+			const form = document.getElementById('formTourist');
+			form.reset();
 			break;
 		case 'formFile':
 			elementUpdate('#groupDataFile')

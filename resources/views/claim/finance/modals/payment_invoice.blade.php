@@ -12,7 +12,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Расчет</label>
 							<select class="select-choices" name="calculate" id="exposeCalculate">
-								@php
+								{{-- @php
 									$calculations = FinanceHelper::calculation();
 								@endphp
 								@foreach ($calculations as $key => $item)
@@ -20,7 +20,7 @@
 										value="{{$item['value']}}">
 										{{$item['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Валюта платежа</label>
 							<select class="select-choices" name="currency" id="exposeCurrency">
-								@php
+								{{-- @php
 									$currencies = FinanceHelper::currency();
 								@endphp
 								@foreach ($currencies as $key => $currency)
@@ -46,7 +46,7 @@
 										value="{{$currency['value']}}">
 										{{$currency['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>

@@ -58,8 +58,8 @@
 					<div class="col-lg-3 col-md-6">
 						<div class="field-group__item">
 							<label class="field-group__label required">Пол</label>
-							<select class="select-choices" name="tourist_gender">
-								<option value="">{{old('tourist_gender')}}</option>
+							<select class="select-choices" name="tourist_gender" id="selectTouristGender">
+								{{-- <option value="">{{old('tourist_gender')}}</option>
 									@php
 										$genders = TouristHelper::gender();
 									@endphp
@@ -69,7 +69,7 @@
 											value="{{$gender['value']}}">
 											{{$gender['title']}}
 										</option>
-									@endforeach
+									@endforeach --}}
 							</select>
 						</div>
 					</div>
@@ -92,8 +92,8 @@
 					<div class="col-lg-3 col-md-6">
 						<div class="field-group__item">
 							<label class="field-group__label required">Гражданство</label>
-							<select class="select-choices" name="tourist_nationality">
-								<option value="" selected></option>
+							<select class="select-choices" name="tourist_nationality" id="selectTouristNationality">
+								{{-- <option value="" selected></option>
 								@php
 									$nationalities = TouristHelper::nationality();
 								@endphp
@@ -101,7 +101,7 @@
 									<option
 										value="{{$nationality['value']}}">{{$nationality['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>
@@ -296,7 +296,7 @@
 							<div class="field-group__item">
 								<label class="field-group__label required">Необходимость визы</label>
 								<select class="select-choices" data-name="visaInfo" name="visa_info" id="visaInfo">
-									<option value="" selected></option>
+									{{-- <option value="" selected></option>
 									@php
 										$visaOptions = TouristHelper::visa();
 									@endphp
@@ -304,13 +304,13 @@
 										<option
 											value="{{$visaOpt['value']}}">{{$visaOpt['title']}}
 										</option>
-									@endforeach
+									@endforeach --}}
 								</select>
 							</div>
 							<div class="field-group__item">
 								<label class="field-group__label">Город подачи визы</label>
-								<select name="visa_city" data-name="visaCity" class="select-choices">
-									<option value="" selected></option>
+								<select name="visa_city" data-name="visaCity" class="select-choices" id="selectVisaCity">
+									{{-- <option value="" selected></option>
 									@php
 										$cities = TouristHelper::city();
 									@endphp
@@ -318,7 +318,7 @@
 										<option
 											value="{{$key}}">{{$city['name']}}
 										</option>
-									@endforeach
+									@endforeach --}}
 								</select>
 							</div>
 						</div>

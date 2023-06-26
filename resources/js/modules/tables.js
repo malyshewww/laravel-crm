@@ -206,8 +206,6 @@ function initDataTable(data) {
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
 			initBootstrapTooltip();
-			replicateFormHandler();
-			restoreFormHandler();
 		}
 	})
 }

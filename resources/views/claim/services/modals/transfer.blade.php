@@ -46,8 +46,8 @@
 					<div class="col-lg-6">
 						<div class="field-group__item">
 							<label class="field-group__label">Тип трансфера</label>
-							<select class="select-choices" name="transfer_type">
-								<option value="" selected></option>
+							<select class="select-choices" name="transfer_type" id="selectTransferType">
+								{{-- <option value="" selected></option>
 								@php
 									$transferTypes = ServiceHelper::transferType();
 								@endphp
@@ -56,7 +56,7 @@
 										value="{{old($transfer['value']) ?: $transfer['value']}}">
 										{{old($transfer['title']) ?: $transfer['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>

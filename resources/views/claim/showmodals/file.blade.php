@@ -33,7 +33,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Тип файла</label>
 							<select class="select-choices" name="file_type" id="fileType">
-								@php
+								{{-- @php
 									$fileTypes = FileHelper::fileType();
 								@endphp
 								@foreach ($fileTypes as $key => $file)
@@ -41,7 +41,7 @@
 										value="{{$file['value']}}">
 										{{$file['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>

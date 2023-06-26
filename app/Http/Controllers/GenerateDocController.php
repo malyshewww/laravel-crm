@@ -265,17 +265,18 @@ class GenerateDocController extends Controller
                 ];
             }
         }
-        $phpWord->cloneRowAndSetValues('excursionDescription', $excursionTableData);
-        $phpWord->cloneRowAndSetValues('habitationHotel', $habitationTableData);
-        $phpWord->cloneRowAndSetValues('insuranceCompany', $insuranceTableData);
-        $phpWord->cloneRowAndSetValues('flightFrom', $flightTableData);
-        $phpWord->cloneRowAndSetValues('fuelsurchangeName', $fuelSurchangeTableData);
-        $phpWord->cloneRowAndSetValues('otherServiceName', $otherServiceTableData);
-        $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
-
-        $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
-        $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
-        $phpWord->cloneRowAndSetValues('tourpackageName', $tourPackageTableData);
+        if ($docType == 'doc_avia') {
+            $phpWord->cloneRowAndSetValues('excursionDescription', $excursionTableData);
+            $phpWord->cloneRowAndSetValues('habitationHotel', $habitationTableData);
+            $phpWord->cloneRowAndSetValues('insuranceCompany', $insuranceTableData);
+            $phpWord->cloneRowAndSetValues('flightFrom', $flightTableData);
+            $phpWord->cloneRowAndSetValues('fuelsurchangeName', $fuelSurchangeTableData);
+            $phpWord->cloneRowAndSetValues('otherServiceName', $otherServiceTableData);
+            $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
+            $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
+            $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
+            $phpWord->cloneRowAndSetValues('tourpackageName', $tourPackageTableData);
+        }
 
         function number2string($number)
         {

@@ -44,8 +44,8 @@
 					<div class="col-lg-2">
 						<div class="field-group__item">
 							<label class="field-group__label">Класс</label>
-							<select class="select-choices" name="flight_class">
-								<option value=""></option>
+							<select class="select-choices" name="flight_class" id="selectFlightClass">
+								{{-- <option value=""></option>
 									@php
 										$flightClasses = ServiceHelper::flightClass();
 									@endphp
@@ -54,7 +54,7 @@
 											value="{{$class['value']}}">
 											{{$class['title']}}
 										</option>
-									@endforeach
+									@endforeach --}}
 								</select>
 							</select>
 						</div>

@@ -29,7 +29,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Тип страховки</label>
 							<select class="select-choices" data-name="insuranceType" name="insurance_type" id="insuranceType">
-								<option value="" selected></option>
+								{{-- <option value="" selected></option>
 								@php
 									$insuranceTypes = ServiceHelper::insuranceType();
 								@endphp
@@ -38,7 +38,7 @@
 										value="{{$type['value']}}">
 										{{$type['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 						<div class="field-group__item mt-3" hidden>

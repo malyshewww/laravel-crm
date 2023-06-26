@@ -21,6 +21,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InsuranceController;
 use App\Http\Controllers\OtherServiceController;
 use App\Http\Controllers\ReplicateController;
+use App\Http\Controllers\SelectDataController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StatusDocController;
 use App\Http\Controllers\TouristController;
@@ -50,13 +51,13 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Маршруты аутентификации...
-Route::get('auth/login', 'Auth\AuthController@getLogin');
-Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('auth/login', [Auth\AuthController::class, 'getLogin']);
+Route::get('auth/login', [Auth\AuthController::class, 'postLogin']);
+Route::get('auth/logout', [Auth\AuthController::class, 'getLogout']);
 
 // Маршруты регистрации...
-Route::get('auth/register', 'Auth\AuthController@getRegister');
-Route::post('auth/register', 'Auth\AuthController@postRegister');
+Route::get('auth/register', [Auth\AuthController::class, 'getRegister']);
+Route::get('auth/register', [Auth\AuthController::class, 'postRegister']);
 
 // Заявка
 Route::middleware('auth')->group(function () {
@@ -77,6 +78,8 @@ Route::middleware('auth')->group(function () {
 Route::post('/statusDocs', [StatusDocController::class, 'store'])->name('statusDoc.store');
 Route::get('/statusDocs/{statusDoc}/loadModal-{action}', [StatusDocController::class, 'loadModal'])->name('statusDoc.loadModal');
 
+// Данные для селекта в модальных окнах
+Route::post('/selectData', [SelectDataController::class, 'dataHelper'])->name('selectData');
 
 // Клонирование заявки
 Route::post('/replicates/{replicate}', [ReplicateController::class, 'index'])->name('replicate.index');
