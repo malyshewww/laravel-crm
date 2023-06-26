@@ -92,3 +92,17 @@
 	@include('claim.indexmodals.createclaim')
 	@include('claim.showmodals.record_action')
 @endsection
+@section('page-script')
+{{-- <script>
+	function adminAdEditorComponent() {
+		return {
+			adCategories: [],
+			loadAdCategories: async () => {
+				let response = await fetch('/claims/records', {})
+				let result = await response.json();
+				const data = await result;
+				console.log(data);
+			}
+		}
+	}
+</script> --}}

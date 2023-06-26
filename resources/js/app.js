@@ -1,5 +1,5 @@
 // require('./bootstrap');
-console.log('app init');
+console.log('app initialized');
 
 import './modules/bootstrapTooltip';
 import './modules/tabs';
