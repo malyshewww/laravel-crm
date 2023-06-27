@@ -6,7 +6,7 @@ import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
-import bootstrapTooltip from "./bootstrapTooltip.js";
+import { bootstrapTooltip } from "./bootstrapTooltip.js";
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -70,6 +70,7 @@ function formHandler(formId) {
 			const selectVisa = thisForm.visa_info;
 			const token = thisForm._token;
 			const inputFileName = thisForm.file_name;
+			const selectDocType = thisForm.doc_type;
 			fetch(route, {
 				headers: {
 					"X-CSRF-Token": token
@@ -85,7 +86,6 @@ function formHandler(formId) {
 						inputComment ? inputComment.value = '' : null;
 						$(currentModal).modal('hide');
 						updateHtmlData(formId);
-						bootstrapTooltip();
 					} else {
 						if (result.date_start) {
 							inputDateStart.classList.add('error');
@@ -110,6 +110,9 @@ function formHandler(formId) {
 						}
 						if (result.visa_info) {
 							selectVisa.parentNode.classList.add('error');
+						}
+						if (result.doc_type) {
+							selectDocType.parentNode.classList.add('error');
 						}
 						if (result.file_name) {
 							inputFileName.closest('.upload-file').classList.add('error');
@@ -147,7 +150,7 @@ function updateHtmlData(formId) {
 			elementUpdate('#groupDataTourist')
 			break;
 		case 'formTourist':
-			elementUpdate('#groupDataTourist')
+			elementUpdate('#groupDataTourist');
 			elementUpdate('#formTourist input[name="tourist_id"]')
 			const form = document.getElementById('formTourist');
 			form.reset();
@@ -174,7 +177,7 @@ function updateHtmlData(formId) {
 		case 'formExcursion':
 		case 'formOtherService':
 		case 'formServiceUpdate':
-			elementUpdate('#groupDataServices')
+			elementUpdate('#groupDataServices');
 			break;
 		default:
 			reloadPage();
@@ -200,6 +203,8 @@ formHandler('formOtherService');
 formHandler('formFile');
 // Добавить счеёт на оплату
 formHandler('formPaymentInvoice');
+// Формирование договора
+// formHandler('formGenerateDocs');
 
 function modalUpdate(modalUpdateId, formId) {
 	const modal = document.getElementById(modalUpdateId);
@@ -351,6 +356,7 @@ async function elementUpdate(selector) {
 		let newdoc = new DOMParser().parseFromString(html, 'text/html');
 		document.querySelector(selector).outerHTML = newdoc.querySelector(selector).outerHTML;
 		console.log('Элемент ' + selector + ' был успешно обновлен');
+		bootstrapTooltip();
 		return true;
 	} catch (err) {
 		console.log('При обновлении элемента ' + selector + ' произошла ошибка:');

@@ -32,10 +32,10 @@ class FileController extends Controller
             'claim_id' => $request->claim_id,
         ];
         // path вернет строку 'files/originalfilename'
-        $path = $request->file('file_name')->storeAs(
-            'files',
-            $originalFileName
-        );
+        // $path = $request->file('file_name')->storeAs(
+        //     'files',
+        //     $originalFileName
+        // );
         $data['file_name'] = Storage::disk('public')->put('/files', $data['file_name']);
         FileUpload::firstOrCreate($data);
         return response()->json([

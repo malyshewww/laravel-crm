@@ -6,6 +6,7 @@ use App\Helpers\TourPackageHelper;
 use App\Models\Claim;
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\FileUpload;
 use App\Models\Person;
 use App\Models\Tourist;
 use App\Models\Touroperator;
@@ -13,6 +14,7 @@ use App\Models\TourPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -92,7 +94,14 @@ class ClaimController extends Controller
     }
     public function forceDelete($id)
     {
-        Claim::where('id', $id)->withTrashed()->forceDelete();
+        $claim = Claim::where('id', $id)->withTrashed()->first();
+        if (count($claim->file) > 0) {
+            foreach ($claim->file as $key => $item) {
+                Storage::disk('public')->delete($item->file_name);
+                FileUpload::where('id', $item->id)->forceDelete();
+            }
+        }
+        $claim->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);

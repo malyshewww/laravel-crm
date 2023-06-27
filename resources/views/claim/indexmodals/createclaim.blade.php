@@ -2,7 +2,7 @@
 	@slot('modal_id', 'createClaim')
 	@slot('modal_title', Blade::render('Заявка от {{ $date }}', ['date' => date('d.m.Y')]))
 	@slot('modal_class', null)
-	<form action="{{route('claim.store')}}" method="POST" id="formCreateClaim" class="form">
+	<form action="{{route('claim.store')}}" method="POST" id="formCreateClaim">
 		@csrf
 		<input type="hidden" name="id" value="{{count($claims) > 0 ? count($claims) + 1 : 1}}">
 		<input type="hidden" name="manager" value="{{Auth::user()->email}}">

@@ -20,7 +20,8 @@ class CreateFinancePaymentsTable extends Migration
             $table->decimal('tour_price', 11, 2)->unsigned()->nullable(true);
             $table->decimal('comission_price', 11, 2)->unsigned()->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

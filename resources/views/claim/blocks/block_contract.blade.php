@@ -13,15 +13,19 @@
 		</button>
 	</div>
 	@if ($claim->contract)
+		@php
+			$contractList = [
+				['label' => 'ДАТА', 'value' => $claim->contract->date ? $claim->contract->date->format('d.m.Y') : ''],
+				['label' => 'НОМЕР БРОНИ', 'value' => $claim->contract->number ?: '']
+			];
+		@endphp
 		<ul class="item-group__list list">
-			<li class="list__item">
-				<div class="list__label">ДАТА</div>
-				<div class="list__value">{{$claim->contract->date->format('d.m.Y')}}</div>
-			</li>
-			<li class="list__item">
-				<div class="list__label">НОМЕР БРОНИ</div>
-				<div class="list__value">{{$claim->contract->number}}</div>
-			</li>
+			@foreach ($contractList as $item)
+				<li class="list__item">
+					<div class="list__label">{{$item['label']}}</div>
+					<div class="list__value">{{$item['value']}}</div>
+				</li>
+			@endforeach
 		</ul>
 	@endif
 </div>

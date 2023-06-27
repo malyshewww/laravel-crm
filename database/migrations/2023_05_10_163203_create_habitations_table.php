@@ -27,7 +27,8 @@ class CreateHabitationsTable extends Migration
             $table->datetime('datehabitation_start')->nullable(true);
             $table->datetime('datehabitation_end')->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
         });
     }

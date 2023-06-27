@@ -10,31 +10,24 @@
 					<i class="fa-regular fa-plus"> </i>
 					Добавить услугу
 				</button>
+				@php
+					$serviceButtons = [
+						['title' => 'Перелёт', 'modalId' => '#addFlight'],
+						['title' => 'Страховка', 'modalId' => '#addInsurance'],
+						['title' => 'Трансфер', 'modalId' => '#addTransfer'],
+						['title' => 'Виза', 'modalId' => '#addVisa'],
+						['title' => 'Проживание', 'modalId' => '#addHabitation'],
+						['title' => 'Топливный сбор', 'modalId' => '#addFuelSurcharge'],
+						['title' => 'Экскурсионная программа', 'modalId' => '#addExcursionProgram'],
+						['title' => 'Другая услуга', 'modalId' => '#addOtherService'],
+					];
+				@endphp
 				<ul class="dropdown-menu dropdown__menu">
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addFlight">Перелёт</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addInsurance">Страховка</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addTransfer">Трансфер</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addVisa">Виза</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addHabitation">Проживание</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addFuelSurcharge">Топливный сбор</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addExcursionProgram">Экскурсионная программа</button>
-					</li>
-					<li class="dropdown-menu__item">
-						<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target="#addOtherService">Другая услуга</button>
-					</li>
+					@foreach ($serviceButtons as $item)
+						<li class="dropdown-menu__item">
+							<button class="dropdown-menu__button" type="button" data-bs-toggle="modal" data-bs-target={{$item['modalId']}}>{{$item['title']}}</button>
+						</li>
+					@endforeach
 				</ul>
 			</div>
 		</div>

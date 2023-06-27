@@ -48,7 +48,7 @@
 			</div>
 			<div class="tourist-price-content" hidden>
 				@php
-					$arrList = [
+					$financeList = [
 						['title' => 'СТОИМОСТЬ ТУРПАКЕТА ПО КАТАЛОГУ'],
 						['title' => '- КОМИССИОННАЯ']
 					];
@@ -58,7 +58,7 @@
 						<div class="list__label">СКИДКА ДЛЯ ПОКУПАТЕЛЯ (ТУРИСТА)</div>
 						<div class="list__value">0,0 %</div>
 					</li> --}}
-					@foreach ($arrList as $item)
+					@foreach ($financeList as $item)
 					<li>
 						<div class="list__label">{{$item['title']}}</div>
 						<div class="list__value">
@@ -219,10 +219,10 @@
 		</div>
 	</div> --}}
 	<div class="item-group__footer">
-		<button class="btn btn-blue btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addPayTourist">
+		{{-- <button class="btn btn-blue btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#addPayTourist">
 			<i class="fa-regular fa-plus"></i>
 			Платеж от туриста
-		</button>
+		</button> --}}
 		<button class="btn btn-blue btn-primary btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#paymentInvoice">
 			Выставить счет туристу
 		</button>
@@ -306,12 +306,12 @@
 						</div>
 					</li>
 					@php
-						$arrList = [
+						$financeList = [
 							['title' => 'СТОИМОСТЬ ТУРА ДЛЯ ТУРИСТА'],
 							['title' => '- КОМИССИОННАЯ']
 						];
 					@endphp
-					@foreach ($arrList as $item)
+					@foreach ($financeList as $item)
 						<li>
 							<div class="list__label">{{$item['title']}}</div>
 							<div class="list__value">

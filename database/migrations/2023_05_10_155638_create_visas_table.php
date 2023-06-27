@@ -22,7 +22,8 @@ class CreateVisasTable extends Migration
             $table->date('datevisa_start')->nullable(true);
             $table->date('datevisa_end')->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
         });
     }

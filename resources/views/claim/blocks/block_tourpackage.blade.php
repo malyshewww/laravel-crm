@@ -12,46 +12,36 @@
 			{{$claim->tourpackage ? '[изменить]' : '[добавить]'}}
 		</button>
 	</div>
-	@php
-		$start_ts = strtotime($claim->date_start);
-		$end_ts = strtotime($claim->date_end); 
-		$diff = $end_ts - $start_ts; 
-		$resultDiff = round($diff / 86400);
-	@endphp
 	@if ($claim->tourpackage)
+		@php
+			$start_ts = strtotime($claim->date_start);
+			$end_ts = strtotime($claim->date_end); 
+			$diff = $end_ts - $start_ts; 
+			$resultDiff = round($diff / 86400);
+			$countries = TourPackageHelper::country();
+			$cities = TourPackageHelper::city();
+			$currentCity = '';
+			$currentCountry = '';
+			foreach ($cities as $key => $city) {
+				$currentCity = $key === $claim->tourpackage->city_id ? $city['name'] : '';
+			}
+			foreach ($countries as $key => $country) {
+				$currentCountry = $key === $claim->tourpackage->country_id ? $country['name'] : '';
+			}
+			$tourpackageList = [
+				['label' => 'СПО', 'value' => $claim->tourpackage->name ?: ''], 
+				['label' => 'ДАТЫ ТУРА', 'value' => $claim->date_start ? $claim->date_start->format('d.m.Y') : '' . ' - ' .  $claim->date_end ? $claim->date_end->format('d.m.Y') : ''],
+				['label' => 'НАПРАВЛЕНИЕ', 'value' => $currentCity . ' - ' . $currentCountry],
+				['label' => 'НОЧЕЙ', 'value' => $resultDiff . ' ' . Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru')],
+			];
+		@endphp
 		<ul class="item-group__list list">
-			<li class="list__item">
-				<div class="list__label">СПО</div>
-				<div class="list__value">{{$claim->tourpackage->name}}</div>
-			</li>
-			<li class="list__item">
-				<div class="list__label">ДАТЫ ТУРА</div>
-				<div class="list__value">{{$claim->date_start->format('d.m.Y')}} - {{$claim->date_end->format('d.m.Y')}}</div>
-			</li>
-			<li class="list__item">
-				<div class="list__label">НАПРАВЛЕНИЕ</div>
-				<div class="list__value">
-					@php
-						$countries = TourPackageHelper::country();
-						$cities = TourPackageHelper::city();
-					@endphp
-					<span>
-						@foreach ($cities as $key => $city)
-							{{$key === $claim->tourpackage->city_id ? $city['name'] : ''}}
-						@endforeach
-					</span>
-					- 
-					<span>
-						@foreach ($countries as $key => $country)
-							{{$key === $claim->tourpackage->country_id ? $country['name'] : ''}}
-						@endforeach
-					</span>
-				</div>
-			</li>
-			<li class="list__item">
-				<div class="list__label">НОЧЕЙ</div>
-				<div class="list__value">{{$resultDiff}} {{Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru')}}</div>
-			</li>
+			@foreach ($tourpackageList as $item)
+				<li class="list__item">
+					<div class="list__label">{{$item['label']}}</div>
+					<div class="list__value">{{$item['value']}}</div>
+				</li>
+			@endforeach
 		</ul>
 	@endif
 </div>

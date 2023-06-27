@@ -19560,7 +19560,8 @@ table.dataTable td {
   border: 1px solid #e2e2e2;
   border-radius: 0;
   font-size: 14px;
-  min-height: 30px;
+  min-height: 32px;
+  max-height: 32px;
   overflow: hidden;
 }
 
@@ -19864,7 +19865,7 @@ select {
   color: #ffffff;
   cursor: pointer;
   font-family: "OpenSans", sans-serif;
-  border-radius: 0;
+  border-radius: 4px;
 }
 
 .btn i:not(.fa-regular) {
@@ -20125,11 +20126,12 @@ input[type=date]::before {
 
 .field-group__input,
 .field-group__textarea {
-  padding: 5px;
+  padding: 4px;
   font-size: inherit;
   color: #000000;
   width: 100%;
   border: 1px solid #e2e2e2;
+  min-height: 32px;
 }
 
 .field-group__input:focus,
@@ -20642,6 +20644,7 @@ div.dt-buttons button {
   -ms-flex-align: center;
   align-items: center;
   gap: 10px;
+  width: 42%;
 }
 
 .modal .modal-text {
@@ -21259,6 +21262,11 @@ div.dt-buttons button {
 
 .dropdown-menu__item:hover {
   color: #0092ff;
+}
+
+.nav-item.active .nav-link {
+  color: #000000;
+  font-weight: 600;
 }
 
 .footer {

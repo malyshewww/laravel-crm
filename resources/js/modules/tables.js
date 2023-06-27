@@ -4,6 +4,7 @@ import 'datatables.net-buttons-dt';
 import 'datatables.net-buttons/js/buttons.html5.mjs';
 import * as JSZip from "jszip";
 import moment from 'moment';
+import { bootstrapTooltip } from './bootstrapTooltip';
 window.JSZip = JSZip;
 
 const mainTable = document.getElementById('tour-table');
@@ -205,17 +206,9 @@ function initDataTable(data) {
 		],
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
-			initBootstrapTooltip();
+			bootstrapTooltip();
 		}
 	})
-}
-function initBootstrapTooltip() {
-	let tooltipTriggerList = [].slice.call(
-		document.querySelectorAll('[data-bs-toggle="tooltip"]')
-	);
-	let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new bootstrap.Tooltip(tooltipTriggerEl);
-	});
 }
 let newArr = [];
 function fetchTable(path, status, form) {
@@ -288,7 +281,7 @@ function filterQuery(form, status) {
 			tourTable.clear();
 			tourTable.rows.add(data);
 			tourTable.draw();
-			initBootstrapTooltip();
+			bootstrapTooltip();
 		})
 		.catch(error => console.log(error.message))
 		.finally(() => hideLoading())
@@ -304,10 +297,9 @@ function filterTable() {
 			const thisForm = event.target;
 			displayLoading();
 			tableStatus === 'all' ? filterQuery(thisForm, 'all') : filterQuery(thisForm, 'archived')
-			setURLSearchParam(thisForm);
+			// setURLSearchParam(thisForm);
 		})
 		buttonReset.addEventListener('click', (event) => {
-			formFilter.reset();
 			if (location.href.includes('?')) {
 				history.pushState({}, null, location.href.split('?')[0]);
 			}
@@ -318,7 +310,7 @@ function filterTable() {
 			inputDateStart.value = '';
 			inputDateEnd.value = '';
 			displayLoading();
-			filterQuery(formFilter);
+			// filterQuery(formFilter);
 		})
 	}
 }

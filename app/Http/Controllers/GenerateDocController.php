@@ -6,6 +6,7 @@ use App\Models\Claim;
 use Illuminate\Http\Request;
 use App\Helpers\ServiceHelper;
 use App\Helpers\TouristHelper;
+use Illuminate\Support\Facades\Validator;
 use NumberFormatter;
 use PhpOffice\PhpWord\ComplexType\TblWidth;
 use PhpOffice\PhpWord\Element\Table;
@@ -13,14 +14,26 @@ use PhpOffice\PhpWord\Element\TextRun;
 use PhpOffice\PhpWord\SimpleType\TblWidth as SimpleTypeTblWidth;
 use Ramsey\Uuid\Type\Decimal;
 
-// use PhpOffice\PhpWord\IOFactory;
-// use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 // use PhpOffice\PhpWord\Writer\Word2007;
 
 class GenerateDocController extends Controller
 {
     public function docExport(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'doc_type' => 'required',
+        // ]);
+        // $json = [];
+        // $errors = $validator->errors();
+        // if ($validator->fails()) {
+        //     $json['status'] = 'error';
+        //     foreach ($errors->getMessages() as $key => $message) {
+        //         $json[$key] = 'error';
+        //     }
+        //     return response()->json($json);
+        // }
         $docType = $request->doc_type;
         // Creating the new document...
         $fileName = '';
@@ -512,13 +525,13 @@ class GenerateDocController extends Controller
         $int_part = number_format(intval($num), 0, ' ', ' ');
         $dec_part = $num * 100 % 100;
         $strPriceNumber = $int_part . ' руб.' . ', ' . $dec_part . ' коп.';
-        $strPriceWord = num2str('10.12');
+        $strPriceWord = num2str($resultSumRUB);
         $phpWord->setValue('priceNumber', $strPriceNumber);
         $phpWord->setValue('priceWord', $strPriceWord);
         // $wordPdf = \PhpOffice\PhpWord\IOFactory::load($fileName . ".docx");
         // $pdfWriter = \PhpOffice\PhpWord\IOFactory::createWriter($wordPdf, 'PDF');
         // $pdfWriter->save($fileName . ".pdf");
-        $phpWord->saveAs('123' . '.docx');
-        return response()->download('123' . '.docx')->deleteFileAfterSend(true);
+        $phpWord->saveAs($fileName . '.docx');
+        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
 }

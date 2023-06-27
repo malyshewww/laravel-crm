@@ -9,14 +9,22 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<!-- Left Side Of Navbar -->
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item active">
-							<a class="nav-link" href="{{route('home')}}">Все заявки<span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{{route('claim.archived')}}">Архивные</a>
-						</li>
-					</ul>
+					@php
+						$navigation = [
+							['title' => 'Все заявки', 'path' => route('home')],
+							['title' => 'Архивные', 'path' => route('claim.archived')],
+						];
+					@endphp
+					@guest
+					@else
+						<ul class="navbar-nav mr-auto">
+							@foreach ($navigation as $item)
+								<li class="nav-item{{url()->current() === $item['path'] ? ' active' : ''}}">
+									<a class="nav-link" href="{{$item['path']}}">{{$item['title']}}</a>
+								</li>
+							@endforeach
+						</ul>
+					@endguest
 					<!-- Right Side Of Navbar -->
 					<ul class="navbar-nav ms-auto">
 						<!-- Authentication Links -->

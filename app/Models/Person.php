@@ -22,6 +22,7 @@ class Person extends Model
         'person_patronymic',
         'claim_id'
     ];
+    protected $primaryKey = 'id';
     public function claim()
     {
         return $this->belongsTo(Claim::class, 'claim_id', 'id');

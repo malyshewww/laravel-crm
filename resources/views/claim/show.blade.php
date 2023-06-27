@@ -82,13 +82,12 @@
 								<div class="data-claim__group">
 									<div class="row"> 
 										<div class="col col-lg-4 col-12">
-											<form action="{{route('docExport')}}" method="post">
+											<form action="{{route('docExport')}}" method="post" id="formGenerateDocs">
 												@csrf
 												<input type="hidden" name="id" value="{{$claim->id}}">
 												<div class="field-group__item">
 													<label class="field-group__label">Выберите тип договора</label>
-													<select class="choices" name="doc_type" id="choiceTypeDoc">
-														<option value="" selected></option>
+													<select class="choices" name="doc_type" id="choiceTypeDoc" required>
 														<option value="doc_avia">Авиатуры</option>
 														<option value="doc_bus">Автобусные туры</option>
 													</select>
