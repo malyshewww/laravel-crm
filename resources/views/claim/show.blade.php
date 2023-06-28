@@ -87,7 +87,7 @@
 												<input type="hidden" name="id" value="{{$claim->id}}">
 												<div class="field-group__item">
 													<label class="field-group__label">Выберите тип договора</label>
-													<select class="choices" name="doc_type" id="choiceTypeDoc" required>
+													<select class="choices" name="doc_type" id="choiceTypeDoc">
 														<option value="doc_avia">Авиатуры</option>
 														<option value="doc_bus">Автобусные туры</option>
 													</select>
@@ -140,7 +140,4 @@
 	@include('claim.finance.modals.update_payment_invoice')
 
 	@include('claim.showmodals.record_action')
-@endsection
-@section('page-script')
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 @endsection

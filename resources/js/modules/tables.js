@@ -4,7 +4,7 @@ import 'datatables.net-buttons-dt';
 import 'datatables.net-buttons/js/buttons.html5.mjs';
 import * as JSZip from "jszip";
 import moment from 'moment';
-import { bootstrapTooltip } from './bootstrapTooltip';
+import { bootstrapTooltip } from './bootstrap/bootstrapTooltip';
 window.JSZip = JSZip;
 
 const mainTable = document.getElementById('tour-table');
@@ -59,7 +59,8 @@ const tableConfig = {
 	buttons: [
 		{
 			extend: 'excelHtml5',
-			text: 'Скачать .xlxs',
+			text: `<i class="fa-solid fa-file-excel"></i>Скачать .xlxs`,
+			className: 'btn btn-download',
 			title: `Таблица заявок ${new Date().toISOString().slice(0, 10)}`
 		},
 	]
@@ -291,7 +292,23 @@ function filterTable() {
 	const formFilter = document.getElementById('formFilter');
 	let tableStatus = mainTable ? mainTable.dataset.status : null;
 	if (formFilter) {
-		const buttonReset = formFilter.querySelector('button[type="reset"]')
+		const buttonReset = formFilter.querySelector('button[type="reset"]');
+		const inputFio = formFilter.fio;
+		const inputDateStart = formFilter.date_start;
+		const inputDateEnd = formFilter.date_end;
+		const inputs = formFilter.querySelectorAll('.field-group__input')
+		buttonReset.setAttribute('disabled', 'true');
+		const isPositiveValue = (e) => {
+			return e.value === "";
+		}
+		[...inputs].forEach((input, index) => {
+			input.addEventListener('change', (event) => {
+				[...inputs].every(isPositiveValue) ? buttonReset.setAttribute('disabled', 'true') : buttonReset.removeAttribute('disabled')
+			})
+			input.addEventListener('input', (event) => {
+				[...inputs].every(isPositiveValue) ? buttonReset.setAttribute('disabled', 'true') : buttonReset.removeAttribute('disabled')
+			})
+		})
 		formFilter.addEventListener('submit', (event) => {
 			event.preventDefault();
 			const thisForm = event.target;
@@ -303,14 +320,11 @@ function filterTable() {
 			if (location.href.includes('?')) {
 				history.pushState({}, null, location.href.split('?')[0]);
 			}
-			const inputFio = formFilter.fio;
-			const inputDateStart = formFilter.date_start;
-			const inputDateEnd = formFilter.date_end;
 			inputFio.value = '';
 			inputDateStart.value = '';
 			inputDateEnd.value = '';
 			displayLoading();
-			// filterQuery(formFilter);
+			filterQuery(formFilter);
 		})
 	}
 }

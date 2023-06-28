@@ -37,10 +37,12 @@ class GenerateDocController extends Controller
         $docType = $request->doc_type;
         // Creating the new document...
         $fileName = '';
-        if ($docType == 'doc_avia') {
+        if ($docType === 'doc_avia') {
             $fileName = 'contract_avia';
-        } else if ($docType == 'doc_bus') {
+        } else if ($docType === 'doc_bus') {
             $fileName = 'contract_bus';
+        } else if ($docType === null) {
+            $fileName = 'contract_avia';
         }
         $phpWord = new \PhpOffice\PhpWord\TemplateProcessor('contracts/' . $fileName . '.docx');
         $phpOfficeWord = new \PhpOffice\PhpWord\PhpWord();

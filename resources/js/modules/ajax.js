@@ -6,7 +6,7 @@ import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
-import { bootstrapTooltip } from "./bootstrapTooltip.js";
+import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -123,6 +123,9 @@ function formHandler(formId) {
 				.catch((error) => {
 					buttonSubmit.removeAttribute('disabled');
 				})
+				.finally(() => {
+					buttonSubmit.removeAttribute('disabled');
+				})
 		})
 	}
 }
@@ -206,6 +209,17 @@ formHandler('formPaymentInvoice');
 // Формирование договора
 // formHandler('formGenerateDocs');
 
+const setAttributeDisabled = (items) => {
+	[...items].forEach((item) => {
+		item.setAttribute('disabled', 'true')
+	});
+}
+const removeAttributeDisabled = (items) => {
+	[...items].forEach((item) => {
+		item.removeAttribute('disabled');
+	});
+}
+
 function modalUpdate(modalUpdateId, formId) {
 	const modal = document.getElementById(modalUpdateId);
 	if (modal) {
@@ -220,6 +234,7 @@ function modalUpdate(modalUpdateId, formId) {
 			const modalBody = thisModal.querySelector('.modal__body');
 			const modalTitle = thisModal.querySelector('.modal__title');
 			const modalContent = thisModal.querySelector('.modal-content');
+			const modalButtons = thisModal.querySelectorAll('.modal__buttons button')
 			const form = thisModal.querySelector('form');
 			const inputClaimId = form.claim_id;
 			const inputTouristId = form.tourist_id;
@@ -230,7 +245,8 @@ function modalUpdate(modalUpdateId, formId) {
 			inputTouristId ? inputTouristId.value = dataId : null;
 			inputRecordId ? inputRecordId.value = dataId : null;
 			Loader.loader.setAttribute('class', 'loader');
-			modalContent.appendChild(Loader.loader)
+			modalContent.appendChild(Loader.loader);
+			setAttributeDisabled(modalButtons);
 			Loader.displayLoading();
 			fetch(`${dataPath}`, {
 				headers: {
@@ -255,11 +271,16 @@ function modalUpdate(modalUpdateId, formId) {
 						}
 					})
 					initDatePicker();
+					removeAttributeDisabled(modalButtons)
 				})
 				.catch((error) => {
-					console.log(error);;
+					console.log(error);
+					removeAttributeDisabled(modalButtons)
+					Loader.hideLoading()
+					Loader.loader.remove();
 				})
 				.finally(() => {
+					removeAttributeDisabled(modalButtons)
 					Loader.hideLoading()
 					Loader.loader.remove();
 				})

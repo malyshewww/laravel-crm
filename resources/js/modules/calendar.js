@@ -30,6 +30,16 @@ export function initDatePicker(type) {
 			input.classList.remove('error');
 		}
 	}
+	const checkBtnAttributeDisabled = (inputStartDate, inputEndDate) => {
+		const form = document.getElementById('formFilter');
+		if (form) {
+			const inputFio = form.querySelector('input#fio');
+			const btnReset = form.querySelector('button[type="reset"]');
+			inputStartDate.value === '' && inputEndDate.value === '' && inputFio.value === ''
+				? btnReset.setAttribute('disabled', 'true')
+				: btnReset.removeAttribute('disabled')
+		}
+	}
 	const rangeDateConfig = {
 		position: 'bottom right',
 		buttons: ['today', 'clear'],
@@ -155,6 +165,10 @@ export function initDatePicker(type) {
 						minDate: date
 					})
 					removeError(inputAltFieldStart);
+					checkBtnAttributeDisabled(inputAltFieldStart, inputAltFieldEnd);
+				},
+				clear: ({ opts }) => {
+					console.log(opts);
 				},
 				...startConfig
 				// selectDates: [inputAltFieldStart.value != '' ? inputAltFieldStart.value : '']
@@ -172,6 +186,7 @@ export function initDatePicker(type) {
 						maxDate: date
 					})
 					removeError(inputAltFieldEnd);
+					checkBtnAttributeDisabled(inputAltFieldStart, inputAltFieldEnd);
 				},
 				...endConfig
 				// selectDates: [inputAltFieldEnd.value != '' ? inputAltFieldEnd.value : '']

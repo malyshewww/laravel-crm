@@ -43,12 +43,12 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+// Route::get('/', [HomeController::class, 'index']);
 
 // Авторизация
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Маршруты аутентификации...
 Route::get('auth/login', [Auth\AuthController::class, 'getLogin']);

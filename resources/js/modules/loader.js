@@ -5,7 +5,7 @@ function displayLoading() {
 		// to stop loading after some time
 		setTimeout(() => {
 			loader.setAttribute("hidden", true);
-		}, 5000);
+		}, 3000);
 	}
 }
 function hideLoading() {

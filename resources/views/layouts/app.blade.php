@@ -8,7 +8,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="{{asset('styles/main.min.css')}}">
     <script>
         var BASE_URL = '{{ url("/") }}';
@@ -30,7 +29,6 @@
         </div>
     </div>
     <script src="{{asset('js/jquery.min.js')}}"></script>
-    {{-- <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script> --}}
     @yield('page-script')
     <script src="{{asset('js/app.js')}}"></script>
 </body>
