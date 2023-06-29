@@ -5,7 +5,7 @@
 	<form action="{{route('claim.store')}}" method="POST" id="formCreateClaim">
 		@csrf
 		<input type="hidden" name="id" value="{{count($claims) > 0 ? count($claims) + 1 : 1}}">
-		<input type="hidden" name="manager" value="{{Auth::user()->email}}">
+		<input type="hidden" name="manager" value="{{Auth::user()->name}}">
 		<div class="modal__body">
 			<div class="field-group">
 				<div class="row"> 

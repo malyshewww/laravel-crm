@@ -205,7 +205,7 @@ class ClaimController extends Controller
                 }
             }
             if (isset($claim->manager)) {
-                $manager = Auth::user()->name;
+                $manager = $claim->manager;
             }
             $arr[] = [
                 'id' => $claim->id,

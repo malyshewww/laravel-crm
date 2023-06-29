@@ -63,11 +63,9 @@ const tableConfig = {
 			className: 'btn btn-download',
 			title: `Таблица заявок ${new Date().toISOString().slice(0, 10)}`
 		},
-	]
+	],
 }
 let tourTable;
-
-const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 const tableAdditionalColumns = {
 	columnActionFirst: (status, data) => {
 		let dataItem = data
@@ -208,9 +206,13 @@ function initDataTable(data) {
 		"initComplete": function (settings, json) {
 			changePostitionControlsDataTable();
 			bootstrapTooltip();
-		}
+		},
+		"drawCallback": function (settings) {
+			bootstrapTooltip();
+		},
 	})
 }
+
 let newArr = [];
 function fetchTable(path, status, form) {
 	let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

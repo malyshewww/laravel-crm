@@ -20,8 +20,7 @@ mix.browserSync({
  |
  */
 
-mix.js('resources/js/app.js', 'public/js/app.js')
-    .minify('app.js');
+mix.js('resources/js/app.js', 'public/js/')
     // .version();
     // .sass('resources/sass/app.scss', 'public/css').options({
     //     processCssUrls: false
