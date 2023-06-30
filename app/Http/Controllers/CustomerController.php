@@ -144,7 +144,8 @@ class CustomerController extends Controller
     public function loadModal($id, $action)
     {
         $claim = Claim::findOrFail($id);
-        return view('claim.customer.modal_update_customer', compact('claim'))->render();
+        $persons = Person::get();
+        return view('claim.customer.modal_update_customer', compact('claim', 'persons'))->render();
     }
     // public function customerData($id)
     // {

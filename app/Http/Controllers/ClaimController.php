@@ -26,11 +26,6 @@ class ClaimController extends Controller
         $claims = Claim::get();
         return view('claim.index', compact('claims'));
     }
-    public function get_comment(Request $request, $id)
-    {
-        $claimData = Claim::find($id);
-        return response()->json($claimData);
-    }
     public function show(Claim $claim)
     {
         $tourists = Tourist::get();
@@ -118,7 +113,7 @@ class ClaimController extends Controller
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
         $fioTourist = $request->input('fio');
-        $result = $status === 'all' ? Claim::get() : Claim::onlyTrashed()->get();
+        $result = $status === 'all' ? Claim::paginate(15) : Claim::onlyTrashed()->paginate(15);
         if (isset($dateStart) || isset($dateEnd) || isset($fioTourist) || isset($status)) {
             $from = $dateStart ? date($dateStart) : '';
             $to = $dateEnd ? date($dateEnd) : '';

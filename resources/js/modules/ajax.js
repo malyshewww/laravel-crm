@@ -7,6 +7,7 @@ import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
 import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
+import { getPersonItems } from "../app.js";
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -258,6 +259,7 @@ function modalUpdate(modalUpdateId, formId) {
 				.then((text) => {
 					dataTitle ? modalTitle.textContent = dataTitle : null;
 					modalBody.innerHTML = text;
+					getPersonItems();
 					formHandler(formId);
 					getTranslitValues();
 					hiddenField();

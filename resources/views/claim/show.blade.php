@@ -11,7 +11,7 @@
 						<h1 class="claim__title">
 							Заявка № <span class="claim-number">{{$claim->id}}-{{date('Y')}}</span>
 						</h1>
-						<button class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
+						<button type="button" class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
 						<div class="claim__subtitle">
 							<strong>{{Auth::user()->name}}</strong> создана: {{$claim->created_at->format('d.m.Y H:i:s')}} МСК.
 						</div>

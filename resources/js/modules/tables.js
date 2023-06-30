@@ -1,5 +1,5 @@
 import DataTable from 'datatables.net-dt';
-import pdfmake from 'pdfmake';
+// import pdfmake from 'pdfmake';
 import 'datatables.net-buttons-dt';
 import 'datatables.net-buttons/js/buttons.html5.mjs';
 import * as JSZip from "jszip";
@@ -53,7 +53,7 @@ const tableConfig = {
 	},
 	"pagingType": "full_numbers",
 	"aLengthMenu": [[1, 5, 10, 15, 25, 50, 100, 200 - 1], [1, 5, 10, 15, 25, 50, 100, 200, "All"]],
-	"iDisplayLength": 10,
+	"iDisplayLength": 15,
 	order: [[0, 'desc']],
 	"dom": 'lBfrtip',
 	buttons: [

@@ -9,7 +9,7 @@ class Touroperator extends Model
 {
     use HasFactory;
     protected $table = 'touroperators';
-    protected $fillable = ['title', 'claim_id'];
+    protected $fillable = ['title', 'claim_id', 'search_terms'];
 
     public function claim()
     {

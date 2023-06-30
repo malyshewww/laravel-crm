@@ -12,6 +12,36 @@ import './modules/number-format';
 import './modules/tables';
 import './modules/ajax';
 
+export function getPersonItems() {
+	const selectPersonItems = document.getElementById('personItems');
+	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	if (selectPersonItems) {
+		selectPersonItems.addEventListener('change', (event) => {
+			const thisSelect = event.target;
+			if (thisSelect.value !== '') {
+				const personId = thisSelect.value;
+				const parent = thisSelect.closest('#person');
+				const rowWrapper = parent.querySelector('.row-wrapper');
+				console.log(rowWrapper);
+				const path = thisSelect.value === '0' ? `/persons/${personId}/new` : `/persons/${personId}/old`;
+				(async () => {
+					try {
+						const response = await fetch(path, {
+							headers: {
+								"X-CSRF-Token": token
+							},
+						});
+						const html = await response.text();
+						rowWrapper.innerHTML = html;
+					} catch (error) {
+						console.log('error');
+					}
+				})();
+			}
+		})
+	}
+}
+getPersonItems();
 document.addEventListener('click', documentActions);
 
 function documentActions(event) {
@@ -64,14 +94,17 @@ const btnCopy = document.getElementById('btn-copy');
 if (btnCopy) {
 	const claimNumber = document.querySelector('.claim-number');
 	const alertNumber = document.querySelector('.alert-number');
-	btnCopy.addEventListener('click', () => {
+	btnCopy.addEventListener('click', (event) => {
+		const thisBtn = event.currentTarget;
 		navigator.clipboard.writeText(claimNumber.textContent)
-		btnCopy.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
+		thisBtn.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
+		thisBtn.setAttribute('disabled', 'true');
 		if (alertNumber) {
 			alertNumber.style.transform = 'translate(-50%, 0%)';
 			setTimeout(() => {
 				alertNumber.style.transform = 'translate(-50%, -150%)';
-				btnCopy.querySelector("i").setAttribute("class", "fa-regular fa-paste");
+				thisBtn.querySelector("i").setAttribute("class", "fa-regular fa-paste");
+				thisBtn.removeAttribute('disabled');
 			}, 2000)
 		}
 	})
