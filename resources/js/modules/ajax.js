@@ -1,13 +1,14 @@
 import Choices from "choices.js";
 import { getTranslitValues } from "./translit.js";
-import { initChoices, choiceConfig, getSelectData } from "./choices.js";
+import { initChoices, choiceConfig, getSelectData } from "./select-choices.js";
 import { initDatePicker } from "./calendar.js";
 import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
 import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
-import { getPersonItems } from "../app.js";
+import { getCustomerDataList, getPersonItems } from "./customers.js";
+import { removeAttributeDisabled, setAttributeDisabled } from "./common.js";
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -52,7 +53,7 @@ function formHandler(formId) {
 	const form = document.getElementById(formId);
 	if (form) {
 		const formId = form.getAttribute('id');
-		const route = form.getAttribute('action');
+		let route = form.getAttribute('action');
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
 			const thisForm = event.target;
@@ -210,16 +211,7 @@ formHandler('formPaymentInvoice');
 // Формирование договора
 // formHandler('formGenerateDocs');
 
-const setAttributeDisabled = (items) => {
-	[...items].forEach((item) => {
-		item.setAttribute('disabled', 'true')
-	});
-}
-const removeAttributeDisabled = (items) => {
-	[...items].forEach((item) => {
-		item.removeAttribute('disabled');
-	});
-}
+
 
 function modalUpdate(modalUpdateId, formId) {
 	const modal = document.getElementById(modalUpdateId);
@@ -241,7 +233,7 @@ function modalUpdate(modalUpdateId, formId) {
 			const inputTouristId = form.tourist_id;
 			const inputRecordId = form.record_id;
 			const token = form._token;
-			form.setAttribute('action', dataUrl);
+			form.setAttribute('action', `${dataUrl}`);
 			inputClaimId ? inputClaimId.value = dataClaimId : null;
 			inputTouristId ? inputTouristId.value = dataId : null;
 			inputRecordId ? inputRecordId.value = dataId : null;
@@ -259,7 +251,8 @@ function modalUpdate(modalUpdateId, formId) {
 				.then((text) => {
 					dataTitle ? modalTitle.textContent = dataTitle : null;
 					modalBody.innerHTML = text;
-					getPersonItems();
+					getCustomerDataList('personItems', 'persons');
+					getCustomerDataList('companyItems', 'companies');
 					formHandler(formId);
 					getTranslitValues();
 					hiddenField();

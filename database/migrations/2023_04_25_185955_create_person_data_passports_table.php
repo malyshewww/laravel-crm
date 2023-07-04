@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonPassportsTable extends Migration
+class CreatePersonDataPassportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePersonPassportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('person_passports', function (Blueprint $table) {
+        Schema::create('person_data_passports', function (Blueprint $table) {
             $table->id();
             $table->integer('person_passport_series')->nullable(true);
             $table->integer('person_passport_number')->nullable(true);
@@ -22,7 +22,7 @@ class CreatePersonPassportsTable extends Migration
             $table->string('person_passport_code')->nullable(true);
             $table->string('person_passport_address')->nullable(true);
 
-            $table->foreignId('person_id')->nullable()->constrained('persons')->onDelete('cascade');
+            $table->foreignId('person_id')->constrained('persons')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ class CreatePersonPassportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('person_passports');
+        Schema::dropIfExists('person_data_passports');
     }
 }

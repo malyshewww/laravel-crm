@@ -183,10 +183,10 @@ function setSelectOptions(select, selectData, modalId) {
 	const modal = document.getElementById(modalId);
 	if (select) {
 		let choice = new Choices(select, choiceConfig)
-		modal.addEventListener('shown.bs.modal', (event) => {
+		modal.addEventListener('shown.bs.modal', () => {
 			choice.setChoices(selectData, 'value', 'label');
 		})
-		modal.addEventListener('hidden.bs.modal', (event) => {
+		modal.addEventListener('hidden.bs.modal', () => {
 			choice.clearChoices();
 		})
 	}

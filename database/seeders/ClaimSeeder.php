@@ -14,6 +14,6 @@ class ClaimSeeder extends Seeder
      */
     public function run()
     {
-        Claim::factory(1500)->create();
+        Claim::factory(50)->create();
     }
 }

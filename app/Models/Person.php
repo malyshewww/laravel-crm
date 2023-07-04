@@ -29,18 +29,18 @@ class Person extends Model
     }
     public function commons()
     {
-        return $this->hasOne(PersonCommons::class);
+        return $this->hasOne(PersonDataCommons::class);
     }
     public function passport()
     {
-        return $this->hasOne(PersonPassport::class);
+        return $this->hasOne(PersonDataPassport::class);
     }
     public function certificate()
     {
-        return $this->hasOne(PersonCertificate::class);
+        return $this->hasOne(PersonDataCertificate::class);
     }
     public function internationalPassport()
     {
-        return $this->hasOne(PersonInternationalPassport::class);
+        return $this->hasOne(PersonDataInternationalPassport::class);
     }
 }

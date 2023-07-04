@@ -9,7 +9,7 @@ class PersonController extends Controller
 {
     public function personData($id, $action)
     {
-        if ($action == 'old') {
+        if ($action === 'old') {
             $person = Person::findOrFail($id);
             return view('claim.customer.modal_customer_person', compact('person'))->render();
         } else {

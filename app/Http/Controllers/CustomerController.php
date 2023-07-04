@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CustomerRequest;
 use App\Models\Claim;
 use App\Models\Company;
-use App\Models\CompanyDataBank;
-use App\Models\CompanyDataContact;
-use App\Models\CompanyDataRegister;
 use App\Models\Customer;
 use App\Models\Person;
-use App\Models\PersonCertificate;
-use App\Models\PersonCommons;
-use App\Models\PersonInternationalPassport;
-use App\Models\PersonPassport;
+use App\Models\PersonDataCertificate;
+use App\Models\PersonDataCommons;
+use App\Models\PersonDataInternationalPassport;
+use App\Models\PersonDataPassport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Stmt\Foreach_;
 
 class CustomerController extends Controller
 {
@@ -70,7 +66,7 @@ class CustomerController extends Controller
                 'person_email' => $request->person_email,
                 'person_id' => $request->person_id,
             ];
-            PersonCommons::updateOrCreate([
+            PersonDataCommons::updateOrCreate([
                 'person_id' => $request->person_id,
             ], $personCommonsFields);
             // // Данные национального паспорта заказчика
@@ -83,7 +79,7 @@ class CustomerController extends Controller
                 'person_passport_address' => $request->person_passport_address,
                 'person_id' => $request->person_id,
             ];
-            PersonPassport::updateOrCreate([
+            PersonDataPassport::updateOrCreate([
                 'person_id' => $request->person_id,
             ], $personPassportFields);
             // // Данные свидетельства о рождении заказчика
@@ -94,7 +90,7 @@ class CustomerController extends Controller
                 'person_certificate_issued' => $request->person_certificate_issued,
                 'person_id' => $request->person_id,
             ];
-            PersonCertificate::updateOrCreate([
+            PersonDataCertificate::updateOrCreate([
                 'person_id' => $request->person_id,
             ], $personCertificateFields);
             // // Данные заграничного паспорта заказчика
@@ -106,7 +102,7 @@ class CustomerController extends Controller
                 'person_international_passport_issued' => $request->person_international_passport_issued,
                 'person_id' => $request->person_id,
             ];
-            PersonInternationalPassport::updateOrCreate([
+            PersonDataInternationalPassport::updateOrCreate([
                 'person_id' => $request->person_id,
             ], $personInternationalPassportFields);
             return response()->json([
@@ -145,7 +141,13 @@ class CustomerController extends Controller
     {
         $claim = Claim::findOrFail($id);
         $persons = Person::get();
-        return view('claim.customer.modal_update_customer', compact('claim', 'persons'))->render();
+        $companies = Company::get();
+        return view('claim.customer.modal_update_customer', compact('claim', 'persons', 'companies'))->render();
+    }
+    public function search(Request $request)
+    {
+        $persons = Person::get();
+        return json_encode($persons, true);
     }
     // public function customerData($id)
     // {

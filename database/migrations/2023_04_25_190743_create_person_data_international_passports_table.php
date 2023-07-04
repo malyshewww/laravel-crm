@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonInternationalPassportsTable extends Migration
+class CreatePersonDataInternationalPassportsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePersonInternationalPassportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('person_international_passports', function (Blueprint $table) {
+        Schema::create('person_data_international_passports', function (Blueprint $table) {
             $table->id();
 
             $table->integer('person_international_passport_series')->nullable(true);
@@ -22,7 +22,7 @@ class CreatePersonInternationalPassportsTable extends Migration
             $table->date('person_international_passport_period')->nullable(true);
             $table->text('person_international_passport_issued')->nullable(true);
 
-            $table->foreignId('person_id')->nullable()->constrained('persons')->onDelete('cascade');
+            $table->foreignId('person_id')->constrained('persons')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ class CreatePersonInternationalPassportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('person_international_passports');
+        Schema::dropIfExists('person_data_international_passports');
     }
 }

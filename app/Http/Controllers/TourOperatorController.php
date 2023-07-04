@@ -27,7 +27,7 @@ class TourOperatorController extends Controller
         $touroperators = Touroperator::orderBy('id', 'DESC')->get();
         if ($claim->touroperator) {
             $touroperator = Touroperator::findOrFail($claim->touroperator->id);
-            return view('claim.touroperator.modals.touroperator_update', compact('touroperator'))->render();
+            return view('claim.touroperator.modals.touroperator_update', compact('claim', 'touroperators'))->render();
         } else {
             return view('claim.touroperator.modals.touroperator_create', compact('touroperators'))->render();
         }

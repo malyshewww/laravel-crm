@@ -1,3 +1,6 @@
+{{-- <button type="submit" class="test-button" form="my-form" formmethod="post" formaction="/something.php">
+   Submit
+</button> --}}
 <div class="field-group">
 	<div class="row">
 		<div class="col-12">
@@ -9,7 +12,7 @@
 						$customers = CustomerHelper::customer();
 					@endphp
 					@foreach ($customers as $customer)
-						<option 
+						<option
 							{{$claim->customer && $claim->customer->type === $customer['type'] ? ' selected' : ''}}
 							value="{{$customer['type']}}">{{$customer['title']}}</option>
 					@endforeach
@@ -18,15 +21,16 @@
 		</div>
 		<div id="tabContentModal">
 			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'person' ? ' isOpen' : ''}}" id="person" data-tab-content="person">
-				<div class="col-12">
+				<div class="col-12 mb-2">
 					<div class="field-group__item">
-						<label class="field-group__label">Список</label>
+						<label class="field-group__label">Список физ.лиц</label>
 						<select data-select name="person_items" id="personItems" multiple select-one>
-							<option value="0">Новый</option>
-							@foreach ($persons as $person)
-								<option 
-									value="{{$person->id}}">{{$person->person_surname . ' ' . $person->person_name . ' ' . $person->person_patronymic}}
-								</option>
+							<option value="">Начните вводить фамилию</option>
+							<option value="0">0. Новый</option>
+							@foreach ($persons as $key => $person)
+									<option 
+										value="{{$person->id}}">{{$key+1}}. {{$person->person_surname . ' ' . $person->person_name . ' ' . $person->person_patronymic}}
+									</option>
 							@endforeach
 						</select>
 					</div>
@@ -400,161 +404,176 @@
 				</div>
 			</div>
 			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'company' ? ' isOpen' : ''}}" id="company" data-tab-content="company">
-				<div class="row align-items-end">
-					<div class="col-lg-3 col-md-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Наименование банка</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_bank"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_bank : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Бик</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_bik"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_bik : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Р/с</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_rs"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_rs : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-3 col-md-6">
-						<div class="field-group__item">
-							<label class="field-group__label">К/с</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_ks"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_ks : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Полное наименование юр.лица</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_fullname"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_fullname : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Сокращенное наименование юр.лица</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_shortname"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_shortname : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Юридический адрес</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_address"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_address : ''}}">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="field-group__item">
-							<label class="field-group__label">Фактический адрес</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_actual_address"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_actual_address : ''}}">
-							</div>
-						</div>
+				<div class="col-12 mb-2">
+					<div class="field-group__item">
+						<label class="field-group__label">Список юр. лиц</label>
+						<select data-select name="company_items" id="companyItems" multiple select-one>
+							<option value="0">0. Новый</option>
+							@foreach ($companies as $key => $company)
+								<option 
+									value="{{$company->id}}">{{$key+1}}. {{$company->company_fullname}}
+								</option>
+							@endforeach
+						</select>
 					</div>
 				</div>
-				<hr>
-				<div class="row"> 
-					<div class="col-lg-4">
-						<div class="field-group__item">
-							<label class="field-group__label">КПП</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_kpp"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_kpp : ''}}">
+				<div class="row-wrapper">
+					<div class="row align-items-end">
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Наименование банка</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_bank"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_bank : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Бик</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_bik"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_bik : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Р/с</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_rs"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_rs : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-6">
+							<div class="field-group__item">
+								<label class="field-group__label">К/с</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_ks"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_ks : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Полное наименование юр.лица</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_fullname"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_fullname : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Сокращенное наименование юр.лица</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_shortname"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_shortname : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Юридический адрес</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_address"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_address : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="field-group__item">
+								<label class="field-group__label">Фактический адрес</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_actual_address"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_actual_address : ''}}">
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-4">
-						<div class="field-group__item">
-							<label class="field-group__label">ИНН</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_inn"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_inn : ''}}">
+					<hr>
+					<div class="row"> 
+						<div class="col-lg-4">
+							<div class="field-group__item">
+								<label class="field-group__label">КПП</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_kpp"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_kpp : ''}}">
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="field-group__item">
-							<label class="field-group__label">ОГРН</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_ogrn"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_ogrn : ''}}">
+						<div class="col-lg-4">
+							<div class="field-group__item">
+								<label class="field-group__label">ИНН</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_inn"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_inn : ''}}">
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="field-group__item">
-							<label class="field-group__label">Фио директора</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="company_director"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_director : ''}}">
+						<div class="col-lg-4">
+							<div class="field-group__item">
+								<label class="field-group__label">ОГРН</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_ogrn"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_ogrn : ''}}">
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="field-group__item">
-							<label class="field-group__label">Телефон</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="tel" name="company_phone"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_phone : ''}}">
+						<div class="col-lg-4">
+							<div class="field-group__item">
+								<label class="field-group__label">Фио директора</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="text" name="company_director"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_director : ''}}">
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-4">
-						<div class="field-group__item">
-							<label class="field-group__label">E-mail</label>
-							<div class="field-group__box">
-								<input class="field-group__input" type="email" name="company_email"
-								value="{{$claim->customer 
-								&& $claim->company 
-								? $claim->company->company_email : ''}}">
+						<div class="col-lg-4">
+							<div class="field-group__item">
+								<label class="field-group__label">Телефон</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="tel" name="company_phone"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_phone : ''}}">
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="field-group__item">
+								<label class="field-group__label">E-mail</label>
+								<div class="field-group__box">
+									<input class="field-group__input" type="email" name="company_email"
+									value="{{$claim->customer 
+									&& $claim->company 
+									? $claim->company->company_email : ''}}">
+								</div>
 							</div>
 						</div>
 					</div>

@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Person;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePersonCommonsTable extends Migration
+class CreatePersonDataCommonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +14,7 @@ class CreatePersonCommonsTable extends Migration
      */
     public function up()
     {
-        Schema::create('person_commons', function (Blueprint $table) {
+        Schema::create('person_data_commons', function (Blueprint $table) {
             $table->id();
             $table->string('person_gender')->nullable(false);
             $table->string('person_surname_lat')->nullable(true);
@@ -24,7 +25,7 @@ class CreatePersonCommonsTable extends Migration
             $table->string('person_phone')->nullable(true);
             $table->string('person_email')->nullable(true);
 
-            $table->foreignId('person_id')->nullable()->constrained('persons')->onDelete('cascade');
+            $table->foreignId('person_id')->constrained('persons')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -37,6 +38,6 @@ class CreatePersonCommonsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('person_commons');
+        Schema::dropIfExists('person_data_commons');
     }
 }

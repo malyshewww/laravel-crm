@@ -8,6 +8,17 @@
 				<button class="btn btn-request" type="button" data-bs-toggle="modal" data-bs-target="#createClaim">Создать заявку</button>
 			</div>
 		</div>
+		<form id="test-form" action="{{route('customer.search')}}" method="post">
+			@csrf
+			<input type="hidden" name="search">
+		</form>
+		<div class="col-12 mb-2">
+			<div class="field-group__item">
+				<label class="field-group__label">Список физ.лиц</label>
+				<input class="field-group__input" type="text" name="custom_search">
+			</div>
+			<div class="search-results"></div>
+		</div>
 		<div class="filters">
 			<form action="{{route('claim.records')}}" id="formFilter">
 				@csrf

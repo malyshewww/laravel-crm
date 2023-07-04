@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClaimController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\TourOperatorController;
 use App\Http\Controllers\TourPackageController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\VisaController;
+use App\Http\Requests\CustomerRequest;
 use App\Models\FinancePrepayment;
 use Illuminate\Support\Facades\Artisan;
 
@@ -50,13 +52,13 @@ use Illuminate\Support\Facades\Artisan;
 Auth::routes();
 
 // Маршруты аутентификации...
-Route::get('auth/login', [Auth\AuthController::class, 'getLogin']);
-Route::get('auth/login', [Auth\AuthController::class, 'postLogin']);
-Route::get('auth/logout', [Auth\AuthController::class, 'getLogout']);
+// Route::get('auth/login', [Auth\AuthController::class, 'getLogin']);
+// Route::get('auth/login', [Auth\AuthController::class, 'postLogin']);
+// Route::get('auth/logout', [Auth\AuthController::class, 'getLogout']);
 
-// Маршруты регистрации...
-Route::get('auth/register', [Auth\AuthController::class, 'getRegister']);
-Route::get('auth/register', [Auth\AuthController::class, 'postRegister']);
+// // Маршруты регистрации...
+// Route::get('auth/register', [Auth\AuthController::class, 'getRegister']);
+// Route::get('auth/register', [Auth\AuthController::class, 'postRegister']);
 
 // Заявка
 Route::middleware('auth')->group(function () {
@@ -97,8 +99,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/contracts/{contract}/loadModal-{action}', [ContractController::class, 'loadModal'])->name('contract.loadModal');
 
     // Данные о заказчике (Физическое|Юридическое лицо)
-    Route::post('/customers', [CustomerController::class, 'store'])->name('customer.store');
     Route::get('/customers/{customer}/loadModal-{action}', [CustomerController::class, 'loadModal'])->name('customer.loadModal');
+    Route::post('/customers/{customer}', [CustomerController::class, 'store'])->name('customer.store');
+    Route::post('/search', [CustomerController::class, 'search'])->name('customer.search');
 
     // Данные о туристе
     Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');
@@ -179,14 +182,11 @@ Route::middleware('auth')->group(function () {
     // Формирование договора
     Route::post('/docs', [GenerateDocController::class, 'docExport'])->name('docExport');
 
-    // Сотрудники
-    Route::get('/employee', 'EmployeeController@index')->name('employee.index');
-    Route::get('/employee/{employee}', [EmployeeController::class, 'show'])->name('employee.show');
-    Route::post('/employee', [EmployeeController::class, 'store'])->name('employee.store');
-    Route::delete('/employee/{employee}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
-
     // Данные заказчика Физ. лица
     Route::get('/persons/{person}/{action}', [PersonController::class, 'personData'])->name('person.personData');
+
+    // Данные заказчика Юр. лица
+    Route::get('/companies/{company}/{action}', [CompanyController::class, 'companyData'])->name('company.companyData');
 });
 
 

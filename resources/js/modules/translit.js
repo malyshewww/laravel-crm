@@ -14,19 +14,22 @@ export function getTranslitValues() {
 			const inputName = form.querySelector('[data-name="name"]');
 			const inputnNameLat = form.querySelector('[data-name="name_lat"]');
 			const translitInput = form.querySelector(`[data-trigger="translit"]`)
+			if (inputSurName) {
+				inputSurName.addEventListener('input', () => {
+					inputSurNameLat.value = translit(inputSurName.value).toUpperCase()
+				})
+			}
+			if (inputName) {
+				inputName.addEventListener('input', () => {
+					inputnNameLat.value = translit(inputName.value).toUpperCase()
+				})
+			}
 			if (translitInput) {
 				translitInput.addEventListener('change', (event) => {
 					const inputSurNameValue = inputSurName.value;
 					const inputNameValue = inputName.value;
-					if (event.target.checked) {
-						if (inputSurNameValue != "" && inputNameValue != "") {
-							inputSurNameLat.value = translit(inputSurNameValue).toUpperCase();
-							inputnNameLat.value = translit(inputNameValue).toUpperCase();
-						}
-					} else {
-						inputSurNameLat.value = "";
-						inputnNameLat.value = "";
-					}
+					inputSurNameLat.value = event.target.checked ? translit(inputSurNameValue).toUpperCase() : '';
+					inputnNameLat.value = event.target.checked ? translit(inputNameValue).toUpperCase() : '';
 				})
 			}
 		}
