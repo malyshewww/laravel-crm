@@ -1,47 +1,34 @@
 import bootstrap, { Modal, draggable } from "bootstrap";
 const modals = document.querySelectorAll('.modal');
-function onDrag({ movementX, movementY }) {
-	[...modals].forEach((modal) => {
-		if (modal.classList.contains('show')) {
-			let getStyle = window.getComputedStyle(modal);
-			let left = parseInt(getStyle.left);
-			let top = parseInt(getStyle.top);
-			modal.style.left = `${left + movementX}px`;
-			modal.style.top = `${top + movementY}px`;
-		}
-	});
-}
-function onTouch(e) {
-	let x = e.touches[0].clientX;
-	let y = e.touches[0].clientY;
-	let target = e.target;
-	[...modals].forEach((modal) => {
-		if (modal.classList.contains('show')) {
-			// console.log(x, y);
-			let getStyle = window.getComputedStyle(modal);
-			let left = parseInt(modal.getBoundingClientRect().left);
-			let top = parseInt(modal.getBoundingClientRect().top);
-			let width = parseInt(modal.getBoundingClientRect().width);
-			let height = parseInt(modal.getBoundingClientRect().height);
-			modal.style.left = `${x - (left + (width / 2 + window.scrollX))}px`;
-			modal.style.top = `${y - (top + (height / 2 + window.scrollY))}px`;
-			// console.log(left, top);
-			console.log(e);
-		}
-	});
-}
+
 [...modals].forEach((modal) => {
 	const header = modal.querySelector('.modal__header');
-	header.addEventListener('mousedown', () => {
-		header.addEventListener('mousemove', onDrag);
-	})
-	header.addEventListener('mouseup', () => {
-		header.removeEventListener('mousemove', onDrag);
-	})
-	// header.addEventListener('touchstart', (event) => {
-	// 	header.addEventListener('touchmove', onTouch);
-	// })
-	// header.addEventListener('touchend', (event) => {
-	// 	header.removeEventListener('touchmove', onTouch);
-	// })
+	header.onmousedown = function (e) {
+		// 1. отследить нажатие
+		var coords = modal.getBoundingClientRect();
+		var shiftX = e.pageX - coords.left;
+		var shiftY = e.pageY - coords.top;
+		// header.style.position = 'absolute';
+		moveAt(e);
+		// document.body.appendChild(ball);
+		modal.style.zIndex = 1000; // показывать над другими элементами
+		// передвинуть под координаты курсора
+		// и сдвинуть на половину ширины/высоты для центрирования
+		function moveAt(e) {
+			modal.style.left = e.pageX - shiftX + 'px';
+			modal.style.top = e.pageY - shiftY + 'px';
+		}
+		// 3, перемещать по экрану
+		document.onmousemove = function (e) {
+			moveAt(e);
+		};
+		// 4. отследить окончание переноса
+		header.onmouseup = function () {
+			document.onmousemove = null;
+			header.onmouseup = null;
+		};
+	};
+	header.ondragstart = function () {
+		return false;
+	};
 });

@@ -9,6 +9,7 @@ import * as Loader from "./loader.js";
 import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
 import { getCustomerDataList, getPersonItems } from "./customers.js";
 import { removeAttributeDisabled, setAttributeDisabled } from "./common.js";
+import { debounced } from "./debounce.js";
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -251,6 +252,7 @@ function modalUpdate(modalUpdateId, formId) {
 				.then((text) => {
 					dataTitle ? modalTitle.textContent = dataTitle : null;
 					modalBody.innerHTML = text;
+					debounced();
 					getCustomerDataList('personItems', 'persons');
 					getCustomerDataList('companyItems', 'companies');
 					formHandler(formId);

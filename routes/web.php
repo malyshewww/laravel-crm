@@ -100,8 +100,9 @@ Route::middleware('auth')->group(function () {
 
     // Данные о заказчике (Физическое|Юридическое лицо)
     Route::get('/customers/{customer}/loadModal-{action}', [CustomerController::class, 'loadModal'])->name('customer.loadModal');
-    Route::post('/customers/{customer}', [CustomerController::class, 'store'])->name('customer.store');
-    Route::post('/search', [CustomerController::class, 'search'])->name('customer.search');
+    Route::post('/customers', [CustomerController::class, 'store'])->name('customer.store');
+    Route::post('/personSearch', [CustomerController::class, 'personSearch'])->name('customer.personSearch');
+    Route::post('/companySearch', [CustomerController::class, 'companySearch'])->name('customer.companySearch');
 
     // Данные о туристе
     Route::post('/tourists/{tourist}', [TouristController::class, 'store'])->name('tourist.store');

@@ -24,7 +24,12 @@
 				<div class="col-12 mb-2">
 					<div class="field-group__item">
 						<label class="field-group__label">Список физ.лиц</label>
-						<select data-select name="person_items" id="personItems" multiple select-one>
+						<div class="search" data-type="person">
+							<input class="field-group__input" type="text" name="search">
+							<div class="search__dropdown">
+							</div>
+						</div>
+						{{-- <select data-select name="person_items" id="personItems" multiple select-one>
 							<option value="">Начните вводить фамилию</option>
 							<option value="0">0. Новый</option>
 							@foreach ($persons as $key => $person)
@@ -32,7 +37,8 @@
 										value="{{$person->id}}">{{$key+1}}. {{$person->person_surname . ' ' . $person->person_name . ' ' . $person->person_patronymic}}
 									</option>
 							@endforeach
-						</select>
+						</select> --}}
+						
 					</div>
 				</div>
 				<div class="row-wrapper">
@@ -407,14 +413,18 @@
 				<div class="col-12 mb-2">
 					<div class="field-group__item">
 						<label class="field-group__label">Список юр. лиц</label>
-						<select data-select name="company_items" id="companyItems" multiple select-one>
+						<div class="search" data-type="company">
+							<input class="field-group__input" type="text" name="search">
+							<div class="search__dropdown"></div>
+						</div>
+						{{-- <select data-select name="company_items" id="companyItems" multiple select-one>
 							<option value="0">0. Новый</option>
 							@foreach ($companies as $key => $company)
 								<option 
 									value="{{$company->id}}">{{$key+1}}. {{$company->company_fullname}}
 								</option>
 							@endforeach
-						</select>
+						</select> --}}
 					</div>
 				</div>
 				<div class="row-wrapper">

@@ -1,7 +1,7 @@
 // require('./bootstrap');
 console.log('app init');
 
-// import './modules/bootstrap/bootstrapModal';
+import './modules/bootstrap/bootstrapModal';
 import './modules/tabs';
 import './modules/calendar';
 import './modules/currency';

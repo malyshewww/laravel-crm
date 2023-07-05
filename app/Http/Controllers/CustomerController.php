@@ -64,7 +64,6 @@ class CustomerController extends Controller
                 'person_address' => $request->person_address,
                 'person_phone' => $person_phone,
                 'person_email' => $request->person_email,
-                'person_id' => $request->person_id,
             ];
             PersonDataCommons::updateOrCreate([
                 'person_id' => $request->person_id,
@@ -77,7 +76,6 @@ class CustomerController extends Controller
                 'person_passport_issued' => $request->person_passport_issued,
                 'person_passport_code' => $request->person_passport_code,
                 'person_passport_address' => $request->person_passport_address,
-                'person_id' => $request->person_id,
             ];
             PersonDataPassport::updateOrCreate([
                 'person_id' => $request->person_id,
@@ -88,7 +86,6 @@ class CustomerController extends Controller
                 'person_certificate_number' => $request->person_certificate_number,
                 'person_certificate_date' => $request->person_certificate_date,
                 'person_certificate_issued' => $request->person_certificate_issued,
-                'person_id' => $request->person_id,
             ];
             PersonDataCertificate::updateOrCreate([
                 'person_id' => $request->person_id,
@@ -100,7 +97,6 @@ class CustomerController extends Controller
                 'person_international_passport_date' => $request->person_international_passport_date,
                 'person_international_passport_period' => $request->person_international_passport_period,
                 'person_international_passport_issued' => $request->person_international_passport_issued,
-                'person_id' => $request->person_id,
             ];
             PersonDataInternationalPassport::updateOrCreate([
                 'person_id' => $request->person_id,
@@ -144,10 +140,17 @@ class CustomerController extends Controller
         $companies = Company::get();
         return view('claim.customer.modal_update_customer', compact('claim', 'persons', 'companies'))->render();
     }
-    public function search(Request $request)
+    public function personSearch(Request $request)
     {
-        $persons = Person::get();
-        return json_encode($persons, true);
+        $value = $request->value;
+        $persons = Person::where('person_surname', 'LIKE', '%' . $value . '%')->get();
+        return $persons ? json_encode($persons) : [];
+    }
+    public function companySearch(Request $request)
+    {
+        $value = $request->value;
+        $companies = Company::where('company_fullname', 'LIKE', '%' . $value . '%')->get();
+        return $companies ? json_encode($companies) : [];
     }
     // public function customerData($id)
     // {

@@ -2,10 +2,11 @@
 	@slot('modal_id', 'addCustomer')
 	@slot('modal_title', 'Заказчик')
 	@slot('modal_class', ' modal-extended')
-	<form id="my-form"></form>
-	<form action="" 
+	{{-- <form id="my-form"></form> --}}
+	<form action="{{route('customer.store')}}" 
 		method="post" id="formCustomer">
 		@csrf
+		<input type="hidden" name="_method" value="POST">
 		<input type="hidden" name="claim_id" value="{{$claim->id}}">
 		<input type="hidden" name="person_id" value="{{$claim->id}}">
 		<input type="hidden" name="company_id" value="{{$claim->id}}">
