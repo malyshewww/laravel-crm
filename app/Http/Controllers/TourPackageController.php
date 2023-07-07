@@ -10,14 +10,13 @@ class TourPackageController extends Controller
 {
     public function store(Request $request)
     {
-        $data = [
-            'name' => $request->name,
-            'date_start' => $request->date_start,
-            'date_end' => $request->date_end,
-            'claim_id' => $request->claim_id,
-            'city_id' => $request->city_id,
-            'country_id' => $request->country_id,
-        ];
+        $data = $request->validate([
+            'name' => '',
+            'date_start' => '',
+            'date_end' => '',
+            'city_id' => '',
+            'country_id' => '',
+        ]);
         TourPackage::updateOrCreate([
             'claim_id' => $request->claim_id
         ], $data);

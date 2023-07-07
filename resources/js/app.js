@@ -13,16 +13,7 @@ import './modules/tables';
 import './modules/ajax';
 import './modules/customers';
 import './modules/btn-copy';
-import './modules/debounce.js';
-
-// const myForm = document.querySelector('#my-form')
-// if (myForm) {
-// 	myForm.addEventListener('submit', (event) => {
-// 		event.preventDefault();
-// 		const search = document.querySelector('input[name="custom_search"]');
-// 		console.log(search.value);
-// 	})
-// }
+import './modules/search/debounce.js';
 
 document.addEventListener('click', documentActions);
 

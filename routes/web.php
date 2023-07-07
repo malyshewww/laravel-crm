@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tourists/{tourist}/force-delete', [TouristController::class, 'destroy'])->name('tourist.force-delete');
     Route::get('/tourists/{tourist}/data', [TouristController::class, 'touristData'])->name('tourist.data');
     Route::get('/tourists/{tourist}/loadModal-{action}', [TouristController::class, 'loadModal'])->name('tourist.loadModal');
+    Route::post('/touristSearch', [TouristController::class, 'touristSearch'])->name('tourist.touristSearch');
     // Данные об услугах
 
     // Услуга Перелет
@@ -188,6 +189,9 @@ Route::middleware('auth')->group(function () {
 
     // Данные заказчика Юр. лица
     Route::get('/companies/{company}/{action}', [CompanyController::class, 'companyData'])->name('company.companyData');
+
+    // Данные туристов
+    Route::get('/tourists/{tourist}/{action}', [TouristController::class, 'touristData'])->name('tourist.touristData');
 });
 
 

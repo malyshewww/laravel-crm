@@ -1,4 +1,4 @@
-import { CompanyBlock, PersonBlock } from "./blocks";
+import { CompanyBlock, PersonBlock, TouristBlock } from "./blocks";
 
 export function debounced() {
 	// В функции contains мы будем проверять,
@@ -27,8 +27,22 @@ export function debounced() {
 				});
 				const data = await response.json();
 				const result = await data;
-				const block = dataType === 'person' ? new PersonBlock(result, value) : new CompanyBlock(result, value);
-				searchResults.innerHTML = block.toHTML();
+				let block;
+				switch (dataType) {
+					case 'person':
+						block = new PersonBlock(result, value)
+						break;
+					case 'company':
+						block = new CompanyBlock(result, value)
+						break;
+					case 'tourist':
+						block = new TouristBlock(result, value)
+						break;
+					default:
+						break;
+				}
+				searchResults.classList[block.count() === 0 || value === '' ? 'remove' : 'add']('active');
+				searchResults.innerHTML = block.count() > 0 ? block.toHTML() : '';
 			} catch (error) {
 				console.log(error);
 			}
@@ -36,18 +50,11 @@ export function debounced() {
 	}
 
 	function getPath(dataTypeValue) {
-		let path = '';
 		switch (dataTypeValue) {
-			case 'person':
-				path = 'personSearch';
-				break;
-			case 'company':
-				path = 'companySearch';
-				break;
-			default:
-				break;
+			case 'person': return 'personSearch';
+			case 'company': return 'companySearch';
+			case 'tourist': return 'touristSearch';
 		}
-		return path;
 	}
 	// Аргументами функции будут:
 	// - функция, которую надо «откладывать»;
@@ -90,4 +97,4 @@ export function debounced() {
 		}
 	})
 }
-
+debounced();

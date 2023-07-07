@@ -22,11 +22,11 @@
 			$cities = TourPackageHelper::city();
 			$currentCity = '';
 			$currentCountry = '';
-			foreach ($cities as $key => $city) {
-				$currentCity = $key === $claim->tourpackage->city_id ? $city['name'] : '';
+			foreach ($cities as $keyCity => $city) {
+				if ($keyCity === $claim->tourpackage->city_id) $currentCity = $city['name'];
 			}
-			foreach ($countries as $key => $country) {
-				$currentCountry = $key === $claim->tourpackage->country_id ? $country['name'] : '';
+			foreach ($countries as $keyCountry => $country) {
+				if ( $keyCountry === $claim->tourpackage->country_id) $currentCountry = $country['name'];
 			}
 			$tourpackageList = [
 				['label' => 'СПО', 'value' => $claim->tourpackage->name ?: ''], 

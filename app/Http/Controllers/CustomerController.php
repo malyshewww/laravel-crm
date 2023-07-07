@@ -48,7 +48,7 @@ class CustomerController extends Controller
                 'person_surname' => $request->person_surname,
                 'person_name' =>  $request->person_name,
                 'person_patronymic' => $request->person_patronymic,
-                'claim_id' => $request->claim_id
+                // 'claim_id' => $request->claim_id
             ];
             Person::updateOrCreate([
                 'claim_id' => $request->claim_id

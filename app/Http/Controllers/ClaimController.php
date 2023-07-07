@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\TourPackageHelper;
+use App\Http\Requests\ClaimRequest;
 use App\Models\Claim;
-use App\Models\Company;
-use App\Models\Customer;
 use App\Models\FileUpload;
-use App\Models\Person;
 use App\Models\Tourist;
-use App\Models\Touroperator;
-use App\Models\TourPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -33,10 +29,11 @@ class ClaimController extends Controller
     }
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'date_start' => 'required',
             'date_end' => 'required',
-        ]);
+        ];
+        $validator = Validator::make($request->all(), $rules);
         $data = [
             'date_start' => $request->date_start,
             'date_end' => $request->date_end,
@@ -57,7 +54,7 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function update(Request $request, Claim $claim)
+    public function update(Claim $claim)
     {
         $data = request()->validate([
             'comment' => '',
@@ -180,12 +177,12 @@ class ClaimController extends Controller
                 $cities = TourPackageHelper::city();
                 $countries = TourPackageHelper::country();
                 foreach ($cities as $keyCity => $c) {
-                    if ($keyCity == $claim->tourpackage->city_id) {
+                    if ($keyCity === $claim->tourpackage->city_id) {
                         $city = $c['name'];
                     }
                 }
                 foreach ($countries as $keyCountry => $c) {
-                    if ($keyCountry == $claim->tourpackage->country_id) {
+                    if ($keyCountry === $claim->tourpackage->country_id) {
                         $country = $c['name'];
                     }
                 }
@@ -218,6 +215,7 @@ class ClaimController extends Controller
                 'manager' => $manager,
             ];
         }
-        return json_encode($arr, true);
+        // return json_encode($arr, true);
+        return response()->json($arr);
     }
 }

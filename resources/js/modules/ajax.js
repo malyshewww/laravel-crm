@@ -1,6 +1,6 @@
 import Choices from "choices.js";
 import { getTranslitValues } from "./translit.js";
-import { initChoices, choiceConfig, getSelectData } from "./select-choices.js";
+import { initChoices, choiceConfig, getSelectData, changeVisaOptions } from "./select-choices.js";
 import { initDatePicker } from "./calendar.js";
 import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
@@ -9,7 +9,10 @@ import * as Loader from "./loader.js";
 import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
 import { getCustomerDataList, getPersonItems } from "./customers.js";
 import { removeAttributeDisabled, setAttributeDisabled } from "./common.js";
-import { debounced } from "./debounce.js";
+import { debounced } from "./search/debounce";
+import { renderModifiedData } from "./search/render";
+
+renderModifiedData();
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -76,7 +79,8 @@ function formHandler(formId) {
 			const selectDocType = thisForm.doc_type;
 			fetch(route, {
 				headers: {
-					"X-CSRF-Token": token
+					// 'Accept': 'application/json',
+					"X-CSRF-Token": token,
 				},
 				method: 'POST',
 				body: formData,
@@ -88,7 +92,8 @@ function formHandler(formId) {
 						inputDateEnd ? inputDateEnd.value = '' : null;
 						inputComment ? inputComment.value = '' : null;
 						$(currentModal).modal('hide');
-						updateHtmlData(formId);
+						reloadPage();
+						// updateHtmlData(formId);
 					} else {
 						if (result.date_start) {
 							inputDateStart.classList.add('error');
@@ -209,10 +214,6 @@ formHandler('formOtherService');
 formHandler('formFile');
 // Добавить счеёт на оплату
 formHandler('formPaymentInvoice');
-// Формирование договора
-// formHandler('formGenerateDocs');
-
-
 
 function modalUpdate(modalUpdateId, formId) {
 	const modal = document.getElementById(modalUpdateId);
@@ -269,6 +270,8 @@ function modalUpdate(modalUpdateId, formId) {
 					})
 					initDatePicker();
 					removeAttributeDisabled(modalButtons)
+					renderModifiedData();
+					changeVisaOptions();
 				})
 				.catch((error) => {
 					console.log(error);

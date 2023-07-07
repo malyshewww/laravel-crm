@@ -29,6 +29,7 @@ export const initChoices = () => {
 	})
 };
 initChoices()
+export const selectData = {};
 export const getSelectData = async () => {
 	const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	try {
@@ -43,6 +44,7 @@ export const getSelectData = async () => {
 		const { genders, nationalities, cities, visaOptions,
 			flightClasses, insuranceTypes, transferTypes, habitationFoodTypes,
 			fileTypes, calculations, currencies } = data;
+		Object.assign(selectData, data);
 		const selectTouristGender = document.getElementById('selectTouristGender');
 		const selectTouristNationality = document.getElementById('selectTouristNationality');
 		const selectVisaCity = document.getElementById('selectVisaCity');
@@ -176,7 +178,7 @@ export const getSelectData = async () => {
 			setSelectOptions(selectExposeCurrency, dataSelectExposeCurrency, 'paymentInvoice')
 		}
 	} catch (error) {
-		console.log('Произошла ошибка при получении данных');
+		console.log('Select: Произошла ошибка при получении данных');
 	}
 }
 function setSelectOptions(select, selectData, modalId) {
@@ -193,17 +195,23 @@ function setSelectOptions(select, selectData, modalId) {
 }
 getSelectData();
 
+export function changeVisaOptions() {
+	let forms = document.querySelectorAll('form');
+	[...forms].forEach((form) => {
+		const selectVisaCity = form.querySelector('[data-name="visaCity"]');
+		const selectVisaInfo = form.querySelector('[data-name="visaInfo"]');
+		if (selectVisaCity && selectVisaInfo) {
+			const parentCity = selectVisaCity.closest('.field-group__item');
+			parentCity.style.display = "none";
+			selectVisaInfo.addEventListener('change', (event) => {
+				showFieldSelect(event, parentCity);
+			});
+		}
+	})
+}
+changeVisaOptions();
 let forms = document.querySelectorAll('form');
 [...forms].forEach((form) => {
-	const selectVisaCity = form.querySelector('[data-name="visaCity"]');
-	const selectVisaInfo = form.querySelector('[data-name="visaInfo"]');
-	if (selectVisaCity && selectVisaInfo) {
-		const parentCity = selectVisaCity.closest('.field-group__item');
-		parentCity.style.display = "none";
-		selectVisaInfo.addEventListener('change', (event) => {
-			showFieldSelect(event, parentCity);
-		});
-	}
 	const selectInsuranceType = form.querySelector('[data-name="insuranceType"]');
 	const inputInsuranceTypeOther = form.querySelector('[data-name="insurance_type_other"]');
 	if (selectInsuranceType && inputInsuranceTypeOther) {

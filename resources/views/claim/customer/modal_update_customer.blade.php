@@ -20,27 +20,8 @@
 			</div>
 		</div>
 		<div id="tabContentModal">
-			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'person' ? ' isOpen' : ''}}" id="person" data-tab-content="person">
-				<div class="col-12 mb-2">
-					<div class="field-group__item">
-						<label class="field-group__label">Список физ.лиц</label>
-						<div class="search" data-type="person">
-							<input class="field-group__input" type="text" name="search">
-							<div class="search__dropdown">
-							</div>
-						</div>
-						{{-- <select data-select name="person_items" id="personItems" multiple select-one>
-							<option value="">Начните вводить фамилию</option>
-							<option value="0">0. Новый</option>
-							@foreach ($persons as $key => $person)
-									<option 
-										value="{{$person->id}}">{{$key+1}}. {{$person->person_surname . ' ' . $person->person_name . ' ' . $person->person_patronymic}}
-									</option>
-							@endforeach
-						</select> --}}
-						
-					</div>
-				</div>
+			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'person' ? ' isOpen' : ''}}" id="person" data-update-box data-tab-content="person">
+				@include('components.search_block', ['type' => 'person', 'label' => 'Список физ.лиц', 'placeholder' => 'Начните вводить фамилию'])
 				<div class="row-wrapper">
 					<div class="row">
 						<div class="col-12">
@@ -409,24 +390,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'company' ? ' isOpen' : ''}}" id="company" data-tab-content="company">
-				<div class="col-12 mb-2">
-					<div class="field-group__item">
-						<label class="field-group__label">Список юр. лиц</label>
-						<div class="search" data-type="company">
-							<input class="field-group__input" type="text" name="search">
-							<div class="search__dropdown"></div>
-						</div>
-						{{-- <select data-select name="company_items" id="companyItems" multiple select-one>
-							<option value="0">0. Новый</option>
-							@foreach ($companies as $key => $company)
-								<option 
-									value="{{$company->id}}">{{$key+1}}. {{$company->company_fullname}}
-								</option>
-							@endforeach
-						</select> --}}
-					</div>
-				</div>
+			<div class="tabs-content{{$claim->customer && $claim->customer->type === 'company' ? ' isOpen' : ''}}" id="company" data-update-box data-tab-content="company">
+				@include('components.search_block', ['type' => 'company', 'label' => 'Список юр.лиц', 'placeholder' => 'Начните ввод'])
 				<div class="row-wrapper">
 					<div class="row align-items-end">
 						<div class="col-lg-3 col-md-6">
