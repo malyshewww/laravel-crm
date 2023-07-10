@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CustomerRequest;
 use App\Models\Claim;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Person;
-use App\Models\PersonDataCertificate;
-use App\Models\PersonDataCommons;
-use App\Models\PersonDataInternationalPassport;
-use App\Models\PersonDataPassport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,7 +22,7 @@ class CustomerController extends Controller
             'claim_id' => $request->claim_id
         ], $customerFields);
         // Если заказчик - Физ. лицо
-        if ($request->type == 'person') {
+        if ($request->type === 'person') {
             $validator = Validator::make($request->all(), [
                 'person_surname' => 'bail|required',
                 'person_name' => 'bail|required',
@@ -44,18 +39,12 @@ class CustomerController extends Controller
                 }
                 return response()->json($json);
             }
+            $person_phone = $claim->validateNumber($request->person_phone);
             $personFields = [
+                'claim_id' => $request->claim_id,
                 'person_surname' => $request->person_surname,
                 'person_name' =>  $request->person_name,
                 'person_patronymic' => $request->person_patronymic,
-                // 'claim_id' => $request->claim_id
-            ];
-            Person::updateOrCreate([
-                'claim_id' => $request->claim_id
-            ], $personFields);
-            // Общие данные о заказчике
-            $person_phone = $claim->validateNumber($request->person_phone);
-            $personCommonsFields = [
                 'person_gender' => $request->person_gender,
                 'person_surname_lat' => $request->person_surname_lat,
                 'person_name_lat' => $request->person_name_lat,
@@ -64,49 +53,31 @@ class CustomerController extends Controller
                 'person_address' => $request->person_address,
                 'person_phone' => $person_phone,
                 'person_email' => $request->person_email,
-            ];
-            PersonDataCommons::updateOrCreate([
-                'person_id' => $request->person_id,
-            ], $personCommonsFields);
-            // // Данные национального паспорта заказчика
-            $personPassportFields = [
                 'person_passport_series' => $request->person_passport_series,
                 'person_passport_number' => $request->person_passport_number,
                 'person_passport_date' => $request->person_passport_date,
                 'person_passport_issued' => $request->person_passport_issued,
                 'person_passport_code' => $request->person_passport_code,
                 'person_passport_address' => $request->person_passport_address,
-            ];
-            PersonDataPassport::updateOrCreate([
-                'person_id' => $request->person_id,
-            ], $personPassportFields);
-            // // Данные свидетельства о рождении заказчика
-            $personCertificateFields = [
                 'person_certificate_series' => $request->person_certificate_series,
                 'person_certificate_number' => $request->person_certificate_number,
                 'person_certificate_date' => $request->person_certificate_date,
                 'person_certificate_issued' => $request->person_certificate_issued,
-            ];
-            PersonDataCertificate::updateOrCreate([
-                'person_id' => $request->person_id,
-            ], $personCertificateFields);
-            // // Данные заграничного паспорта заказчика
-            $personInternationalPassportFields = [
                 'person_international_passport_series' => $request->person_international_passport_series,
                 'person_international_passport_number' => $request->person_international_passport_number,
                 'person_international_passport_date' => $request->person_international_passport_date,
                 'person_international_passport_period' => $request->person_international_passport_period,
                 'person_international_passport_issued' => $request->person_international_passport_issued,
             ];
-            PersonDataInternationalPassport::updateOrCreate([
-                'person_id' => $request->person_id,
-            ], $personInternationalPassportFields);
+            Person::updateOrCreate([
+                'claim_id' => $request->claim_id
+            ], $personFields);
             return response()->json([
                 'status' => 'success'
             ]);
             // Если заказчик - Юр. лицо
         }
-        if ($request->type == 'company') {
+        if ($request->type === 'company') {
             $company_phone = $claim->validateNumber($request->company_phone);
             $companyFields = [
                 'company_fullname' => $request->company_fullname,

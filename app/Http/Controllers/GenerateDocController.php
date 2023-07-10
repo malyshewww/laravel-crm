@@ -7,16 +7,8 @@ use Illuminate\Http\Request;
 use App\Helpers\ServiceHelper;
 use App\Helpers\TouristHelper;
 use Illuminate\Support\Facades\Validator;
-use NumberFormatter;
-use PhpOffice\PhpWord\ComplexType\TblWidth;
-use PhpOffice\PhpWord\Element\Table;
-use PhpOffice\PhpWord\Element\TextRun;
-use PhpOffice\PhpWord\SimpleType\TblWidth as SimpleTypeTblWidth;
-use Ramsey\Uuid\Type\Decimal;
-
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
-// use PhpOffice\PhpWord\Writer\Word2007;
 
 class GenerateDocController extends Controller
 {
@@ -37,12 +29,17 @@ class GenerateDocController extends Controller
         $docType = $request->doc_type;
         // Creating the new document...
         $fileName = '';
-        if ($docType === 'doc_avia') {
-            $fileName = 'contract_avia';
-        } else if ($docType === 'doc_bus') {
-            $fileName = 'contract_bus';
-        } else if ($docType === null) {
-            $fileName = 'contract_avia';
+        switch ($docType) {
+            case 'doc_avia':
+                $fileName = 'contract_avia';
+                break;
+            case 'doc_bus':
+                $fileName = 'contract_bus';
+                break;
+            case '':
+                $fileName = 'contract_avia';
+            default:
+                break;
         }
         $phpWord = new \PhpOffice\PhpWord\TemplateProcessor('contracts/' . $fileName . '.docx');
         $phpOfficeWord = new \PhpOffice\PhpWord\PhpWord();
@@ -70,22 +67,14 @@ class GenerateDocController extends Controller
                 $personSurname = $claim->person->person_surname ?: 'Фамилия';
                 $personName = $claim->person->person_name ?: 'Имя';
                 $personPatronymic = $claim->person->person_patronymic ?: 'Отчество';
-                $personPassportSeries = $claim->person->passport && $claim->person->passport->person_passport_series
-                    ? $claim->person->passport->person_passport_series : '-';
-                $personPassportNumber = $claim->person->passport && $claim->person->passport->person_passport_number
-                    ? $claim->person->passport->person_passport_number : '-';
-                $personPassportIssued = $claim->person->passport && $claim->person->passport->person_passport_issued
-                    ? $claim->person->passport->person_passport_issued : '-';
-                $personPassportDate = $claim->person->passport && $claim->person->passport->person_passport_date
-                    ? $claim->person->passport->person_passport_date : '-';
-                $personPassportAddress = $claim->person->passport && $claim->person->passport->person_passport_address
-                    ? $claim->person->passport->person_passport_address : '-';
-                $personAddress = $claim->person->commons && $claim->person->commons->person_address
-                    ? $claim->person->commons->person_address  : '-';
-                $personPhone = $claim->person->commons && $claim->person->commons->person_phone
-                    ? $claim->person->commons->person_phone : '-';
-                $personEmail = $claim->person->commons && $claim->person->commons->person_email
-                    ? $claim->person->commons->person_email : '-';
+                $personPassportSeries = $claim->person->person_passport_series ?: '-';
+                $personPassportNumber = $claim->person->person_passport_number ?: '-';
+                $personPassportIssued = $claim->person->person_passport_issued ?: '-';
+                $personPassportDate = $claim->person->person_passport_date ?: '-';
+                $personPassportAddress = $claim->person->person_passport_address ?: '-';
+                $personAddress = $claim->person->person_address ?: '-';
+                $personPhone = $claim->person->person_phone ?: '-';
+                $personEmail = $claim->person->person_email ?: '-';
             }
         }
         $phpWord->setValue('personSurname', $personSurname);

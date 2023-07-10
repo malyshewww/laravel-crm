@@ -44,8 +44,7 @@
 				<option value=""></option>
 				@foreach ($genders as $gender)
 					<option
-						{{$person->commons
-						&& $person->commons->person_gender === $gender['value'] ? ' selected' : ''}}
+						{{$person->person_gender === $gender['value'] ? ' selected' : ''}}
 						value="{{$gender['value']}}">
 						{{$gender['title']}}
 					</option>
@@ -58,8 +57,7 @@
 			<label class="field-group__label">Фамилия (LAT)</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" data-name="surname_lat" name="person_surname_lat"
-				value="{{$person->commons
-				? $person->commons->person_surname_lat : ''}}">
+				value="{{$person->person_surname_lat ?: ''}}">
 			</div>
 		</div>
 	</div>
@@ -68,8 +66,7 @@
 			<label class="field-group__label">Имя (LAT)</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" data-name="name_lat" name="person_name_lat"
-				value="{{$person->commons
-				? $person->commons->person_name_lat : ''}}">
+				value="{{$person->person_name_lat ?: ''}}">
 			</div>
 		</div>
 	</div>
@@ -83,8 +80,7 @@
 				@endphp
 				@foreach ($nationalities as $nationality)
 					<option
-						{{$person->commons
-						&& $person->commons->person_nationality === $nationality['value'] ? ' selected' : ''}}
+						{{$person->person_nationality === $nationality['value'] ? ' selected' : ''}}
 						value="{{$nationality['value']}}">{{$nationality['title']}}
 					</option>
 				@endforeach
@@ -96,8 +92,7 @@
 			<label class="field-group__label required">Дата рождения</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" name="person_birthday"
-				value="{{$person->commons
-				? $person->commons->person_birthday : ''}}">
+				value="{{$person->person_birthday ?: ''}}">
 			</div>
 		</div>
 	</div>
@@ -106,8 +101,7 @@
 			<label class="field-group__label">Фактический адрес</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" name="person_address"
-				value="{{$person->commons
-				? $person->commons->person_address : ''}}">
+				value="{{$person->person_address ?: ''}}">
 			</div>
 		</div>
 	</div>
@@ -116,8 +110,7 @@
 			<label class="field-group__label">Телефон</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="tel" name="person_phone"
-				value="{{$person->commons
-				? $person->commons->person_phone : ''}}">
+				value="+{{$person->person_phone ?: ''}}">
 			</div>
 		</div>
 	</div>
@@ -126,8 +119,7 @@
 			<label class="field-group__label">Email</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="email" name="person_email"
-				value="{{$person->commons
-				? $person->commons->person_email : ''}}">
+				value="{{$person->person_email ?: ''}}">
 			</div>
 		</div>
 	</div>
@@ -142,8 +134,7 @@
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="number" name="person_passport_series"
-						value="{{$person->passport 
-						? $person->passport->person_passport_series : ''}}">
+						value="{{$person->person_passport_series ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -152,8 +143,7 @@
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="number" name="person_passport_number"
-						value="{{$person->passport 
-						? $person->passport->person_passport_number : ''}}">
+						value="{{$person->person_passport_number ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -162,8 +152,7 @@
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_date"
-						value="{{$person->passport 
-						? $person->passport->person_passport_date : ''}}">
+						value="{{$person->person_passport_date ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -172,8 +161,7 @@
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_issued"
-						value="{{$person->passport 
-						? $person->passport->person_passport_issued : ''}}">
+						value="{{$person->person_passport_issued ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -182,8 +170,7 @@
 					<label class="field-group__label">Код</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_code"
-						value="{{$person->passport 
-						? $person->passport->person_passport_code : ''}}">
+						value="{{$person->person_passport_code ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -192,8 +179,7 @@
 					<label class="field-group__label">Адрес регистрации</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_address"
-						value="{{$person->passport
-						? $person->passport->person_passport_address : ''}}">
+						value="{{$person->person_passport_address ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -207,8 +193,7 @@
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_certificate_series"
-						value="{{$person->certificate
-						? $person->certificate->person_certificate_series : ''}}">
+						value="{{$person->person_certificate_series ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -217,8 +202,7 @@
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_certificate_number"
-						value="{{$person->certificate
-						? $person->certificate->person_certificate_number : ''}}">
+						value="{{$person->person_certificate_number ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -227,9 +211,8 @@
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_certificate_date"
-						value="{{$person->certificate
-						&& $person->certificate->person_certificate_date
-						? $person->certificate->person_certificate_date->format('Y-m-d') 
+						value="{{$person->person_certificate_date
+						? $person->person_certificate_date->format('Y-m-d') 
 						: ''}}">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
@@ -243,8 +226,7 @@
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_certificate_issued"
-						value="{{$person->certificate
-						? $person->certificate->person_certificate_issued : ''}}">
+						value="{{$person->person_certificate_issued ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -258,8 +240,7 @@
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_international_passport_series"
-						value="{{$person->internationalPassport
-						? $person->internationalPassport->person_international_passport_series : ''}}">
+						value="{{$person->person_international_passport_series ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -268,8 +249,7 @@
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_international_passport_number"
-						value="{{$person->internationalPassport
-						? $person->internationalPassport->person_international_passport_number : ''}}">
+						value="{{$person->person_international_passport_number ?: ''}}">
 					</div>
 				</div>
 			</div>
@@ -278,9 +258,8 @@
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_date"
-							value="{{$person->internationalPassport
-							&& $person->internationalPassport->person_international_passport_date
-							? $person->internationalPassport->person_international_passport_date->format('Y-m-d') : ''}}">
+							value="{{$person->person_international_passport_date
+							? $person->person_international_passport_date->format('Y-m-d') : ''}}">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
 							<input class="input-trigger" type="text" data-trigger="date"
@@ -294,9 +273,8 @@
 					<label class="field-group__label">Срок действия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_period"
-						value="{{$person->internationalPassport
-							&& $person->internationalPassport->person_international_passport_period
-							? $person->internationalPassport->person_international_passport_period->format('Y-m-d') : ''}}">
+						value="{{$person->person_international_passport_period
+							? $person->person_international_passport_period->format('Y-m-d') : ''}}">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
 							<input class="input-trigger" type="text" data-trigger="date">
@@ -309,8 +287,7 @@
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_international_passport_issued"
-						value="{{$person->internationalPassport
-						? $person->internationalPassport->person_international_passport_issued : ''}}">
+						value="{{$person->person_international_passport_issued ?: ''}}">
 					</div>
 				</div>
 			</div>

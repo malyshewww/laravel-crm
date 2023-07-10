@@ -8,3 +8,6 @@ export const removeAttributeDisabled = (items) => {
 		item.removeAttribute('disabled');
 	});
 }
+export const reloadPage = () => {
+	return window.location.reload();
+}

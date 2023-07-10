@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StatusDoc extends Model
 {
     use HasFactory;
+    use \Bkwld\Cloner\Cloneable;
     protected $table = 'status_docs';
     protected $fillable = [
         'status',

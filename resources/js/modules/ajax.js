@@ -8,7 +8,7 @@ import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
 import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
 import { getCustomerDataList, getPersonItems } from "./customers.js";
-import { removeAttributeDisabled, setAttributeDisabled } from "./common.js";
+import { reloadPage, removeAttributeDisabled, setAttributeDisabled } from "./common.js";
 import { debounced } from "./search/debounce";
 import { renderModifiedData } from "./search/render";
 
@@ -47,9 +47,6 @@ function checkFormFields() {
 			parent.classList.remove('error');
 		});
 	})
-}
-const reloadPage = () => {
-	return window.location.reload();
 }
 checkFormFields();
 numberFormatted();
@@ -214,6 +211,8 @@ formHandler('formOtherService');
 formHandler('formFile');
 // Добавить счеёт на оплату
 formHandler('formPaymentInvoice');
+// Формирование документа
+// formHandler('formGenerateDocs');
 
 function modalUpdate(modalUpdateId, formId) {
 	const modal = document.getElementById(modalUpdateId);

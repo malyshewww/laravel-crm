@@ -10,7 +10,7 @@
 				data-url="{{route('customer.store')}}"
 				data-path="{{route('customer.loadModal', [$claim->id, 'update'])}}"
 				data-title="Заказчик">
-				Указать заказчика
+				{{$claim->customer ? 'Изменить заказчика' : 'Указать заказчика'}}
 			</button>
 		</div>
 		<div class="group-data__text text-blue">Покупатель тура, с которым заключается договор</div>
@@ -25,17 +25,17 @@
 							{{$claim->person->person_name ?: 'Имя'}}
 							{{$claim->person->person_patronymic ?: 'Отчество'}}</span>
 						<div class="area-group__labels"> 
-							@if ($claim->person->commons)
-								@if ($claim->person->commons->person_phone)
+							@if ($claim->person->person_phone)
+								@if ($claim->person->person_phone)
 								<div class="area-group__label">
 									<i class="fa-solid fa-phone"></i>
-									<span class="area-group__phone">+{{$claim->person->commons->person_phone}}</span>
+									<span class="area-group__phone">+{{$claim->person->person_phone}}</span>
 								</div>
 								@endif
-								@if ($claim->person->commons->person_email)
+								@if ($claim->person->person_email)
 									<div class="area-group__label">
 										<i class="fa-solid fa-envelope"></i>
-										<span class="area-group__phone">{{$claim->person->commons->person_email}}</span>
+										<span class="area-group__phone">{{$claim->person->person_email}}</span>
 									</div>
 								@endif
 							@endif
@@ -68,16 +68,11 @@
 					<button class="dropdown__button text-blue" type="button" id="passport-data">Паспортные данные</button>
 					<div class="dropdown__content customer-passport" hidden>
 						@php
-							$passportSeries = $claim->person->passport && $claim->person->passport->person_passport_series 
-									? $claim->person->passport->person_passport_series : 'Не указано';
-							$passportNumber = $claim->person->passport && $claim->person->passport->person_passport_number 
-									? $claim->person->passport->person_passport_number : 'Не указано';
-							$passportIssued = $claim->person->passport && $claim->person->passport->person_passport_issued
-									? $claim->person->passport->person_passport_issued : 'Не указано';
-							$passportCode = $claim->person->passport && $claim->person->passport->person_passport_code 
-									? $claim->person->passport->person_passport_code : 'Не указано';
-							$passportAddress = $claim->person->passport && $claim->person->passport->person_passport_address 
-									? $claim->person->passport->person_passport_address : 'Не указано';
+							$passportSeries = $claim->person->person_passport_series ?: 'Не указано';
+							$passportNumber = $claim->person->person_passport_number ?: 'Не указано';
+							$passportIssued = $claim->person->person_passport_issued ?: 'Не указано';
+							$passportCode =  $claim->person->person_passport_code ?: 'Не указано';
+							$passportAddress = $claim->person->person_passport_address ?: 'Не указано';
 							$personDataList = [
 								['label' => 'СЕРИЯ И НОМЕР:', 'value' => $passportSeries . ' - ' . $passportNumber],
 								['label' => 'КЕМ ВЫДАН:', 'value' => $passportIssued],

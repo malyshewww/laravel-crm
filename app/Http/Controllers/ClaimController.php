@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\TourPackageHelper;
-use App\Http\Requests\ClaimRequest;
 use App\Models\Claim;
 use App\Models\FileUpload;
 use App\Models\Tourist;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;

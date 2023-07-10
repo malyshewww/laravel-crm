@@ -4684,9 +4684,6 @@ function checkFormFields() {
     });
   });
 }
-var reloadPage = function reloadPage() {
-  return window.location.reload();
-};
 checkFormFields();
 (0,_number_format_js__WEBPACK_IMPORTED_MODULE_5__.numberFormatted)();
 function formHandler(formId) {
@@ -4728,7 +4725,7 @@ function formHandler(formId) {
           inputDateEnd ? inputDateEnd.value = '' : null;
           inputComment ? inputComment.value = '' : null;
           $(currentModal).modal('hide');
-          reloadPage();
+          (0,_common_js__WEBPACK_IMPORTED_MODULE_10__.reloadPage)();
           // updateHtmlData(formId);
         } else {
           if (result.date_start) {
@@ -4825,7 +4822,7 @@ function updateHtmlData(formId) {
       elementUpdate('#groupDataServices');
       break;
     default:
-      reloadPage();
+      (0,_common_js__WEBPACK_IMPORTED_MODULE_10__.reloadPage)();
       break;
   }
 }
@@ -4848,6 +4845,9 @@ formHandler('formOtherService');
 formHandler('formFile');
 // Добавить счеёт на оплату
 formHandler('formPaymentInvoice');
+// Формирование документа
+// formHandler('formGenerateDocs');
+
 function modalUpdate(modalUpdateId, formId) {
   var modal = document.getElementById(modalUpdateId);
   if (modal) {
@@ -4988,7 +4988,7 @@ function formButtonActionHandler() {
       }).then(function (result) {
         if (result.status === 'success') {
           $(currentModal).modal('hide');
-          reloadPage();
+          (0,_common_js__WEBPACK_IMPORTED_MODULE_10__.reloadPage)();
         }
         buttonSubmit.removeAttribute('disabled');
       })["catch"](function (error) {
@@ -5447,6 +5447,7 @@ window.addEventListener("resize", function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "reloadPage": () => (/* binding */ reloadPage),
 /* harmony export */   "removeAttributeDisabled": () => (/* binding */ removeAttributeDisabled),
 /* harmony export */   "setAttributeDisabled": () => (/* binding */ setAttributeDisabled)
 /* harmony export */ });
@@ -5465,6 +5466,9 @@ var removeAttributeDisabled = function removeAttributeDisabled(items) {
   _toConsumableArray(items).forEach(function (item) {
     item.removeAttribute('disabled');
   });
+};
+var reloadPage = function reloadPage() {
+  return window.location.reload();
 };
 
 /***/ }),
