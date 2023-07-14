@@ -2,13 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExcursionController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FinancePaymentController;
@@ -24,15 +21,12 @@ use App\Http\Controllers\OtherServiceController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ReplicateController;
 use App\Http\Controllers\SelectDataController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StatusDocController;
 use App\Http\Controllers\TouristController;
 use App\Http\Controllers\TourOperatorController;
 use App\Http\Controllers\TourPackageController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\VisaController;
-use App\Http\Requests\CustomerRequest;
-use App\Models\FinancePrepayment;
 use Illuminate\Support\Facades\Artisan;
 
 /*

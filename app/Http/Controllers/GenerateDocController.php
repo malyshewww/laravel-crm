@@ -503,17 +503,22 @@ class GenerateDocController extends Controller
             return trim(preg_replace('/ {2,}/', ' ', join(' ', $out))) . ' ' . $res;
         }
         $resultSumRUB = '';
-        if (count($claim->paymentInvoices) > 0) {
-            $currencyRUB = [];
-            foreach ($claim->paymentInvoices as $key => $item) {
-                if ($item->currency === 'RUB') {
-                    $currencyRUB[] = $item->sum;
-                }
+        // if (count($claim->paymentInvoices) > 0) {
+        //     $currencyRUB = [];
+        //     foreach ($claim->paymentInvoices as $key => $item) {
+        //         if ($item->currency === 'RUB') {
+        //             $currencyRUB[] = $item->sum;
+        //         }
+        //     }
+        //     $resultSumRUB = array_sum($currencyRUB);
+        // }
+        if ($claim->payment) {
+            if ($claim->payment->currency === 'RUB' && $claim->payment->comission_price > 0) {
+                $resultSumRUB = $claim->payment->comission_price;
             }
-            $resultSumRUB = array_sum($currencyRUB);
         }
         $num = abs($resultSumRUB);
-        $int_part = number_format(intval($num), 0, ' ', ' ');
+        $int_part = number_format(intval($num), 0, '.', ',');
         $dec_part = $num * 100 % 100;
         $strPriceNumber = $int_part . ' руб.' . ', ' . $dec_part . ' коп.';
         $strPriceWord = num2str($resultSumRUB);

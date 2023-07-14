@@ -326,7 +326,8 @@ function filterTable() {
 			inputDateStart.value = '';
 			inputDateEnd.value = '';
 			displayLoading();
-			filterQuery(formFilter);
+			filterQuery(formFilter, 'all');
+			event.target.setAttribute('disabled', 'true')
 		})
 	}
 }

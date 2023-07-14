@@ -1,10 +1,79 @@
+@php
+	$currencyRUB = [];
+	$currencyUSD = [];
+	$currencyEUR = [];
+	$status = 'not-sent';
+	$currencySign = '';
+	if (count($claim->paymentInvoices) > 0) {
+		foreach ($claim->paymentInvoices as $key => $item) {
+			if ($item->currency === 'RUB') {
+				$currencyRUB[] = $item->sum;
+			} 
+			if ($item->currency === 'USD') {
+				$currencyUSD[] = $item->sum;
+			} 
+			if ($item->currency === 'EUR') {
+				$currencyEUR[] = $item->sum;
+			}
+		}
+	}
+	$resultSumRUB = array_sum($currencyRUB);
+	$resultSumUSD = array_sum($currencyUSD);
+	$resultSumEUR = array_sum($currencyEUR);
+	if ($claim->payment) {
+		if ($claim->payment->currency === 'RUB' && $resultSumRUB < $claim->payment->comission_price) {
+			$status = 'part';
+		}
+		if ($claim->payment->currency === 'RUB' && $resultSumRUB >= $claim->payment->comission_price) {
+			$status = 'full';
+		}
+		if ($claim->payment->currency === 'USD' && $resultSumUSD < $claim->payment->comission_price) {
+			$status = 'part';
+		}
+		if ($claim->payment->currency === 'USD' && $resultSumUSD >= $claim->payment->comission_price) {
+			$status = 'full';
+		}
+		if ($claim->payment->currency === 'EUR' && $resultSumEUR < $claim->payment->comission_price) {
+			$status = 'part';
+		}
+		if ($claim->payment->currency === 'EUR' && $resultSumEUR >= $claim->payment->comission_price) {
+			$status = 'full';
+		}
+		switch ($claim->payment->currency) {
+			case 'USD':
+				$currencySign = '$';
+				break;
+			case 'EUR':
+				$currencySign = '€';
+				break;
+			default:
+				$currencySign = '₽';
+				break;
+		}
+	}
+@endphp
 <div class="group-data__item item-group" id="groupDataCalculation">
 	<div class="item-group__top"> 
 		<div class="item-group__title">ВЗАИМОРАСЧЁТЫ С ТУРИСТОМ</div>
-		<div class="item-group__status status-full">
-			<i class="fa-solid fa-circle-check"></i>
-			Полностью оплачено
-		</div>
+		@switch($status)
+				@case('part')
+				<div class="item-group__status status-part">
+					<i class="fa-solid fa-circle-check"></i>
+					Оплачено частично
+				</div>
+					@break
+				@case('full')
+				<div class="item-group__status status-full">
+					<i class="fa-solid fa-circle-check"></i>
+					Полностью оплачено
+				</div>
+					@break
+				@default
+				<div class="item-group__status status-not-sent">
+					<i class="fa-solid fa-circle-xmark"></i>
+					Не оплачено
+				</div>
+		@endswitch
 		<div>
 			<button class="item-group__button btn-blue btn-redact" type="button" 
 				data-bs-toggle="modal" 
@@ -41,8 +110,16 @@
 								<span class="item-group__price">{{$claim->payment->tour_price}} ₽</span>
 						@endswitch
 					@endif --}}
-					{{-- <span class="item-group__price">151 300,28 ₽</span>
-					<span>/</span>
+					<span class="item-group__price">
+						<strong>
+							@if ($claim->payment)
+								{{$claim->payment->comission_price ?: '0'}} {{$currencySign}}
+							@else
+								0 ₽
+							@endif
+						</strong>
+					</span>
+					{{-- <span>/</span>
 					<span class="item-group__price">1 939,25 $</span> --}}
 				</div>
 			</div>
@@ -54,26 +131,12 @@
 					];
 				@endphp
 				<ul class="item-group__list list">
-					{{-- <li>
-						<div class="list__label">СКИДКА ДЛЯ ПОКУПАТЕЛЯ (ТУРИСТА)</div>
-						<div class="list__value">0,0 %</div>
-					</li> --}}
 					@foreach ($financeList as $item)
 					<li>
 						<div class="list__label">{{$item['title']}}</div>
 						<div class="list__value">
 							@if ($claim->payment)
-								{{$claim->payment->comission_price ?: '0'}}
-								@switch($claim->payment->currency)
-									@case('USD')
-										$
-										@break
-									@case('EUR')
-										€
-										@break
-									@default
-										₽
-								@endswitch
+								{{$claim->payment->comission_price ?: '0'}} {{$currencySign}}
 							@else
 								0 ₽
 							@endif
@@ -95,27 +158,6 @@
 				</button>
 			</div>
 			<div class="item-group__prices">
-				@php
-					if (count($claim->paymentInvoices) > 0) {
-						$currencyRUB = [];
-						$currencyUSD = [];
-						$currencyEUR = [];
-						foreach ($claim->paymentInvoices as $key => $item) {
-							if ($item->currency === 'RUB') {
-								$currencyRUB[] = $item->sum;
-							} 
-							if ($item->currency === 'USD') {
-								$currencyUSD[] = $item->sum;
-							} 
-							if ($item->currency === 'EUR') {
-								$currencyEUR[] = $item->sum;
-							}
-						}
-						$resultSumRUB = array_sum($currencyRUB);
-						$resultSumUSD = array_sum($currencyUSD);
-						$resultSumEUR = array_sum($currencyEUR);
-					}
-				@endphp
 				<span class="item-group__price">
 					@if ($resultSumRUB > 0)
 						<strong>{{$resultSumRUB}} ₽</strong>
@@ -264,17 +306,7 @@
 					@endphp
 					<span class="item-group__price fw-700">
 						@if ($claim->payment)
-								{{$claim->payment->tour_price ?: '0'}}
-								@switch($claim->payment->currency)
-									@case('USD')
-										$
-										@break
-									@case('EUR')
-										€
-										@break
-									@default
-										₽
-								@endswitch
+								{{$claim->payment->tour_price ?: '0'}} {{$currencySign}}
 							@else
 								Цена не указана
 							@endif
@@ -289,17 +321,7 @@
 						<div class="list__label">СТОИМОСТЬ ТУРПАКЕТА ДЛЯ ТА</div>
 						<div class="list__value">
 							@if ($claim->payment)
-								{{$claim->payment->tour_price ?: '0'}}
-								@switch($claim->payment->currency)
-									@case('USD')
-										$
-										@break
-									@case('EUR')
-										€
-										@break
-									@default
-										₽
-								@endswitch
+								{{$claim->payment->tour_price ?: '0'}} {{$currencySign}}
 							@else
 								0 ₽
 							@endif
@@ -316,17 +338,7 @@
 							<div class="list__label">{{$item['title']}}</div>
 							<div class="list__value">
 								@if ($claim->payment)
-									{{$claim->payment->comission_price ?: '0'}}
-									@switch($claim->payment->currency)
-										@case('USD')
-											$
-											@break
-										@case('EUR')
-											€
-											@break
-										@default
-											₽
-									@endswitch
+									{{$claim->payment->comission_price ?: '0'}} {{$currencySign}}
 								@else
 									0 ₽
 								@endif
