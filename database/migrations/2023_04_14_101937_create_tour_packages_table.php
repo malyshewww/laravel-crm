@@ -21,8 +21,7 @@ class CreateTourPackagesTable extends Migration
             $table->unsignedBigInteger('city_id')->nullable(true);
             $table->unsignedBigInteger('country_id')->nullable(true);
 
-            $table->unsignedBigInteger('claim_id');
-            $table->foreign('claim_id')->references('id')->on('claims')->onDelete('cascade');
+            $table->foreignId('claim_id')->constrained('claims')->onDelete('cascade');
 
             $table->timestamps();
         });

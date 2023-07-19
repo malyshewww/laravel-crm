@@ -4,7 +4,11 @@ var LiveReloadPlugin = require('webpack-livereload-plugin');
 mix.webpackConfig({
     plugins: [new LiveReloadPlugin()]
 });
-
+mix.browserSync({
+    proxy: 'laravel-crm',
+    notify: false,
+    online: true,
+});
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -16,7 +20,8 @@ mix.webpackConfig({
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js/')
+    // .version();
     // .sass('resources/sass/app.scss', 'public/css').options({
     //     processCssUrls: false
     // })

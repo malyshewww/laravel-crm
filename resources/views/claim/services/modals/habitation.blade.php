@@ -60,8 +60,8 @@
 					<div class="col-lg-4">
 						<div class="field-group__item">
 							<label class="field-group__label">Тип питания</label>
-							<select class="select-choices" name="habitation_type_food">
-								<option value="" selected></option>
+							<select class="select-choices" name="habitation_type_food" id="selectHabitationFoodType">
+								{{-- <option value="" selected></option>
 								@php
 									$habitationFoodTypes = ServiceHelper::habitationFoodType();
 								@endphp
@@ -70,7 +70,7 @@
 										value="{{$type['value']}}">
 										{{$type['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>
@@ -106,14 +106,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal__footer">
-			<div class="modal__buttons">
-				<button class="btn btn-create btn-primary" type="submit">
-					<i class="fa-solid fa-check"></i>
-					Сохранить
-				</button>
-				<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
-			</div>
-		</div>
+		@include('components.modal_footer')
 	</form>
 @endcomponent

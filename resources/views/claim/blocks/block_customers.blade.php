@@ -10,7 +10,7 @@
 				data-url="{{route('customer.store')}}"
 				data-path="{{route('customer.loadModal', [$claim->id, 'update'])}}"
 				data-title="Заказчик">
-				Указать заказчика
+				{{$claim->customer ? 'Изменить заказчика' : 'Указать заказчика'}}
 			</button>
 		</div>
 		<div class="group-data__text text-blue">Покупатель тура, с которым заключается договор</div>
@@ -25,17 +25,17 @@
 							{{$claim->person->person_name ?: 'Имя'}}
 							{{$claim->person->person_patronymic ?: 'Отчество'}}</span>
 						<div class="area-group__labels"> 
-							@if ($claim->person->commons)
-								@if ($claim->person->commons->person_phone)
+							@if ($claim->person->person_phone)
+								@if ($claim->person->person_phone)
 								<div class="area-group__label">
 									<i class="fa-solid fa-phone"></i>
-									<span class="area-group__phone">+{{$claim->person->commons->person_phone}}</span>
+									<span class="area-group__phone">+{{$claim->person->person_phone}}</span>
 								</div>
 								@endif
-								@if ($claim->person->commons->person_email)
+								@if ($claim->person->person_email)
 									<div class="area-group__label">
 										<i class="fa-solid fa-envelope"></i>
-										<span class="area-group__phone">{{$claim->person->commons->person_email}}</span>
+										<span class="area-group__phone">{{$claim->person->person_email}}</span>
 									</div>
 								@endif
 							@endif
@@ -67,32 +67,26 @@
 				<div class="dropdown">
 					<button class="dropdown__button text-blue" type="button" id="passport-data">Паспортные данные</button>
 					<div class="dropdown__content customer-passport" hidden>
+						@php
+							$passportSeries = $claim->person->person_passport_series ?: 'Не указано';
+							$passportNumber = $claim->person->person_passport_number ?: 'Не указано';
+							$passportIssued = $claim->person->person_passport_issued ?: 'Не указано';
+							$passportCode =  $claim->person->person_passport_code ?: 'Не указано';
+							$passportAddress = $claim->person->person_passport_address ?: 'Не указано';
+							$personDataList = [
+								['label' => 'СЕРИЯ И НОМЕР:', 'value' => $passportSeries . ' - ' . $passportNumber],
+								['label' => 'КЕМ ВЫДАН:', 'value' => $passportIssued],
+								['label' => 'КОД ПОДРАЗДЕЛЕНИЯ:', 'value' => $passportCode],
+								['label' => 'АДРЕС:', 'value' => $passportAddress],
+							];
+						@endphp
 						<ul class="dropdown__list list">
-							<li>
-								<div class="list__label">СЕРИЯ И НОМЕР:</div>
-								<div class="list__value">
-									{{$claim->person->passport && $claim->person->passport->person_passport_series 
-									? $claim->person->passport->person_passport_series : 'Не указано'}}
-									-
-									{{$claim->person->passport && $claim->person->passport->person_passport_number 
-									? $claim->person->passport->person_passport_number : 'Не указано'}}
-								</div>
-							</li>
-							<li> 
-								<div class="list__label">КЕМ ВЫДАН:</div>
-								<div class="list__value">{{$claim->person->passport && $claim->person->passport->person_passport_issued
-								? $claim->person->passport->person_passport_issued : 'Не указано'}}</div>
-							</li>
-							<li> 
-								<div class="list__label">КОД ПОДРАЗДЕЛЕНИЯ:</div>
-								<div class="list__value">{{$claim->person->passport && $claim->person->passport->person_passport_code 
-								? $claim->person->passport->person_passport_code : 'Не указано'}}</div>
-							</li>
-							<li> 
-								<div class="list__label">АДРЕС:</div>
-								<div class="list__value">{{$claim->person->passport && $claim->person->passport->person_passport_address 
-								? $claim->person->passport->person_passport_address : 'Не указано'}}</div>
-							</li>
+							@foreach ($personDataList as $item)
+								<li>
+									<div class="list__label">{{$item['label']}}</div>
+									<div class="list__value">{{$item['value']}}</div>
+								</li>
+							@endforeach
 						</ul>
 					</div>
 				</div>
@@ -104,78 +98,31 @@
 					<div class="dropdown">
 						<button class="dropdown__button text-blue" type="button" id="passport-data">Данные юридического лица</button>
 						<div class="dropdown__content customer-passport" hidden>
+							@php
+								$companyDataList = [
+									['label' => 'Полное наименование юр. лица:', 'value' => $claim->company->company_fullname ?: 'Не указано'],
+									['label' => 'Сокращенное наименование юр. лица:', 'value' => $claim->company->company_shortname ?: 'Не указано'],
+									['label' => 'ИНН:', 'value' => $claim->company->company_inn ?: 'Не указан'],
+									['label' => 'КПП:', 'value' => $claim->company->company_kpp ?: 'Не указан'],
+									['label' => 'ОГРН:', 'value' => $claim->company->company_ogrn ?: 'Не указан'],
+									['label' => 'Наименование банка:', 'value' => $claim->company->company_bank ?: 'Не указан'],
+									['label' => 'БИК:', 'value' => $claim->company->company_bik ?: 'Не указан'],
+									['label' => 'Р/С:', 'value' => $claim->company->company_rs ?: 'Не указан'],
+									['label' => 'К/С:', 'value' => $claim->company->company_ks ?: 'Не указан'],
+									['label' => 'Юридический адрес:', 'value' => $claim->company->company_address ?: 'Не указан'],
+									['label' => 'Фактический адрес:', 'value' => $claim->company->company_actual_address ?: 'Не указан'],
+									['label' => 'ФИО ГЕН. ДИРЕКТОРА:', 'value' => $claim->company->company_director ?: 'Не указано'],
+									['label' => 'Телефон:', 'value' => $claim->company->company_phone ?: 'Не указан'],
+									['label' => 'E-mail:', 'value' => $claim->company->company_email ?: 'Не указан'],
+								];
+							@endphp
 							<ul class="dropdown__list list">
-								<li>
-									<div class="list__label">Полное наименование юр. лица:</div>
-									<div class="list__value">
-										{{$claim->company->company_fullname ?: 'Не указано'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">Сокращенное наименование юр. лица:</div>
-									<div class="list__value">
-										{{$claim->company->company_shortname ?: 'Не указано'}}
-									</div>
-								</li>
-								<li> 
-									<div class="list__label">ИНН:</div>
-									<div class="list__value">
-										{{$claim->company->company_inn ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">КПП:</div>
-									<div class="list__value">
-										{{$claim->company->company_kpp ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">ОГРН:</div>
-									<div class="list__value">
-										{{$claim->company->company_ogrn ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">Наименование банка:</div>
-									<div class="list__value">
-										{{$claim->company->company_bank ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">БИК:</div>
-									<div class="list__value">
-										{{$claim->company->company_bik ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">Р/С:</div>
-									<div class="list__value">
-										{{$claim->company->company_rs ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">К/С:</div>
-									<div class="list__value">
-										{{$claim->company->company_ks ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">Юридический адрес:</div>
-									<div class="list__value">
-										{{$claim->company->company_address ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">Фактический адрес:</div>
-									<div class="list__value">
-										{{$claim->company->company_actual_address ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">ФИО ГЕН. ДИРЕКТОРА:</div>
-									<div class="list__value">
-										{{$claim->company->company_director ?: 'Не указано'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">Телефон:</div>
-									<div class="list__value">
-										{{$claim->company->company_phone ?: 'Не указан'}}</div>
-								</li>
-								<li> 
-									<div class="list__label">E-mail:</div>
-									<div class="list__value">
-										{{$claim->company->company_email ?: 'Не указан'}}</div>
-								</li>
+								@foreach ($companyDataList as $item)
+									<li> 
+										<div class="list__label">{{$item['label']}}</div>
+										<div class="list__value">{{$item['value']}}</div>
+									</li>
+								@endforeach
 							</ul>
 						</div>
 					</div>

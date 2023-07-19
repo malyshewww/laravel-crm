@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\TourPackageHelper;
 use App\Models\Claim;
-use App\Models\Company;
-use App\Models\Customer;
-use App\Models\Person;
+use App\Models\FileUpload;
 use App\Models\Tourist;
-use App\Models\Touroperator;
-use App\Models\TourPackage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -24,11 +20,6 @@ class ClaimController extends Controller
         $claims = Claim::get();
         return view('claim.index', compact('claims'));
     }
-    public function get_comment(Request $request, $id)
-    {
-        $claimData = Claim::find($id);
-        return response()->json($claimData);
-    }
     public function show(Claim $claim)
     {
         $tourists = Tourist::get();
@@ -36,10 +27,11 @@ class ClaimController extends Controller
     }
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $rules = [
             'date_start' => 'required',
             'date_end' => 'required',
-        ]);
+        ];
+        $validator = Validator::make($request->all(), $rules);
         $data = [
             'date_start' => $request->date_start,
             'date_end' => $request->date_end,
@@ -60,7 +52,7 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function update(Request $request, Claim $claim)
+    public function update(Claim $claim)
     {
         $data = request()->validate([
             'comment' => '',
@@ -92,7 +84,14 @@ class ClaimController extends Controller
     }
     public function forceDelete($id)
     {
-        Claim::where('id', $id)->withTrashed()->forceDelete();
+        $claim = Claim::where('id', $id)->withTrashed()->first();
+        if (count($claim->file) > 0) {
+            foreach ($claim->file as $key => $item) {
+                Storage::disk('public')->delete($item->file_name);
+                FileUpload::where('id', $item->id)->forceDelete();
+            }
+        }
+        $claim->forceDelete();
         return response()->json([
             'status' => 'success'
         ]);
@@ -109,7 +108,7 @@ class ClaimController extends Controller
         $dateStart = $request->input('date_start');
         $dateEnd = $request->input('date_end');
         $fioTourist = $request->input('fio');
-        $result = $status === 'all' ? Claim::get() : Claim::onlyTrashed()->get();
+        $result = $status === 'all' ? Claim::paginate(15) : Claim::onlyTrashed()->paginate(15);
         if (isset($dateStart) || isset($dateEnd) || isset($fioTourist) || isset($status)) {
             $from = $dateStart ? date($dateStart) : '';
             $to = $dateEnd ? date($dateEnd) : '';
@@ -176,12 +175,12 @@ class ClaimController extends Controller
                 $cities = TourPackageHelper::city();
                 $countries = TourPackageHelper::country();
                 foreach ($cities as $keyCity => $c) {
-                    if ($keyCity == $claim->tourpackage->city_id) {
+                    if ($keyCity === $claim->tourpackage->city_id) {
                         $city = $c['name'];
                     }
                 }
                 foreach ($countries as $keyCountry => $c) {
-                    if ($keyCountry == $claim->tourpackage->country_id) {
+                    if ($keyCountry === $claim->tourpackage->country_id) {
                         $country = $c['name'];
                     }
                 }
@@ -196,7 +195,7 @@ class ClaimController extends Controller
                 }
             }
             if (isset($claim->manager)) {
-                $manager = Auth::user()->name;
+                $manager = $claim->manager;
             }
             $arr[] = [
                 'id' => $claim->id,
@@ -214,6 +213,7 @@ class ClaimController extends Controller
                 'manager' => $manager,
             ];
         }
-        return json_encode($arr, true);
+        // return json_encode($arr, true);
+        return response()->json($arr);
     }
 }

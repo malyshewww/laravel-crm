@@ -33,7 +33,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Тип файла</label>
 							<select class="select-choices" name="file_type" id="fileType">
-								@php
+								{{-- @php
 									$fileTypes = FileHelper::fileType();
 								@endphp
 								@foreach ($fileTypes as $key => $file)
@@ -41,21 +41,13 @@
 										value="{{$file['value']}}">
 										{{$file['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="modal__footer">
-			<div class="modal__buttons">
-				<button class="btn btn-create btn-primary" type="submit">
-					<i class="fa-solid fa-check"></i>
-					Сохранить
-				</button>
-				<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Отменить</button>
-			</div>
-		</div>
+		@include('components.modal_footer')
 	</form>
 @endcomponent

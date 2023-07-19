@@ -46,8 +46,8 @@
 					<div class="col-lg-6">
 						<div class="field-group__item">
 							<label class="field-group__label">Тип трансфера</label>
-							<select class="select-choices" name="transfer_type">
-								<option value="" selected></option>
+							<select class="select-choices" name="transfer_type" id="selectTransferType">
+								{{-- <option value="" selected></option>
 								@php
 									$transferTypes = ServiceHelper::transferType();
 								@endphp
@@ -56,7 +56,7 @@
 										value="{{old($transfer['value']) ?: $transfer['value']}}">
 										{{old($transfer['title']) ?: $transfer['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 					</div>
@@ -74,14 +74,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal__footer">
-			<div class="modal__buttons">
-			<button class="btn btn-create btn-primary" type="submit">
-				<i class="fa-solid fa-check"></i>
-				Сохранить
-			</button>
-			<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
-			</div>
-		</div>
+		@include('components.modal_footer')
 	</form>
 @endcomponent

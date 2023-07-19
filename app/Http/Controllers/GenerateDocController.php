@@ -6,28 +6,40 @@ use App\Models\Claim;
 use Illuminate\Http\Request;
 use App\Helpers\ServiceHelper;
 use App\Helpers\TouristHelper;
-use NumberFormatter;
-use PhpOffice\PhpWord\ComplexType\TblWidth;
-use PhpOffice\PhpWord\Element\Table;
-use PhpOffice\PhpWord\Element\TextRun;
-use PhpOffice\PhpWord\SimpleType\TblWidth as SimpleTypeTblWidth;
-use Ramsey\Uuid\Type\Decimal;
-
-// use PhpOffice\PhpWord\IOFactory;
-// use PhpOffice\PhpWord\PhpWord;
-// use PhpOffice\PhpWord\Writer\Word2007;
+use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class GenerateDocController extends Controller
 {
     public function docExport(Request $request)
     {
+        // $validator = Validator::make($request->all(), [
+        //     'doc_type' => 'required',
+        // ]);
+        // $json = [];
+        // $errors = $validator->errors();
+        // if ($validator->fails()) {
+        //     $json['status'] = 'error';
+        //     foreach ($errors->getMessages() as $key => $message) {
+        //         $json[$key] = 'error';
+        //     }
+        //     return response()->json($json);
+        // }
         $docType = $request->doc_type;
         // Creating the new document...
         $fileName = '';
-        if ($docType == 'doc_avia') {
-            $fileName = 'contract_avia';
-        } else if ($docType == 'doc_bus') {
-            $fileName = 'contract_bus';
+        switch ($docType) {
+            case 'doc_avia':
+                $fileName = 'contract_avia';
+                break;
+            case 'doc_bus':
+                $fileName = 'contract_bus';
+                break;
+            case '':
+                $fileName = 'contract_avia';
+            default:
+                break;
         }
         $phpWord = new \PhpOffice\PhpWord\TemplateProcessor('contracts/' . $fileName . '.docx');
         $phpOfficeWord = new \PhpOffice\PhpWord\PhpWord();
@@ -55,22 +67,14 @@ class GenerateDocController extends Controller
                 $personSurname = $claim->person->person_surname ?: 'Фамилия';
                 $personName = $claim->person->person_name ?: 'Имя';
                 $personPatronymic = $claim->person->person_patronymic ?: 'Отчество';
-                $personPassportSeries = $claim->person->passport && $claim->person->passport->person_passport_series
-                    ? $claim->person->passport->person_passport_series : '-';
-                $personPassportNumber = $claim->person->passport && $claim->person->passport->person_passport_number
-                    ? $claim->person->passport->person_passport_number : '-';
-                $personPassportIssued = $claim->person->passport && $claim->person->passport->person_passport_issued
-                    ? $claim->person->passport->person_passport_issued : '-';
-                $personPassportDate = $claim->person->passport && $claim->person->passport->person_passport_date
-                    ? $claim->person->passport->person_passport_date : '-';
-                $personPassportAddress = $claim->person->passport && $claim->person->passport->person_passport_address
-                    ? $claim->person->passport->person_passport_address : '-';
-                $personAddress = $claim->person->commons && $claim->person->commons->person_address
-                    ? $claim->person->commons->person_address  : '-';
-                $personPhone = $claim->person->commons && $claim->person->commons->person_phone
-                    ? $claim->person->commons->person_phone : '-';
-                $personEmail = $claim->person->commons && $claim->person->commons->person_email
-                    ? $claim->person->commons->person_email : '-';
+                $personPassportSeries = $claim->person->person_passport_series ?: '-';
+                $personPassportNumber = $claim->person->person_passport_number ?: '-';
+                $personPassportIssued = $claim->person->person_passport_issued ?: '-';
+                $personPassportDate = $claim->person->person_passport_date ?: '-';
+                $personPassportAddress = $claim->person->person_passport_address ?: '-';
+                $personAddress = $claim->person->person_address ?: '-';
+                $personPhone = $claim->person->person_phone ?: '-';
+                $personEmail = $claim->person->person_email ?: '-';
             }
         }
         $phpWord->setValue('personSurname', $personSurname);
@@ -265,17 +269,18 @@ class GenerateDocController extends Controller
                 ];
             }
         }
-        $phpWord->cloneRowAndSetValues('excursionDescription', $excursionTableData);
-        $phpWord->cloneRowAndSetValues('habitationHotel', $habitationTableData);
-        $phpWord->cloneRowAndSetValues('insuranceCompany', $insuranceTableData);
-        $phpWord->cloneRowAndSetValues('flightFrom', $flightTableData);
-        $phpWord->cloneRowAndSetValues('fuelsurchangeName', $fuelSurchangeTableData);
-        $phpWord->cloneRowAndSetValues('otherServiceName', $otherServiceTableData);
-        $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
-
-        $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
-        $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
-        $phpWord->cloneRowAndSetValues('tourpackageName', $tourPackageTableData);
+        if ($docType == 'doc_avia') {
+            $phpWord->cloneRowAndSetValues('excursionDescription', $excursionTableData);
+            $phpWord->cloneRowAndSetValues('habitationHotel', $habitationTableData);
+            $phpWord->cloneRowAndSetValues('insuranceCompany', $insuranceTableData);
+            $phpWord->cloneRowAndSetValues('flightFrom', $flightTableData);
+            $phpWord->cloneRowAndSetValues('fuelsurchangeName', $fuelSurchangeTableData);
+            $phpWord->cloneRowAndSetValues('otherServiceName', $otherServiceTableData);
+            $phpWord->cloneRowAndSetValues('touristSurname', $touristTableData);
+            $phpWord->cloneRowAndSetValues('visaInfo', $visaTableData);
+            $phpWord->cloneRowAndSetValues('touristList', $transferTableData);
+            $phpWord->cloneRowAndSetValues('tourpackageName', $tourPackageTableData);
+        }
 
         function number2string($number)
         {
@@ -498,26 +503,31 @@ class GenerateDocController extends Controller
             return trim(preg_replace('/ {2,}/', ' ', join(' ', $out))) . ' ' . $res;
         }
         $resultSumRUB = '';
-        if (count($claim->paymentInvoices) > 0) {
-            $currencyRUB = [];
-            foreach ($claim->paymentInvoices as $key => $item) {
-                if ($item->currency === 'RUB') {
-                    $currencyRUB[] = $item->sum;
-                }
+        // if (count($claim->paymentInvoices) > 0) {
+        //     $currencyRUB = [];
+        //     foreach ($claim->paymentInvoices as $key => $item) {
+        //         if ($item->currency === 'RUB') {
+        //             $currencyRUB[] = $item->sum;
+        //         }
+        //     }
+        //     $resultSumRUB = array_sum($currencyRUB);
+        // }
+        if ($claim->payment) {
+            if ($claim->payment->currency === 'RUB' && $claim->payment->comission_price > 0) {
+                $resultSumRUB = $claim->payment->comission_price;
             }
-            $resultSumRUB = array_sum($currencyRUB);
         }
         $num = abs($resultSumRUB);
-        $int_part = number_format(intval($num), 0, ' ', ' ');
+        $int_part = number_format(intval($num), 0, '.', ',');
         $dec_part = $num * 100 % 100;
         $strPriceNumber = $int_part . ' руб.' . ', ' . $dec_part . ' коп.';
-        $strPriceWord = num2str('10.12');
+        $strPriceWord = num2str($resultSumRUB);
         $phpWord->setValue('priceNumber', $strPriceNumber);
         $phpWord->setValue('priceWord', $strPriceWord);
         // $wordPdf = \PhpOffice\PhpWord\IOFactory::load($fileName . ".docx");
         // $pdfWriter = \PhpOffice\PhpWord\IOFactory::createWriter($wordPdf, 'PDF');
         // $pdfWriter->save($fileName . ".pdf");
-        $phpWord->saveAs('123' . '.docx');
-        return response()->download('123' . '.docx')->deleteFileAfterSend(true);
+        $phpWord->saveAs($fileName . '.docx');
+        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
 }

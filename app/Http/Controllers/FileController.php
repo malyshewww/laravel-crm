@@ -31,11 +31,19 @@ class FileController extends Controller
             'file_type' => $request->file_type,
             'claim_id' => $request->claim_id,
         ];
+<<<<<<< HEAD
         // path вернет строку 'files/originalFileName'
         $path = $request->file('file_name')->storeAs(
             'files',
             $originalFileName
         );
+=======
+        // path вернет строку 'files/originalfilename'
+        // $path = $request->file('file_name')->storeAs(
+        //     'files',
+        //     $originalFileName
+        // );
+>>>>>>> 09b1018ff684e43a302b71074a7518e2f2418fa3
         $data['file_name'] = Storage::disk('public')->put('/files', $data['file_name']);
         FileUpload::firstOrCreate($data);
         return response()->json([

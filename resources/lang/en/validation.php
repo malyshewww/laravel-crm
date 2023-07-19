@@ -145,9 +145,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'person_surname' => [
-            'required' => 'Поле обязательно для заполнения',
-        ],
+        'email' => [
+            'unique' => 'Пользователь с данным E-mail уже зарегистрирован'
+        ]
     ],
 
     /*

@@ -8,6 +8,13 @@
 				<button class="btn btn-request" type="button" data-bs-toggle="modal" data-bs-target="#createClaim">Создать заявку</button>
 			</div>
 		</div>
+		<div class="col-12 mb-2">
+			{{-- <div class="field-group__item">
+				<label class="field-group__label">Список физ.лиц</label>
+				<input class="field-group__input" type="text" name="custom_search">
+			</div>
+			<ul class="search-results"></ul> --}}
+		</div>
 		<div class="filters">
 			<form action="{{route('claim.records')}}" id="formFilter">
 				@csrf
@@ -17,14 +24,14 @@
 							<div class="field-group__item">
 								<label class="field-group__label">ФИО ТУРИСТА</label>
 								<div class="field-group__box">
-									<input class="field-group__input" id="fio" type="text" name="fio" value={{request()->get('fio') ?: ''}}>
+									<input class="field-group__input" id="fio" type="text" name="fio" value={{request()->get('fio')}}>
 								</div>
 							</div>
 							<div class="field-group__item">
 								<label class="field-group__label">НАЧАЛО ТУРА (ОТ)</label>
 								<div class="field-group__box">
 									<input class="field-group__input" id="tour_start" type="text" data-name="date_start" data-format="date" name="date_start"
-									value="{{request()->get('date_start') ?: ''}}">
+									value="{{request()->get('date_start')}}">
 									<div class="field-group__trigger">
 										<i class="fa-regular fa-calendar-days calendar-icon"></i>
 										<input class="input-trigger" type="text" data-trigger="date_start">
@@ -35,7 +42,7 @@
 								<label class="field-group__label">НАЧАЛО ТУРА (ДО)</label>
 								<div class="field-group__box">
 									<input class="field-group__input" id="tour_end" type="text" data-name="date_end" data-format="date" name="date_end"
-									value="{{request()->get('date_end') ?: ''}}">
+									value="{{request()->get('date_end')}}">
 									<div class="field-group__trigger">
 										<i class="fa-regular fa-calendar-days calendar-icon"></i>
 										<input class="input-trigger" type="text" data-trigger="date_end">

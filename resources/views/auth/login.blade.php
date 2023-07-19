@@ -1,12 +1,11 @@
 @extends('layouts.app')
-
+@section('title', 'Вход')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <h1 class="card-header text-center">Вход</h1>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -56,7 +55,4 @@
         </div>
     </div>
 </div>
-@endsection
-@section('page-script')
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 @endsection

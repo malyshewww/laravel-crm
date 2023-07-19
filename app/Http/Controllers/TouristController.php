@@ -184,40 +184,55 @@ class TouristController extends Controller
             'status' => 'success'
         ]);
     }
-    public function touristData($id)
-    {
-        $currentTourist = Tourist::find($id);
-        $touristGenders = TouristHelper::gender();
-        $touristNationalities = TouristHelper::nationality();
-        $touristVisas = TouristHelper::visa();
-        $cities = TouristHelper::city();
-        $arr = [
-            'tourist' => $currentTourist,
-            'common' => $currentTourist->common,
-            'passport' => $currentTourist->passport,
-            'certificate' => $currentTourist->certificate,
-            'internationalPassport' => $currentTourist->internationalPassport,
-            'genders' => $touristGenders,
-            'nationalities' => $touristNationalities,
-            'visaOpts' => $touristVisas,
-            'cities' => $cities,
-        ];
-        // return json_encode($arr);
-        return response()->json([
-            'tourist' => $currentTourist,
-            'common' => $currentTourist->common,
-            'passport' => $currentTourist->passport,
-            'certificate' => $currentTourist->certificate,
-            'internationalPassport' => $currentTourist->internationalPassport,
-            'genders' => $touristGenders,
-            'nationalities' => $touristNationalities,
-            'visaOpts' => $touristVisas,
-            'cities' => $cities,
-        ]);
-    }
+    // public function touristData($id)
+    // {
+    //     $currentTourist = Tourist::find($id);
+    //     $touristGenders = TouristHelper::gender();
+    //     $touristNationalities = TouristHelper::nationality();
+    //     $touristVisas = TouristHelper::visa();
+    //     $cities = TouristHelper::city();
+    //     $arr = [
+    //         'tourist' => $currentTourist,
+    //         'common' => $currentTourist->common,
+    //         'passport' => $currentTourist->passport,
+    //         'certificate' => $currentTourist->certificate,
+    //         'internationalPassport' => $currentTourist->internationalPassport,
+    //         'genders' => $touristGenders,
+    //         'nationalities' => $touristNationalities,
+    //         'visaOpts' => $touristVisas,
+    //         'cities' => $cities,
+    //     ];
+    //     // return json_encode($arr);
+    //     return response()->json([
+    //         'tourist' => $currentTourist,
+    //         'common' => $currentTourist->common,
+    //         'passport' => $currentTourist->passport,
+    //         'certificate' => $currentTourist->certificate,
+    //         'internationalPassport' => $currentTourist->internationalPassport,
+    //         'genders' => $touristGenders,
+    //         'nationalities' => $touristNationalities,
+    //         'visaOpts' => $touristVisas,
+    //         'cities' => $cities,
+    //     ]);
+    // }
     public function loadModal($id, $action)
     {
         $tourist = Tourist::findOrFail($id);
-        return view('claim.tourists.modals.modal_update', compact('tourist'))->render();
+        return view('claim.tourists.tourist_update', compact('tourist'))->render();
+    }
+    public function touristSearch(Request $request)
+    {
+        $value = $request->value;
+        $tourists = Tourist::where('tourist_surname', 'LIKE', '%' . $value . '%')->get();
+        return $tourists ? json_encode($tourists) : [];
+    }
+    public function touristData($id, $action)
+    {
+        if ($action === 'old') {
+            $tourist = Tourist::findOrFail($id);
+            return view('claim.tourists.tourist_update', compact('tourist'))->render();
+        } else {
+            return view('claim.tourists.tourist_new')->render();
+        }
     }
 }

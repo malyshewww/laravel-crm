@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Регистрация')
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -51,7 +51,4 @@
         </div>
     </div>
 </div>
-@endsection
-@section('page-script')
-	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 @endsection

@@ -21,7 +21,8 @@ class CreateExcursionsTable extends Migration
             $table->date('excursion_date_start')->nullable(true);
             $table->date('excursion_date_end')->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
         });
     }

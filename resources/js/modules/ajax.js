@@ -1,12 +1,18 @@
 import Choices from "choices.js";
 import { getTranslitValues } from "./translit.js";
-import { initChoices, choiceConfig } from "./choices.js";
+import { initChoices, choiceConfig, getSelectData, changeVisaOptions } from "./select-choices.js";
 import { initDatePicker } from "./calendar.js";
 import { hiddenField } from "./currency.js";
 import { numberFormatted } from "./number-format.js";
 import { changeCustomer } from "./tabs.js";
 import * as Loader from "./loader.js";
-import bootstrapTooltip from "./bootstrapTooltip.js";
+import { bootstrapTooltip } from "./bootstrap/bootstrapTooltip.js";
+import { getCustomerDataList, getPersonItems } from "./customers.js";
+import { reloadPage, removeAttributeDisabled, setAttributeDisabled } from "./common.js";
+import { debounced } from "./search/debounce";
+import { renderModifiedData } from "./search/render";
+
+renderModifiedData();
 
 function checkFormFields() {
 	const formAllInputs = document.querySelectorAll('.field-group__input');
@@ -42,16 +48,13 @@ function checkFormFields() {
 		});
 	})
 }
-const reloadPage = () => {
-	return window.location.reload();
-}
 checkFormFields();
 numberFormatted();
 function formHandler(formId) {
 	const form = document.getElementById(formId);
 	if (form) {
 		const formId = form.getAttribute('id');
-		const route = form.getAttribute('action');
+		let route = form.getAttribute('action');
 		form.addEventListener('submit', (event) => {
 			event.preventDefault();
 			const thisForm = event.target;
@@ -70,9 +73,11 @@ function formHandler(formId) {
 			const selectVisa = thisForm.visa_info;
 			const token = thisForm._token;
 			const inputFileName = thisForm.file_name;
+			const selectDocType = thisForm.doc_type;
 			fetch(route, {
 				headers: {
-					"X-CSRF-Token": token
+					// 'Accept': 'application/json',
+					"X-CSRF-Token": token,
 				},
 				method: 'POST',
 				body: formData,
@@ -84,8 +89,8 @@ function formHandler(formId) {
 						inputDateEnd ? inputDateEnd.value = '' : null;
 						inputComment ? inputComment.value = '' : null;
 						$(currentModal).modal('hide');
-						updateHtmlData(formId);
-						bootstrapTooltip();
+						reloadPage();
+						// updateHtmlData(formId);
 					} else {
 						if (result.date_start) {
 							inputDateStart.classList.add('error');
@@ -111,6 +116,9 @@ function formHandler(formId) {
 						if (result.visa_info) {
 							selectVisa.parentNode.classList.add('error');
 						}
+						if (result.doc_type) {
+							selectDocType.parentNode.classList.add('error');
+						}
 						if (result.file_name) {
 							inputFileName.closest('.upload-file').classList.add('error');
 						}
@@ -118,6 +126,9 @@ function formHandler(formId) {
 					buttonSubmit.removeAttribute('disabled');
 				})
 				.catch((error) => {
+					buttonSubmit.removeAttribute('disabled');
+				})
+				.finally(() => {
 					buttonSubmit.removeAttribute('disabled');
 				})
 		})
@@ -147,7 +158,10 @@ function updateHtmlData(formId) {
 			elementUpdate('#groupDataTourist')
 			break;
 		case 'formTourist':
-			elementUpdate('#groupDataTourist')
+			elementUpdate('#groupDataTourist');
+			elementUpdate('#formTourist input[name="tourist_id"]')
+			const form = document.getElementById('formTourist');
+			form.reset();
 			break;
 		case 'formFile':
 			elementUpdate('#groupDataFile')
@@ -171,7 +185,7 @@ function updateHtmlData(formId) {
 		case 'formExcursion':
 		case 'formOtherService':
 		case 'formServiceUpdate':
-			elementUpdate('#groupDataServices')
+			elementUpdate('#groupDataServices');
 			break;
 		default:
 			reloadPage();
@@ -197,6 +211,8 @@ formHandler('formOtherService');
 formHandler('formFile');
 // Добавить счеёт на оплату
 formHandler('formPaymentInvoice');
+// Формирование документа
+// formHandler('formGenerateDocs');
 
 function modalUpdate(modalUpdateId, formId) {
 	const modal = document.getElementById(modalUpdateId);
@@ -212,17 +228,19 @@ function modalUpdate(modalUpdateId, formId) {
 			const modalBody = thisModal.querySelector('.modal__body');
 			const modalTitle = thisModal.querySelector('.modal__title');
 			const modalContent = thisModal.querySelector('.modal-content');
+			const modalButtons = thisModal.querySelectorAll('.modal__buttons button')
 			const form = thisModal.querySelector('form');
 			const inputClaimId = form.claim_id;
 			const inputTouristId = form.tourist_id;
 			const inputRecordId = form.record_id;
 			const token = form._token;
-			form.setAttribute('action', dataUrl);
+			form.setAttribute('action', `${dataUrl}`);
 			inputClaimId ? inputClaimId.value = dataClaimId : null;
 			inputTouristId ? inputTouristId.value = dataId : null;
 			inputRecordId ? inputRecordId.value = dataId : null;
 			Loader.loader.setAttribute('class', 'loader');
-			modalContent.appendChild(Loader.loader)
+			modalContent.appendChild(Loader.loader);
+			setAttributeDisabled(modalButtons);
 			Loader.displayLoading();
 			fetch(`${dataPath}`, {
 				headers: {
@@ -234,6 +252,9 @@ function modalUpdate(modalUpdateId, formId) {
 				.then((text) => {
 					dataTitle ? modalTitle.textContent = dataTitle : null;
 					modalBody.innerHTML = text;
+					debounced();
+					getCustomerDataList('personItems', 'persons');
+					getCustomerDataList('companyItems', 'companies');
 					formHandler(formId);
 					getTranslitValues();
 					hiddenField();
@@ -247,11 +268,18 @@ function modalUpdate(modalUpdateId, formId) {
 						}
 					})
 					initDatePicker();
+					removeAttributeDisabled(modalButtons)
+					renderModifiedData();
+					changeVisaOptions();
 				})
 				.catch((error) => {
-					console.log(error);;
+					console.log(error);
+					removeAttributeDisabled(modalButtons)
+					Loader.hideLoading()
+					Loader.loader.remove();
 				})
 				.finally(() => {
+					removeAttributeDisabled(modalButtons)
 					Loader.hideLoading()
 					Loader.loader.remove();
 				})
@@ -348,6 +376,7 @@ async function elementUpdate(selector) {
 		let newdoc = new DOMParser().parseFromString(html, 'text/html');
 		document.querySelector(selector).outerHTML = newdoc.querySelector(selector).outerHTML;
 		console.log('Элемент ' + selector + ' был успешно обновлен');
+		bootstrapTooltip();
 		return true;
 	} catch (err) {
 		console.log('При обновлении элемента ' + selector + ' произошла ошибка:');

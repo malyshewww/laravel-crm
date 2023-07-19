@@ -19,7 +19,8 @@ class CreateFilesTable extends Migration
             $table->string('file_original_name')->nullable(true);
             $table->string('file_type')->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
         });
     }

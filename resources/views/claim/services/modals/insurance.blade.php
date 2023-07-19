@@ -29,7 +29,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Тип страховки</label>
 							<select class="select-choices" data-name="insuranceType" name="insurance_type" id="insuranceType">
-								<option value="" selected></option>
+								{{-- <option value="" selected></option>
 								@php
 									$insuranceTypes = ServiceHelper::insuranceType();
 								@endphp
@@ -38,7 +38,7 @@
 										value="{{$type['value']}}">
 										{{$type['title']}}
 									</option>
-								@endforeach
+								@endforeach --}}
 							</select>
 						</div>
 						<div class="field-group__item mt-3" hidden>
@@ -86,14 +86,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal__footer">
-			<div class="modal__buttons">
-			<button class="btn btn-create btn-primary" type="submit">
-				<i class="fa-solid fa-check"></i>
-				Сохранить
-			</button>
-			<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Закрыть</button>
-			</div>
-		</div>
+		@include('components.modal_footer')
 	</form>
 @endcomponent

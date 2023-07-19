@@ -20,7 +20,8 @@ class CreateFinancePaymentInvoicesTable extends Migration
             $table->string('currency')->nullable(true);
             $table->datetime('date_invoices')->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

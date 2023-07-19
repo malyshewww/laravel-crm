@@ -13,13 +13,18 @@
 		</button>
 	</div>
 	@if ($claim->touroperator)
-		@if ($claim->touroperator->title)
-			<ul class="item-group__list list">
-				<li class="list__item">
-					<div class="list__label">ТУРОПЕРАТОР</div>
-					<div class="list__value">{{$claim->touroperator->title}}</div>
-				</li>
-			</ul>
-		@endif
+		@php
+			$touroperatorList = [
+				['label' => 'ТУРОПЕРАТОР', 'value' => $claim->touroperator->title ?: '']
+			];
+		@endphp
+		<ul class="item-group__list list">
+			@foreach ($touroperatorList as $item)
+			<li class="list__item">
+				<div class="list__label">{{$item['label']}}</div>
+				<div class="list__value">{{$item['value']}}</div>
+			</li>
+			@endforeach
+		</ul>
 	@endif
 </div>

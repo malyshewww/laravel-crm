@@ -25,7 +25,8 @@ class CreateInsurancesTable extends Migration
             $table->date('dateinsurance_end')->nullable(true);
             $table->string('insurance_sum')->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
         });
     }

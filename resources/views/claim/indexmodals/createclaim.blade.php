@@ -2,10 +2,10 @@
 	@slot('modal_id', 'createClaim')
 	@slot('modal_title', Blade::render('Заявка от {{ $date }}', ['date' => date('d.m.Y')]))
 	@slot('modal_class', null)
-	<form action="{{route('claim.store')}}" method="POST" id="formCreateClaim" class="form">
+	<form action="{{route('claim.store')}}" method="POST" id="formCreateClaim">
 		@csrf
 		<input type="hidden" name="id" value="{{count($claims) > 0 ? count($claims) + 1 : 1}}">
-		<input type="hidden" name="manager" value="{{Auth::user()->email}}">
+		<input type="hidden" name="manager" value="{{Auth::user()->name}}">
 		<div class="modal__body">
 			<div class="field-group">
 				<div class="row"> 
@@ -52,16 +52,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal__footer">
-			<div class="modal__buttons">
-				<button class="btn btn-create btn-primary" type="submit">
-					<i class="fa-solid fa-check"></i>
-					Создать
-				</button>
-				<button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
-					Отмена
-				</button>
-			</div>
-		</div>
+		@include('components.modal_footer', ['saveButton' => 'Создать'])
 	</form>
 @endcomponent

@@ -18,7 +18,8 @@ class CreateFinancePrepaymentsTable extends Migration
             $table->decimal('percent', 6, 2)->unsigned()->nullable(true);
             $table->tinyInteger('days')->unsigned()->nullable(true);
 
-            $table->foreignId('claim_id')->onDelete('cascade')->constrained('claims');
+            $table->unsignedBigInteger('claim_id');
+            $table->foreign('claim_id')->on('claims')->references('id')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
