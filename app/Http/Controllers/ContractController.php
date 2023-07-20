@@ -23,9 +23,9 @@ class ContractController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $action, $status)
     {
-        $claim = Claim::findOrFail($id);
+        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
         if ($claim->contract) {
             $contract = Contract::findOrFail($claim->contract->id);
             return view('claim.contract.modals.contract_update', compact('contract'))->render();

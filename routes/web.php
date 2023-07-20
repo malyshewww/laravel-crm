@@ -60,19 +60,19 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/claims', [ClaimController::class, 'index'])->name('claim.index');
     Route::get('/claims/create', [ClaimController::class, 'create'])->name('claim.create');
-    Route::get('/claims/{claim}', [ClaimController::class, 'show'])->name('claim.show');
+    Route::get('/claims/{claim}/{status}', [ClaimController::class, 'show'])->name('claim.show');
     Route::post('/claims', [ClaimController::class, 'store'])->name('claim.store');
-    Route::post('/claims/{claim}/update', [ClaimController::class, 'update'])->name('claim.update');
+    Route::post('/claims/{claim}/update/status-{status}', [ClaimController::class, 'update'])->name('claim.update');
     Route::delete('/claims/{claim}/delete', [ClaimController::class, 'destroy'])->name('claim.destroy');
     Route::post('/claims/records', [ClaimController::class, 'records'])->name('claim.records');
-    Route::get('/claims/{claim}/loadModal-{action}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
+    Route::get('/claims/{claim}/loadModal-{action}/{status}', [ClaimController::class, 'loadModal'])->name('claim.loadModal');
     Route::get('/archived', [ClaimController::class, 'archived'])->name('claim.archived');
     Route::post('/claims/{claim}/restore', [ClaimController::class, 'restore'])->name('claim.restore');
     Route::delete('claims/{claim}/force-delete', [ClaimController::class, 'forceDelete'])->name('claim.force-delete');
 
     // Статус отправки документов
     Route::post('/statusDocs', [StatusDocController::class, 'store'])->name('statusDoc.store');
-    Route::get('/statusDocs/{statusDoc}/loadModal-{action}', [StatusDocController::class, 'loadModal'])->name('statusDoc.loadModal');
+    Route::get('/statusDocs/{statusDoc}/loadModal-{action}/{status}', [StatusDocController::class, 'loadModal'])->name('statusDoc.loadModal');
 
     // Данные для селекта в модальных окнах
     Route::post('/selectData', [SelectDataController::class, 'dataHelper'])->name('selectData');
@@ -82,18 +82,18 @@ Route::middleware('auth')->group(function () {
 
     // Информация о туроператоре
     Route::post('/touroperators/{touroperator}/store', [TourOperatorController::class, 'store'])->name('touroperator.store');
-    Route::get('/touroperators/{touroperator}/loadModal-{action}', [TourOperatorController::class, 'loadModal'])->name('touroperator.loadModal');
+    Route::get('/touroperators/{touroperator}/loadModal-{action}/{status}', [TourOperatorController::class, 'loadModal'])->name('touroperator.loadModal');
 
     // Информация о турпакете
     Route::post('/tourpackages/{tourpackage}/store', [TourPackageController::class, 'store'])->name('tourpackage.store');
-    Route::get('/tourpackages/{tourpackage}/loadModal-{action}', [TourPackageController::class, 'loadModal'])->name('tourpackage.loadModal');
+    Route::get('/tourpackages/{tourpackage}/loadModal-{action}/{status}', [TourPackageController::class, 'loadModal'])->name('tourpackage.loadModal');
 
     // Данные договора и бронироваиня
     Route::post('/contracts/{contract}/store', [ContractController::class, 'store'])->name('contract.store');
-    Route::get('/contracts/{contract}/loadModal-{action}', [ContractController::class, 'loadModal'])->name('contract.loadModal');
+    Route::get('/contracts/{contract}/loadModal-{action}/{status}', [ContractController::class, 'loadModal'])->name('contract.loadModal');
 
     // Данные о заказчике (Физическое|Юридическое лицо)
-    Route::get('/customers/{customer}/loadModal-{action}', [CustomerController::class, 'loadModal'])->name('customer.loadModal');
+    Route::get('/customers/{customer}/loadModal-{action}/{status}', [CustomerController::class, 'loadModal'])->name('customer.loadModal');
     Route::post('/customers', [CustomerController::class, 'store'])->name('customer.store');
     Route::post('/personSearch', [CustomerController::class, 'personSearch'])->name('customer.personSearch');
     Route::post('/companySearch', [CustomerController::class, 'companySearch'])->name('customer.companySearch');

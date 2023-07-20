@@ -104,9 +104,9 @@ class CustomerController extends Controller
             ]);
         }
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $action, $status)
     {
-        $claim = Claim::findOrFail($id);
+        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
         $persons = Person::get();
         $companies = Company::get();
         return view('claim.customer.modal_update_customer', compact('claim', 'persons', 'companies'))->render();

@@ -51,8 +51,7 @@ class ExcursionController extends Controller
     public function loadModal($id, $claimId, $action)
     {
         $excursion = Excursion::findOrFail($id);
-        $title = 'Эксурсионная программа (редактирование)';
-        $claim = Claim::find($claimId);
-        return view('claim.services.modals.modal_update_excursion', compact('excursion', 'claim', 'title'))->render();
+        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
+        return view('claim.services.modals.modal_update_excursion', compact('excursion', 'claim'))->render();
     }
 }

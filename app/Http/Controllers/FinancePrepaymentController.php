@@ -24,7 +24,7 @@ class FinancePrepaymentController extends Controller
     }
     public function loadModal($id, $action)
     {
-        $claim = Claim::findOrFail($id);
+        $claim = $action === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
         if ($claim->prepayment) {
             $prepayment = FinancePrepayment::findOrFail($claim->prepayment->id);
             return view('claim.finance.modals.prepayment_update', compact('prepayment'))->render();

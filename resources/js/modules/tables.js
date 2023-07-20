@@ -142,7 +142,7 @@ function initDataTable(data) {
 				"data": 'number',
 				"orderable": false,
 				"render": function (data, type, row, meta) {
-					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}" target="_blank">${row.claim_number}</a>`;
+					return `<a class="tour-table__link" href="${BASE_URL}/claims/${row.id}/${row.claimStatus}?status=${row.claimStatus}" target="_blank">${row.claim_number}</a>`;
 				}
 			},
 			{

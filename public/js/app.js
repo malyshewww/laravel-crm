@@ -6633,7 +6633,7 @@ function initDataTable(data) {
       "data": 'number',
       "orderable": false,
       "render": function render(data, type, row, meta) {
-        return "<a class=\"tour-table__link\" href=\"".concat(BASE_URL, "/claims/").concat(row.id, "\" target=\"_blank\">").concat(row.claim_number, "</a>");
+        return "<a class=\"tour-table__link\" href=\"".concat(BASE_URL, "/claims/").concat(row.id, "/").concat(row.claimStatus, "?status=").concat(row.claimStatus, "\" target=\"_blank\">").concat(row.claim_number, "</a>");
       }
     }, {
       "data": 'date_start',

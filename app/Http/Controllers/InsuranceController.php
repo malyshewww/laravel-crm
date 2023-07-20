@@ -56,8 +56,8 @@ class InsuranceController extends Controller
     }
     public function loadModal($id, $claimId, $action)
     {
+        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
         $insurance = Insurance::findOrFail($id);
-        $claim = Claim::find($claimId);
         return view('claim.services.modals.modal_update_insurance', compact('insurance', 'claim'))->render();
     }
 }

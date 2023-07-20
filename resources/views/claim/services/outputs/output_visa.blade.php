@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('visa.update', $visa->id)}}"
-							data-path="{{route('visa.loadModal', [$visa->id, $claim->id, 'update'])}}"
+							data-path="{{route('visa.loadModal', [$visa->id, $claim->id, request()->get('status')])}}"
 							data-title="Виза (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

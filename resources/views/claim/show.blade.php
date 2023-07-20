@@ -24,7 +24,7 @@
 								data-type="update"
 								data-claim-id="{{$claim->id}}"
 								data-url="{{route('claim.store')}}"
-								data-path="{{route('claim.loadModal', [$claim->id, 'update'])}}"
+								data-path="{{route('claim.loadModal', [$claim->id, 'update', request()->get('status')])}}"
 								data-title="{{$claim->comment ? 'Комментарий (редактирование)' : 'Комментарий'}}">
 								<span>{{$claim->comment ? 'редактировать комментарий' : 'добавить комментарий'}}</span>
 							</button>

@@ -20,8 +20,16 @@ class ClaimController extends Controller
         $claims = Claim::get();
         return view('claim.index', compact('claims'));
     }
-    public function show(Claim $claim)
+    public function show($id, $status)
     {
+        $claim = Claim::find($id);
+        if ($status === 'active') {
+            $claim->get();
+        } else {
+            $claim = Claim::withTrashed()
+                ->where('id', $id)
+                ->first();
+        }
         $tourists = Tourist::get();
         return view('claim.show', compact('claim', 'tourists'));
     }
@@ -52,8 +60,9 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function update(Claim $claim)
+    public function update($id, $status)
     {
+        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
         $data = request()->validate([
             'comment' => '',
         ]);
@@ -96,9 +105,16 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $action, $status)
     {
-        $claim = Claim::findOrFail($id);
+        $claim = Claim::find($id);
+        if ($status === 'active') {
+            $claim->first();
+        } else {
+            $claim = Claim::withTrashed()
+                ->where('id', $id)
+                ->first();
+        }
         return view('claim.comment.modals.modal_comment_update', compact('claim'))->render();
     }
     // Fetch DataTable data
@@ -198,6 +214,7 @@ class ClaimController extends Controller
                 $manager = $claim->manager;
             }
             $arr[] = [
+                'claimStatus' => $status === 'all' ? 'active' : 'deleted',
                 'id' => $claim->id,
                 'claim_number' => $claim->id . '-' . date('Y'),
                 'date_start' => $claim->date_start,
@@ -213,7 +230,6 @@ class ClaimController extends Controller
                 'manager' => $manager,
             ];
         }
-        // return json_encode($arr, true);
         return response()->json($arr);
     }
 }

@@ -51,7 +51,7 @@ class VisaController extends Controller
     public function loadModal($id, $claimId, $action)
     {
         $visa = Visa::findOrFail($id);
-        $claim = Claim::find($claimId);
+        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
         return view('claim.services.modals.modal_update_visa', compact('visa', 'claim'))->render();
     }
 }

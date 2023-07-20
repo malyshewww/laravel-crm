@@ -24,9 +24,9 @@ class TourPackageController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action)
+    public function loadModal($id, $action, $status)
     {
-        $claim = Claim::findOrFail($id);
+        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
         if ($claim->tourpackage) {
             $tourpackage = TourPackage::findOrFail($claim->tourpackage->id);
             return view('claim.tourpackage.modals.tourpackage_update', compact('tourpackage', 'claim'))->render();

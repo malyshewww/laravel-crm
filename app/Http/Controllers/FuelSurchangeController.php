@@ -48,8 +48,8 @@ class FuelSurchangeController extends Controller
     }
     public function loadModal($id, $claimId, $action)
     {
+        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
         $fs = FuelSurchange::findOrFail($id);
-        $claim = Claim::find($claimId);
         return view('claim.services.modals.modal_update_fuelsurchange', compact('fs', 'claim'))->render();
     }
 }

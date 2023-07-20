@@ -7,7 +7,7 @@
 			data-type="update"
 			data-claim-id="{{$claim->id}}"
 			data-url="{{route('tourpackage.store', $claim->id)}}"
-			data-path="{{route('tourpackage.loadModal', [$claim->id, 'update'])}}"
+			data-path="{{route('tourpackage.loadModal', [$claim->id, 'update', request()->get('status')])}}"
 			data-title="Турпакет">
 			{{$claim->tourpackage ? '[изменить]' : '[добавить]'}}
 		</button>
@@ -28,13 +28,15 @@
 			foreach ($countries as $keyCountry => $country) {
 				if ( $keyCountry === $claim->tourpackage->country_id) $currentCountry = $country['name'];
 			}
+			$dateStart = $claim->date_start ? $claim->date_start->format('d.m.Y') : '';
+			$dateEnd = $claim->date_end ? $claim->date_end->format('d.m.Y') : '';
 			$tourpackageList = [
 				['label' => 'СПО', 'value' => $claim->tourpackage->name ?: ''], 
-				['label' => 'ДАТЫ ТУРА', 'value' => $claim->date_start ? $claim->date_start->format('d.m.Y') : '' . ' - ' .  $claim->date_end ? $claim->date_end->format('d.m.Y') : ''],
+				['label' => 'ДАТЫ ТУРА', 'value' => $dateStart . ' - ' . $dateEnd],
 				['label' => 'НАПРАВЛЕНИЕ', 'value' => $currentCity . ' - ' . $currentCountry],
 				['label' => 'НОЧЕЙ', 'value' => $resultDiff . ' ' . Lang::choice('ночь|ночи|ночей', $resultDiff, [], 'ru')],
 			];
-		@endphp
+			@endphp
 		<ul class="item-group__list list">
 			@foreach ($tourpackageList as $item)
 				<li class="list__item">
