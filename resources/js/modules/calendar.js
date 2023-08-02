@@ -25,6 +25,66 @@ function getNumberOfDays(start, end) {
 }
 
 export function initDatePicker(type) {
+	// Конфигурация для одиночных дат
+	let button = {
+		content: 'Применить',
+		className: 'custom-button-classname',
+		onClick: (dp, date) => {
+			let newDate = new Date(date);
+			dp.selectDate(newDate);
+			dp.setViewDate(newDate);
+			dp.hide();
+		}
+	}
+	const calendarPosition = {
+		position({ $datepicker, $target, $pointer, done }) {
+			let popper = createPopper($target, $datepicker, {
+				placement: 'bottom',
+				modifiers: [
+					{
+						name: 'flip',
+						options: {
+							padding: {
+								top: 64
+							}
+						}
+					},
+					{
+						name: 'offset',
+						options: {
+							offset: [0, 20]
+						}
+					},
+					{
+						name: 'arrow',
+						options: {
+							element: $pointer
+						}
+					}
+				]
+			})
+			return function completeHide() {
+				popper.destroy();
+				done();
+			}
+		}
+	}
+	let startConfig = {}
+	let endConfig = {}
+	let settings = {}
+	if (type === 'mobile') {
+		settings = {
+			// описание настроек для мобильной вариации.
+			isMobile: true,
+		}
+	} else {
+		settings = {
+			// описание настроек для десктопной вариации.
+			...calendarPosition,
+			isMobile: false,
+		}
+	}
+
 	const removeError = (input) => {
 		if (input.classList.contains('error')) {
 			input.classList.remove('error');
@@ -49,6 +109,7 @@ export function initDatePicker(type) {
 	const datePickerRange = document.querySelectorAll('[data-range]');
 	[...datePickerRange].forEach((range) => {
 		let datepickerRange = new AirDatepicker(range, {
+			...settings,
 			range: true,
 			autoClose: true,
 			multipleDatesSeparator: ' - ',
@@ -66,83 +127,6 @@ export function initDatePicker(type) {
 			},
 		})
 	})
-	// Конфигурация для одиночных дат
-	let button = {
-		content: 'Применить',
-		className: 'custom-button-classname',
-		onClick: (dp, date) => {
-			let newDate = new Date(date);
-			dp.selectDate(newDate);
-			dp.setViewDate(newDate);
-			dp.hide();
-		}
-	}
-	let startConfig = {}
-	let endConfig = {}
-	let singleDateConfig = {}
-	let settings = {}
-	if (type === 'mobile') {
-		settings = {
-			// описание настроек для мобильной вариации.
-			isMobile: true,
-		}
-	} else {
-		settings = {
-			// описание настроек для десктопной вариации.
-			isMobile: false,
-		}
-		let singleDateSettings = {
-			container: "#scroll-container",
-			position({ $datepicker, $target, $pointer, isViewChange, done }) {
-				let popper = createPopper($target, $datepicker, {
-					placement: 'bottom',
-					onFirstUpdate: state => {
-						!isViewChange && anime.remove($datepicker);
-						$datepicker.style.transformOrigin = 'center top';
-						!isViewChange && anime({
-							targets: $datepicker,
-							opacity: [0, 1],
-							rotateX: [-90, 0],
-							easing: 'spring(1.3, 80, 5, 0)',
-						})
-
-					},
-					modifiers: [
-						{
-							name: 'offset',
-							options: {
-								offset: [0, 10]
-							}
-						},
-						{
-							name: 'arrow',
-							options: {
-								element: $pointer,
-							}
-						},
-						{
-							name: 'computeStyles',
-							options: {
-								gpuAcceleration: false,
-							},
-						},
-					]
-				});
-				return () => {
-					anime({
-						targets: $datepicker,
-						opacity: 0,
-						rotateX: -90,
-						duration: 300,
-						easing: 'easeOutCubic'
-					}).finished.then(() => {
-						popper.destroy();
-						done();
-					})
-				}
-			}
-		}
-	}
 	let forms = document.querySelectorAll('form');
 	[...forms].forEach((form) => {
 		let inputTriggerStart = form.querySelector('[data-trigger="date_start"]');
@@ -156,6 +140,7 @@ export function initDatePicker(type) {
 				altField: inputAltFieldStart,
 				...rangeDateConfig,
 				...settings,
+				...startConfig,
 				autoClose: true,
 				dateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
 				altFieldDateFormat: inputAltFieldStartFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
@@ -167,16 +152,16 @@ export function initDatePicker(type) {
 					removeError(inputAltFieldStart);
 					checkBtnAttributeDisabled(inputAltFieldStart, inputAltFieldEnd);
 				},
-				clear: ({ opts }) => {
-					console.log(opts);
-				},
-				...startConfig
+				// clear: ({ opts }) => {
+				// 	console.log(opts);
+				// },
 				// selectDates: [inputAltFieldStart.value != '' ? inputAltFieldStart.value : '']
 			});
 			let datepickerEnd = new AirDatepicker(inputTriggerEnd, {
 				altField: inputAltFieldEnd,
 				...rangeDateConfig,
 				...settings,
+				...endConfig,
 				autoClose: true,
 				dateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
 				altFieldDateFormat: inputAltFieldEndFormat == 'datetime' ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
@@ -188,7 +173,6 @@ export function initDatePicker(type) {
 					removeError(inputAltFieldEnd);
 					checkBtnAttributeDisabled(inputAltFieldStart, inputAltFieldEnd);
 				},
-				...endConfig
 				// selectDates: [inputAltFieldEnd.value != '' ? inputAltFieldEnd.value : '']
 			});
 		}
@@ -200,11 +184,6 @@ export function initDatePicker(type) {
 			const altFieldDate = parent.querySelector('[data-name="date"]');
 			if (altFieldDate) {
 				let altFieldDateFormat = altFieldDate?.dataset.format;
-				// if (altFieldDate.value != "") {
-				// 	singleDateConfig = {
-				// 		selectedDates: [altFieldDate.value]
-				// 	}
-				// }
 				let datepicker = new AirDatepicker(item, {
 					...settings,
 					dateSeparator: "",
@@ -216,11 +195,6 @@ export function initDatePicker(type) {
 					buttons: ['today', 'clear'],
 					timepicker: altFieldDateFormat == "datetime" ? true : false,
 					timeFormat: 'HH:mm',
-					// navTitles: {
-					// 	days: '<strong>yyyy</strong> <i>MMMM</i>',
-					// 	months: 'Выберите месяц в  <strong>yyyy</strong>'
-					// },
-					...singleDateConfig
 				})
 			}
 		});

@@ -9,7 +9,7 @@
 				<div class="claim__header">
 					<div class="claim__top"> 
 						<h1 class="claim__title">
-							Заявка № <span class="claim-number">{{$claim->id}}-{{date('Y')}}</span>
+							Заявка № <span class="claim-number" data-claim-number>{{$claim->id}}-{{date('Y')}}</span>
 						</h1>
 						<button type="button" class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
 						<div class="claim__subtitle">

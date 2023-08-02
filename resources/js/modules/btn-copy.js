@@ -21,13 +21,20 @@ document.body.insertAdjacentHTML('beforeend', alertHtml);
 
 const btnCopy = document.getElementById('btn-copy');
 if (btnCopy) {
-	const claimNumber = document.querySelector('.claim-number');
+	const claimNumber = document.querySelector('[data-claim-number]');
 	const alertNumber = document.querySelector('.alert-number');
 	btnCopy.addEventListener('click', (event) => {
 		const thisBtn = event.currentTarget;
-		navigator.clipboard.writeText(claimNumber.textContent)
-		thisBtn.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
-		thisBtn.setAttribute('disabled', 'true');
+		async function copyCode() {
+			try {
+				navigator.clipboard?.writeText(claimNumber.textContent)
+				thisBtn.querySelector("i").setAttribute("class", "fa-solid fa-file-circle-check");
+				thisBtn.setAttribute('disabled', 'true');
+			} catch (e) {
+				console.log(e);
+			}
+		}
+		copyCode()
 		if (alertNumber) {
 			alertNumber.style.transform = 'translate(-50%, 0%)';
 			setTimeout(() => {

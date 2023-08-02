@@ -16,11 +16,13 @@ class ContractController extends Controller
             'number' => $request->number,
             'claim_id' => $request->claim_id,
         ];
+        $contract = Claim::findOrFail($request->claim_id)->contract;
         Contract::updateOrCreate([
             'claim_id' => $request->claim_id
         ], $data);
         return response()->json([
-            'status' => 'success'
+            'status' => 'success',
+            'data' => $contract
         ]);
     }
     public function loadModal($id, $action, $status)

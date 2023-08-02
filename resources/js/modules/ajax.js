@@ -55,7 +55,8 @@ function formHandler(formId) {
 	if (form) {
 		const formId = form.getAttribute('id');
 		let route = form.getAttribute('action');
-		form.addEventListener('submit', (event) => {
+		form.addEventListener('submit', formSubmit)
+		function formSubmit(event) {
 			event.preventDefault();
 			const thisForm = event.target;
 			const currentModal = thisForm.closest('.modal');
@@ -131,7 +132,8 @@ function formHandler(formId) {
 				.finally(() => {
 					buttonSubmit.removeAttribute('disabled');
 				})
-		})
+		}
+		// form.removeEventListener('submit', formSubmit)
 	}
 }
 function updateHtmlData(formId) {
@@ -149,7 +151,8 @@ function updateHtmlData(formId) {
 			elementUpdate('#groupDataTouroperator')
 			break;
 		case 'formContract':
-			elementUpdate('#groupDataContract')
+			// elementUpdate('#groupDataContract')
+			const block = document.querySelector('#groupDataContract');
 			break;
 		case 'formCustomer':
 			elementUpdate('#groupDataCustomer')
