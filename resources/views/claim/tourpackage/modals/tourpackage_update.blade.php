@@ -4,7 +4,7 @@
 			<div class="field-group__item">
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="name" value="{{$tourpackage ? $tourpackage->name : ''}}">
+					<input class="field-group__input" type="text" name="name" value="{{$tourpackage ? $tourpackage->name : ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -13,7 +13,7 @@
 				<label class="field-group__label">Начало</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="date_start" 
-					value="{{$claim->date_start->format('Y-m-d')}}">
+					value="{{$claim->date_start->format('Y-m-d')}}" autocomplete="off">
 					<div class="field-group__trigger"><i class="fa-regular fa-calendar-days calendar-icon"></i>
 						<input class="input-trigger" type="text" data-trigger="date_start">
 					</div>
@@ -25,7 +25,7 @@
 				<label class="field-group__label">Окончание</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="date_end" 
-					value="{{$claim->date_end->format('Y-m-d')}}">
+					value="{{$claim->date_end->format('Y-m-d')}}" autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
 						<input class="input-trigger" type="text" data-trigger="date_end">

@@ -7,7 +7,7 @@
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="habitation_name"
-					value="{{$habitation->habitation_name ?: ''}}">
+					value="{{$habitation->habitation_name ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -16,7 +16,7 @@
 				<label class="field-group__label">Курорт</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="habitation_resort"
-					value="{{$habitation->habitation_resort ?: ''}}">
+					value="{{$habitation->habitation_resort ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 				<label class="field-group__label">Отель</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="habitation_hotel"
-					value="{{$habitation->habitation_hotel ?: ''}}">
+					value="{{$habitation->habitation_hotel ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -34,7 +34,7 @@
 				<label class="field-group__label">Адрес отеля</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="habitation_hotel_address"
-					value="{{$habitation->habitation_hotel_address ?: ''}}">
+					value="{{$habitation->habitation_hotel_address ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -43,7 +43,7 @@
 				<label class="field-group__label">Тип номера</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="habitation_type_number"
-					value="{{$habitation->habitation_type_number ?: ''}}">
+					value="{{$habitation->habitation_type_number ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -52,7 +52,7 @@
 				<label class="field-group__label">Тип размещения</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="habitation_type_placement"
-					value="{{$habitation->habitation_type_placement ?: ''}}">
+					value="{{$habitation->habitation_type_placement ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -87,10 +87,11 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_start" data-format="datetime"
 					name="datehabitation_start"
-					value="{{$start_ts ? $date_start_format : ''}}">
+					value="{{$start_ts ? $date_start_format : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_start">
+						<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -102,10 +103,11 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_end" data-format="datetime"
 					name="datehabitation_end"
-					value="{{$end_ts ? $date_end_format : ''}}">
+					value="{{$end_ts ? $date_end_format : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_end">
+						<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 					</div>
 				</div>
 			</div>

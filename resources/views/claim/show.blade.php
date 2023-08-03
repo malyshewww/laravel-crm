@@ -13,21 +13,28 @@
 						</h1>
 						<button type="button" class="claim__copy btn-copy" id="btn-copy"><i class="fa-regular fa-paste"></i></button>
 						<div class="claim__subtitle">
-							<strong>{{Auth::user()->name}}</strong> создана: {{$claim->created_at->format('d.m.Y H:i:s')}} МСК.
+							<strong>{{$claim->manager}}</strong> создана: {{$claim->created_at->format('d.m.Y H:i:s')}} МСК.
 						</div>
 					</div>
 					<div class="claim__comment comment-claim">
 						<div class="comment-claim__box">
+							@if ($claim->id === Auth::user()->id)
+								<button class="claim__button btn-blue btn-redact" 
+									type="button" data-bs-toggle="modal" data-bs-target="#commentModal"
+									data-id="{{$claim->id}}" 
+									data-type="update"
+									data-claim-id="{{$claim->id}}"
+									data-url="{{route('claim.store')}}"
+									data-path="{{route('claim.loadModal', [$claim->id, 'update'])}}"
+									data-title="{{$claim->comment ? 'Комментарий (редактирование)' : 'Комментарий'}}">
+									<span>{{$claim->comment ? 'редактировать комментарий' : 'добавить комментарий'}}</span>
+								</button>
+							@else
 							<button class="claim__button btn-blue btn-redact" 
-								type="button" data-bs-toggle="modal" data-bs-target="#commentModal"
-								data-id="{{$claim->id}}" 
-								data-type="update"
-								data-claim-id="{{$claim->id}}"
-								data-url="{{route('claim.store')}}"
-								data-path="{{route('claim.loadModal', [$claim->id, 'update', request()->get('status')])}}"
-								data-title="{{$claim->comment ? 'Комментарий (редактирование)' : 'Комментарий'}}">
+								type="button" data-bs-toggle="modal" data-bs-target="#modal_lock">
 								<span>{{$claim->comment ? 'редактировать комментарий' : 'добавить комментарий'}}</span>
 							</button>
+							@endif
 							@if ($claim->comment)
 								<div class="comment-claim__text">{{$claim->comment}}</div>
 							@endif
@@ -140,4 +147,5 @@
 	@include('claim.finance.modals.update_payment_invoice')
 
 	@include('claim.showmodals.record_action')
+	@include('claim.showmodals.lock_modal')
 @endsection

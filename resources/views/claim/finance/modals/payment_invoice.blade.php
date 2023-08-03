@@ -30,7 +30,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Сумма платежа в счете</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="expose_payment_sum" name="sum" data-number>
+								<input class="field-group__input" type="text" data-name="expose_payment_sum" name="sum" autocomplete="off" data-number>
 							</div>
 						</div>
 					</div>
@@ -56,10 +56,10 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Дата и время счёта</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="date" data-format="datetime" name="date_invoices">
+								<input class="field-group__input" type="text" data-name="date" data-format="datetime" autocomplete="off" name="date_invoices">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date">
+									<input class="input-trigger" type="text" autocomplete="off" data-trigger="date">
 								</div>
 							</div>
 						</div>

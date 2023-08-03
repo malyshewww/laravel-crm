@@ -26,7 +26,7 @@ class FinancePaymentController extends Controller
     }
     public function loadModal($id, $action)
     {
-        $claim = $action === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
+        $claim = Claim::withTrashed()->where('id', $id)->first();
         if ($claim->payment) {
             $payment = FinancePayment::findOrFail($claim->payment->id);
             return view('claim.finance.modals.payment_update', compact('payment'))->render();

@@ -7,7 +7,7 @@
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="insurance_name"
-					value="{{$insurance->insurance_name ?: ''}}">
+					value="{{$insurance->insurance_name ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -16,7 +16,7 @@
 				<label class="field-group__label">Компания страховщик</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="insurance_company"
-					value="{{$insurance->insurance_company ?: ''}}">
+					value="{{$insurance->insurance_company ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="insurance_type_other" 
 					name="insurance_type_other"
-					value="{{$insurance->insurance_type_other ?: ''}}">
+					value="{{$insurance->insurance_type_other ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -53,11 +53,12 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_start" data-format="date"
 					name="dateinsurance_start"
-					value="{{$insurance->dateinsurance_start ? $insurance->dateinsurance_start->format('Y-m-d') : ''}}">
+					value="{{$insurance->dateinsurance_start ? $insurance->dateinsurance_start->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
 						<input class="input-trigger" type="text" data-trigger="date_start"
-						>
+						autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -69,11 +70,12 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_end" data-format="date" 
 					name="dateinsurance_end"
-					value="{{$insurance->dateinsurance_end ? $insurance->dateinsurance_end->format('Y-m-d') : ''}}">
+					value="{{$insurance->dateinsurance_end ? $insurance->dateinsurance_end->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
 						<input class="input-trigger" type="text" data-trigger="date_end"
-						>
+						autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -83,7 +85,7 @@
 				<label class="field-group__label">Страховая сумма</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="insurance_sum"
-					value="{{$insurance->insurance_sum ?: ''}}">
+					value="{{$insurance->insurance_sum ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>

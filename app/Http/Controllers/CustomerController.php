@@ -104,9 +104,9 @@ class CustomerController extends Controller
             ]);
         }
     }
-    public function loadModal($id, $action, $status)
+    public function loadModal($id, $action)
     {
-        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
+        $claim = Claim::withTrashed()->where('id', $id)->first();
         $persons = Person::get();
         $companies = Company::get();
         return view('claim.customer.modal_update_customer', compact('claim', 'persons', 'companies'))->render();
@@ -123,14 +123,4 @@ class CustomerController extends Controller
         $companies = Company::where('company_fullname', 'LIKE', '%' . $value . '%')->get();
         return $companies ? json_encode($companies) : [];
     }
-    // public function customerData($id)
-    // {
-    //     $customer = Customer::find($id);
-    //     return response()->json([
-    //         'commons' => $customer->person->commons,
-    //         'passport' => $customer->person->passport,
-    //         'certificate' => $customer->person->certificate,
-    //         'internationalPassport' => $customer->person->internationalPassport,
-    //     ]);
-    // }
 }

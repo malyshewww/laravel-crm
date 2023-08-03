@@ -7,7 +7,7 @@
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="excursion_name"
-					value="{{$excursion->excursion_name ?: ''}}">
+					value="{{$excursion->excursion_name ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -16,7 +16,7 @@
 				<label class="field-group__label">Описание</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="excursion_description"
-					value="{{$excursion->excursion_description ?: ''}}">
+					value="{{$excursion->excursion_description ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -27,9 +27,10 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_start" data-format="date"
 					name="excursion_date_start"
-					value="{{$excursion->excursion_date_start ? $excursion->excursion_date_start->format('Y-m-d') : ''}}">
+					value="{{$excursion->excursion_date_start ? $excursion->excursion_date_start->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger"><i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_start">
+						<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -41,9 +42,10 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_end" data-format="date"
 					name="excursion_date_end"
-					value="{{$excursion->excursion_date_end ? $excursion->excursion_date_end->format('Y-m-d') : ''}}">
+					value="{{$excursion->excursion_date_end ? $excursion->excursion_date_end->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger"><i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_end">
+						<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 					</div>
 				</div>
 			</div>

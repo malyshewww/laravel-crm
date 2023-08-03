@@ -5,10 +5,10 @@
 				<label class="field-group__label">Дата договора</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="date" data-format="date" name="date"
-					value="{{$contract->date ? $contract->date->format('Y-m-d') : ''}}">
+					value="{{$contract->date ? $contract->date->format('Y-m-d') : ''}}" autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date">
+						<input class="input-trigger" type="text" data-trigger="date" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -18,7 +18,7 @@
 				<label class="field-group__label">Номер брони</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="number" 
-					value="{{$contract && $contract->number ? $contract->number : ''}}">
+					value="{{$contract && $contract->number ? $contract->number : ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>

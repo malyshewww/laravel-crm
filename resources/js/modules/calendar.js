@@ -187,7 +187,6 @@ export function initDatePicker(type) {
 				let datepicker = new AirDatepicker(item, {
 					...settings,
 					dateSeparator: "",
-					position: "bottom right",
 					autoClose: true,
 					dateFormat: altFieldDateFormat == "datetime" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
 					altField: altFieldDate,

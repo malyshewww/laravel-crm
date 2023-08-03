@@ -4725,6 +4725,10 @@ function formHandler(formId) {
           $(currentModal).modal('hide');
           (0,_common_js__WEBPACK_IMPORTED_MODULE_10__.reloadPage)();
           // updateHtmlData(formId);
+        } else if (result.status === 'lock') {
+          var modalBody = currentModal.querySelector('.modal__body');
+          var html = "<div class=\"alert alert-danger mt-2\" role=\"alert\">\n\t\t\t\t\t\t\t\u0412\u044B \u043D\u0435 \u043C\u043E\u0436\u0435\u0442\u0435 \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0437\u0430\u043F\u0438\u0441\u0438 \u0434\u0440\u0443\u0433\u0438\u0445 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u0435\u0439\n\t\t\t\t\t\t</div>";
+          modalBody.insertAdjacentHTML('beforeend', html);
         } else {
           if (result.date_start) {
             inputDateStart.classList.add('error');
@@ -5403,7 +5407,6 @@ function initDatePicker(type) {
         var altFieldDateFormat = altFieldDate === null || altFieldDate === void 0 ? void 0 : altFieldDate.dataset.format;
         var datepicker = new air_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"](item, _objectSpread(_objectSpread({}, settings), {}, {
           dateSeparator: "",
-          position: "bottom right",
           autoClose: true,
           dateFormat: altFieldDateFormat == "datetime" ? "yyyy-MM-dd HH:mm" : "yyyy-MM-dd",
           altField: altFieldDate,
@@ -6639,7 +6642,7 @@ function initDataTable(data) {
       "data": 'number',
       "orderable": false,
       "render": function render(data, type, row, meta) {
-        return "<a class=\"tour-table__link\" href=\"".concat(BASE_URL, "/claims/").concat(row.id, "/").concat(row.claimStatus, "?status=").concat(row.claimStatus, "\" target=\"_blank\">").concat(row.claim_number, "</a>");
+        return "<a class=\"tour-table__link\" href=\"".concat(BASE_URL, "/claims/").concat(row.id, "\" target=\"_blank\">").concat(row.claim_number, "</a>");
       }
     }, {
       "data": 'date_start',

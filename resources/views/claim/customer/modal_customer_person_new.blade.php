@@ -11,7 +11,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label required">Фамилия</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" data-name="surname" name="person_surname">
+				<input class="field-group__input" type="text" data-name="surname" name="person_surname" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -19,7 +19,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label required">Имя</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" data-name="name" name="person_name">
+				<input class="field-group__input" type="text" data-name="name" name="person_name" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -27,7 +27,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label">Отчество</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" name="person_patronymic">
+				<input class="field-group__input" type="text" name="person_patronymic" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -52,7 +52,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label">Фамилия (LAT)</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" data-name="surname_lat" name="person_surname_lat">
+				<input class="field-group__input" type="text" data-name="surname_lat" name="person_surname_lat" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -60,7 +60,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label">Имя (LAT)</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" data-name="name_lat" name="person_name_lat">
+				<input class="field-group__input" type="text" data-name="name_lat" name="person_name_lat" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -84,7 +84,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label required">Дата рождения</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" name="person_birthday">
+				<input class="field-group__input" type="text" name="person_birthday" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -92,7 +92,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label">Фактический адрес</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="text" name="person_address">
+				<input class="field-group__input" type="text" name="person_address" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -100,7 +100,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label">Телефон</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="tel" name="person_phone">
+				<input class="field-group__input" type="tel" name="person_phone" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -108,7 +108,7 @@
 		<div class="field-group__item">
 			<label class="field-group__label">Email</label>
 			<div class="field-group__box">
-				<input class="field-group__input" type="email" name="person_email">
+				<input class="field-group__input" type="email" name="person_email" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -122,7 +122,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="number" name="person_passport_series">
+						<input class="field-group__input" type="number" name="person_passport_series" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -130,7 +130,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="number" name="person_passport_number">
+						<input class="field-group__input" type="number" name="person_passport_number" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -138,7 +138,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_passport_date">
+						<input class="field-group__input" type="text" name="person_passport_date" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -146,7 +146,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_passport_issued">
+						<input class="field-group__input" type="text" name="person_passport_issued" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -154,7 +154,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Код</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_passport_code">
+						<input class="field-group__input" type="text" name="person_passport_code" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -162,7 +162,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Адрес регистрации</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_passport_address">
+						<input class="field-group__input" type="text" name="person_passport_address" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -175,7 +175,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_certificate_series">
+						<input class="field-group__input" type="text" name="person_certificate_series" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -183,7 +183,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_certificate_number">
+						<input class="field-group__input" type="text" name="person_certificate_number" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -191,10 +191,10 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_certificate_date">
+						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_certificate_date" autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
-							<input class="input-trigger" type="text" data-trigger="date">
+							<input class="input-trigger" type="text" data-trigger="date" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -203,7 +203,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_certificate_issued">
+						<input class="field-group__input" type="text" name="person_certificate_issued" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -216,7 +216,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_international_passport_series">
+						<input class="field-group__input" type="text" name="person_international_passport_series" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -224,7 +224,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_international_passport_number">
+						<input class="field-group__input" type="text" name="person_international_passport_number" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -232,11 +232,11 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_date">
+						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_date" autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
 							<input class="input-trigger" type="text" data-trigger="date"
-							>
+							autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -245,10 +245,11 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Срок действия</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_period">
+						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_period"
+						autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
-							<input class="input-trigger" type="text" data-trigger="date">
+							<input class="input-trigger" type="text" data-trigger="date" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -257,7 +258,7 @@
 				<div class="field-group__item">
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="person_international_passport_issued">
+						<input class="field-group__input" type="text" name="person_international_passport_issued" autocomplete="off">
 					</div>
 				</div>
 			</div>

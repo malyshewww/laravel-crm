@@ -8,7 +8,7 @@
 				data-type="update"
 				data-claim-id="{{$claim->id}}"
 				data-url="{{route('customer.store')}}"
-				data-path="{{route('customer.loadModal', [$claim->id, 'update', request()->get('status')])}}"
+				data-path="{{route('customer.loadModal', [$claim->id, 'update'])}}"
 				data-title="Заказчик">
 				{{$claim->customer ? 'Изменить заказчика' : 'Указать заказчика'}}
 			</button>

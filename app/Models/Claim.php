@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Claim extends Model
 {
@@ -28,10 +29,14 @@ class Claim extends Model
         'created_at' => 'date:d.m.Y',
     ];
     protected $dates = ['date_start', 'date_end', 'created_at'];
-    protected $fillable = ['date_start', 'date_end', 'comment', 'manager'];
+    protected $fillable = ['date_start', 'date_end', 'comment', 'manager', 'user_id'];
     public function validateNumber($tel)
     {
         return preg_replace('![^0-9]+!', '', $tel);
+    }
+    public function scopeAuthuser($query)
+    {
+        return $query->where('user_id', '=', Auth::user()->id);
     }
     public function getIdProductAttribute($value)
     {

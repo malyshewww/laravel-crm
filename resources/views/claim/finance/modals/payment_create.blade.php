@@ -21,7 +21,7 @@
 				<label class="field-group__label">Курс для туриста</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="parameters_course_tourist" 
-					name="tourist_course" data-number>
+					name="tourist_course" autocomplete="off" data-number>
 				</div>
 			</div>
 		</div>
@@ -37,7 +37,7 @@
 					RUB
 				</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="tour_price" data-number>
+					<input class="field-group__input" type="text" autocomplete="off" name="tour_price" data-number>
 				</div>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 					RUB
 				</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="comission_price" data-number>
+					<input class="field-group__input" type="text" autocomplete="off" name="comission_price" data-number>
 				</div>
 			</div>
 		</div>

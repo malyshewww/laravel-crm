@@ -12,7 +12,7 @@
 			<label class="field-group__label required">Фамилия</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" data-name="surname" name="person_surname"
-				value="{{$person->person_surname ?: ''}}">
+				value="{{$person->person_surname ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -21,7 +21,7 @@
 			<label class="field-group__label required">Имя</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" data-name="name" name="person_name" 
-				value="{{$person->person_name ?: ''}}">
+				value="{{$person->person_name ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -30,7 +30,7 @@
 			<label class="field-group__label">Отчество</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" name="person_patronymic"
-				value="{{$person->person_patronymic ?: ''}}">
+				value="{{$person->person_patronymic ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -57,7 +57,7 @@
 			<label class="field-group__label">Фамилия (LAT)</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" data-name="surname_lat" name="person_surname_lat"
-				value="{{$person->person_surname_lat ?: ''}}">
+				value="{{$person->person_surname_lat ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -66,7 +66,7 @@
 			<label class="field-group__label">Имя (LAT)</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" data-name="name_lat" name="person_name_lat"
-				value="{{$person->person_name_lat ?: ''}}">
+				value="{{$person->person_name_lat ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -92,7 +92,7 @@
 			<label class="field-group__label required">Дата рождения</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" name="person_birthday"
-				value="{{$person->person_birthday ?: ''}}">
+				value="{{$person->person_birthday ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -101,7 +101,7 @@
 			<label class="field-group__label">Фактический адрес</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="text" name="person_address"
-				value="{{$person->person_address ?: ''}}">
+				value="{{$person->person_address ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -110,7 +110,7 @@
 			<label class="field-group__label">Телефон</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="tel" name="person_phone"
-				value="+{{$person->person_phone ?: ''}}">
+				value="+{{$person->person_phone ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -119,7 +119,7 @@
 			<label class="field-group__label">Email</label>
 			<div class="field-group__box">
 				<input class="field-group__input" type="email" name="person_email"
-				value="{{$person->person_email ?: ''}}">
+				value="{{$person->person_email ?: ''}}" autocomplete="off">
 			</div>
 		</div>
 	</div>
@@ -134,7 +134,7 @@
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="number" name="person_passport_series"
-						value="{{$person->person_passport_series ?: ''}}">
+						value="{{$person->person_passport_series ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -143,7 +143,7 @@
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="number" name="person_passport_number"
-						value="{{$person->person_passport_number ?: ''}}">
+						value="{{$person->person_passport_number ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -152,7 +152,7 @@
 					<label class="field-group__label">Дата выдачи</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_date"
-						value="{{$person->person_passport_date ?: ''}}">
+						value="{{$person->person_passport_date ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -161,7 +161,7 @@
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_issued"
-						value="{{$person->person_passport_issued ?: ''}}">
+						value="{{$person->person_passport_issued ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -170,7 +170,7 @@
 					<label class="field-group__label">Код</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_code"
-						value="{{$person->person_passport_code ?: ''}}">
+						value="{{$person->person_passport_code ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -179,7 +179,7 @@
 					<label class="field-group__label">Адрес регистрации</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_passport_address"
-						value="{{$person->person_passport_address ?: ''}}">
+						value="{{$person->person_passport_address ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -193,7 +193,7 @@
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_certificate_series"
-						value="{{$person->person_certificate_series ?: ''}}">
+						value="{{$person->person_certificate_series ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -202,7 +202,7 @@
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_certificate_number"
-						value="{{$person->person_certificate_number ?: ''}}">
+						value="{{$person->person_certificate_number ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -213,10 +213,10 @@
 						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_certificate_date"
 						value="{{$person->person_certificate_date
 						? $person->person_certificate_date->format('Y-m-d') 
-						: ''}}">
+						: ''}}" autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
-							<input class="input-trigger" type="text" data-trigger="date">
+							<input class="input-trigger" type="text" data-trigger="date" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -226,7 +226,7 @@
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_certificate_issued"
-						value="{{$person->person_certificate_issued ?: ''}}">
+						value="{{$person->person_certificate_issued ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -240,7 +240,7 @@
 					<label class="field-group__label">Серия</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_international_passport_series"
-						value="{{$person->person_international_passport_series ?: ''}}">
+						value="{{$person->person_international_passport_series ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -249,7 +249,7 @@
 					<label class="field-group__label">Номер</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_international_passport_number"
-						value="{{$person->person_international_passport_number ?: ''}}">
+						value="{{$person->person_international_passport_number ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -259,11 +259,11 @@
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_date"
 							value="{{$person->person_international_passport_date
-							? $person->person_international_passport_date->format('Y-m-d') : ''}}">
+							? $person->person_international_passport_date->format('Y-m-d') : ''}}" autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
 							<input class="input-trigger" type="text" data-trigger="date"
-							>
+							autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -274,10 +274,10 @@
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" data-name="date" data-format="date" name="person_international_passport_period"
 						value="{{$person->person_international_passport_period
-							? $person->person_international_passport_period->format('Y-m-d') : ''}}">
+							? $person->person_international_passport_period->format('Y-m-d') : ''}}" autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
-							<input class="input-trigger" type="text" data-trigger="date">
+							<input class="input-trigger" type="text" data-trigger="date" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -287,7 +287,7 @@
 					<label class="field-group__label">Кем выдан</label>
 					<div class="field-group__box">
 						<input class="field-group__input" type="text" name="person_international_passport_issued"
-						value="{{$person->person_international_passport_issued ?: ''}}">
+						value="{{$person->person_international_passport_issued ?: ''}}" autocomplete="off">
 					</div>
 				</div>
 			</div>

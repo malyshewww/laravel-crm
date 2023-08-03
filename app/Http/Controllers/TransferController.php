@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use App\Models\Transfer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TransferController extends Controller
 {
@@ -52,7 +51,7 @@ class TransferController extends Controller
     }
     public function loadModal($id, $claimId, $action)
     {
-        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
+        $claim = Claim::withTrashed()->where('id', $claimId)->first();
         $transfer = Transfer::findOrFail($id);
         return view('claim.services.modals.modal_update_transfer', compact('transfer', 'claim'))->render();
     }

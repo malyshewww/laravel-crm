@@ -1,4 +1,4 @@
-<div class="modal fade{{$modal_class}}" id="{{$modal_id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade{{$modal_class}}" id="{{$modal_id}}" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content modal__content">
 			<div class="modal__header">

@@ -13,7 +13,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Название</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="insurance_name">
+								<input class="field-group__input" type="text" name="insurance_name" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -21,7 +21,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Компания страховщик</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="insurance_company">
+								<input class="field-group__input" type="text" name="insurance_company" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -44,7 +44,7 @@
 						<div class="field-group__item mt-3" hidden>
 							<label class="field-group__label">Тип страховки (заполняется вручную)</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="insurance_type_other" name="insurance_type_other">
+								<input class="field-group__input" type="text" data-name="insurance_type_other" name="insurance_type_other" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -52,10 +52,10 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Начало действия</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="dateinsurance_start">
+								<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="dateinsurance_start" autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_start">
+									<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 								</div>
 							</div>
 						</div>
@@ -64,10 +64,10 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Окончание действия</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="dateinsurance_end">
+								<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="dateinsurance_end" autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_end">
+									<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 								</div>
 							</div>
 						</div>
@@ -76,7 +76,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Страховая сумма</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="insurance_sum">
+								<input class="field-group__input" type="text" name="insurance_sum" autocomplete="off">
 							</div>
 						</div>
 					</div>

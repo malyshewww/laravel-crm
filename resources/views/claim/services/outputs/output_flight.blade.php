@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('flight.update', $flight->id)}}"
-							data-path="{{route('flight.loadModal', [$flight->id, $claim->id, request()->get('status')])}}"
+							data-path="{{route('flight.loadModal', [$flight->id, $claim->id, 'update'])}}"
 							data-title="Перелёт (редактирвоание)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

@@ -21,9 +21,9 @@ class TourOperatorController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action, $status)
+    public function loadModal($id, $action)
     {
-        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
+        $claim = Claim::withTrashed()->where('id', $id)->first();
         $touroperators = Touroperator::orderBy('id', 'DESC')->get();
         if ($claim->touroperator) {
             $touroperator = Touroperator::findOrFail($claim->touroperator->id);

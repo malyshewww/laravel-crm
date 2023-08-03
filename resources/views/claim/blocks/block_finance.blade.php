@@ -82,7 +82,7 @@
 				data-type="update"
 				data-claim-id="{{$claim->id}}"
 				data-url="{{route('prepayment.store', $claim->id)}}"
-				data-path="{{route('prepayment.loadModal', [$claim->id, request()->get('status')])}}"
+				data-path="{{route('prepayment.loadModal', [$claim->id, 'update'])}}"
 				data-title="Параметры предоплаты">
 				[параметры предоплаты по договору]
 			</button>
@@ -289,7 +289,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('payment.store', $claim->id)}}"
-							data-path="{{route('payment.loadModal', [$claim->id, request()->get('status')])}}"
+							data-path="{{route('payment.loadModal', [$claim->id, 'update'])}}"
 							data-title="Параметры стоимости">
 							[параметры]
 						</button>

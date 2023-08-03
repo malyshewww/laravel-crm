@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('transfer.update', $transfer->id)}}"
-							data-path="{{route('transfer.loadModal', [$transfer->id, $claim->id, request()->get('status')])}}"
+							data-path="{{route('transfer.loadModal', [$transfer->id, $claim->id, 'update'])}}"
 							data-title="Трансфер (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

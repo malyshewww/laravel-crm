@@ -7,7 +7,7 @@
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="visa_name"
-					value="{{$visa->visa_name ?: ''}}">
+					value="{{$visa->visa_name ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -16,7 +16,7 @@
 				<label class="field-group__label">Страна назначения</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="visa_country"
-					value="{{$visa->visa_country ?: ''}}">
+					value="{{$visa->visa_country ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -27,10 +27,11 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_start" data-format="date"
 					name="datevisa_start"
-					value="{{$visa->datevisa_start ? $visa->datevisa_start->format('Y-m-d') : ''}}">
+					value="{{$visa->datevisa_start ? $visa->datevisa_start->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_start">
+						<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -42,10 +43,12 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_end" data-format="date"
 					name="datevisa_end"
-					value="{{$visa->datevisa_end ? $visa->datevisa_end->format('Y-m-d') : ''}}">
+					value="{{$visa->datevisa_end ? $visa->datevisa_end->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_end">
+						<input class="input-trigger" type="text" data-trigger="date_end"
+						autocomplete="off">
 					</div>
 				</div>
 			</div>

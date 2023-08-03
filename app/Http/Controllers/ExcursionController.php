@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use App\Models\Excursion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ExcursionController extends Controller
 {
@@ -51,7 +50,7 @@ class ExcursionController extends Controller
     public function loadModal($id, $claimId, $action)
     {
         $excursion = Excursion::findOrFail($id);
-        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
+        $claim = Claim::withTrashed()->where('id', $claimId)->first();
         return view('claim.services.modals.modal_update_excursion', compact('excursion', 'claim'))->render();
     }
 }

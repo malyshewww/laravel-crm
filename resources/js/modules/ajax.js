@@ -92,6 +92,12 @@ function formHandler(formId) {
 						$(currentModal).modal('hide');
 						reloadPage();
 						// updateHtmlData(formId);
+					} else if (result.status === 'lock') {
+						const modalBody = currentModal.querySelector('.modal__body');
+						const html = `<div class="alert alert-danger mt-2" role="alert">
+							Вы не можете редактировать записи других пользователей
+						</div>`
+						modalBody.insertAdjacentHTML('beforeend', html);
 					} else {
 						if (result.date_start) {
 							inputDateStart.classList.add('error');

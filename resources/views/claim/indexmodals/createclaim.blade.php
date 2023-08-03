@@ -17,10 +17,10 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Начало</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="date_start">
+								<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="date_start" autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_start">
+									<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 								</div>
 								@error('date_start')
 									<div class="alert alert-danger">{{ $message }}</div>
@@ -32,10 +32,10 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Окончание</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="date_end">
+								<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="date_end" autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_end">
+									<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 								</div>
 								@error('date_end')
 									<div class="alert alert-danger">{{ $message }}</div>
@@ -46,7 +46,7 @@
 					<div class="col-12"> 
 						<div class="field-group__item"> 
 							<label class="field-group__label">КОММЕНТАРИЙ ДЛЯ СЕБЯ (ЕГО НЕ БУДУТ ВИДЕТЬ СОТРУДНИКИ ЦБ!)</label>
-							<textarea class="field-group__textarea" type="text" name="comment"></textarea>
+							<textarea class="field-group__textarea" type="text" name="comment" autocomplete="off"></textarea>
 						</div>
 					</div>
 				</div>

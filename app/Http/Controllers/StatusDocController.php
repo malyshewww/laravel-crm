@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use App\Models\StatusDoc;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 
 class StatusDocController extends Controller
 {
@@ -22,9 +21,9 @@ class StatusDocController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action, $status)
+    public function loadModal($id, $action)
     {
-        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
+        $claim = Claim::withTrashed()->where('id', $id)->first();
         return view('claim.doc.modal_doc_update', compact('claim'))->render();
     }
 }

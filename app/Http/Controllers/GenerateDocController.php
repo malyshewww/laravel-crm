@@ -45,7 +45,7 @@ class GenerateDocController extends Controller
         $phpOfficeWord = new \PhpOffice\PhpWord\PhpWord();
         $contractData = [];
         $claimId = $request->id;
-        $claim = Claim::find($claimId);
+        $claim = Claim::withTrashed()->where('id', $claimId)->first();
         $claimId = $claim->id . '-' . date('Y');
         $claimDate = $claim->date_start->format('d.m.Y');
         $phpWord->setValue('claimId', $claimId);

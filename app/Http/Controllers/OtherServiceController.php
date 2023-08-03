@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use App\Models\OtherService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OtherServiceController extends Controller
 {
@@ -49,7 +48,7 @@ class OtherServiceController extends Controller
     public function loadModal($id, $claimId, $action)
     {
         $other = OtherService::findOrFail($id);
-        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
+        $claim = Claim::withTrashed()->where('id', $claimId)->first();
         return view('claim.services.modals.modal_update_other', compact('other', 'claim'))->render();
     }
 }

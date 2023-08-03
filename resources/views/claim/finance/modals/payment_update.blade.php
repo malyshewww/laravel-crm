@@ -18,11 +18,11 @@
 			</div>
 		</div>
 		<div class="parameters-payment__col">
-			<div class="field-group__item"{{$payment && $payment->currency === 'RUB' ? ' hidden' : 'hidden'}}>
+			<div class="field-group__item"{{$payment && $payment->currency === 'RUB' ? ' hidden' : ''}}>
 				<label class="field-group__label">Курс для туриста</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" data-name="parameters_course_tourist" 
-					name="tourist_course" data-number
+					name="tourist_course" autocomplete="off" data-number
 					value="{{$payment && $payment->tourist_course ? $payment->tourist_course : old('tourist_course')}}">
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 					{{$payment && $payment->currency ? $payment->currency : 'RUB'}}
 				</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="tour_price" data-number
+					<input class="field-group__input" type="text" name="tour_price" autocomplete="off" data-number
 					value="{{$payment && $payment->tour_price ? $payment->tour_price : ''}}">
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 					{{$payment && $payment->currency ? $payment->currency : 'RUB'}}
 				</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="comission_price" data-number
+					<input class="field-group__input" type="text" name="comission_price" autocomplete="off" data-number
 					value="{{$payment && $payment->comission_price ? $payment->comission_price : ''}}">
 				</div>
 			</div>

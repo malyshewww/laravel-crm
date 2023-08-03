@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Claim;
 use App\Models\Insurance;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class InsuranceController extends Controller
 {
@@ -56,7 +55,7 @@ class InsuranceController extends Controller
     }
     public function loadModal($id, $claimId, $action)
     {
-        $claim = $action === 'active' ? Claim::findOrFail($claimId)->first() : Claim::withTrashed()->where('id', $claimId)->first();
+        $claim = Claim::withTrashed()->where('id', $claimId)->first();
         $insurance = Insurance::findOrFail($id);
         return view('claim.services.modals.modal_update_insurance', compact('insurance', 'claim'))->render();
     }

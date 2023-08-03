@@ -7,11 +7,11 @@ use App\Models\Claim;
 use App\Models\FileUpload;
 use App\Models\Tourist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
 
 class ClaimController extends Controller
 {
@@ -20,16 +20,12 @@ class ClaimController extends Controller
         $claims = Claim::get();
         return view('claim.index', compact('claims'));
     }
-    public function show($id, $status)
+    public function show($id)
     {
-        $claim = Claim::find($id);
-        if ($status === 'active') {
-            $claim->get();
-        } else {
-            $claim = Claim::withTrashed()
-                ->where('id', $id)
-                ->first();
-        }
+        $claim =
+            Claim::withTrashed()
+            ->where('id', $id)
+            ->first();
         $tourists = Tourist::get();
         return view('claim.show', compact('claim', 'tourists'));
     }
@@ -44,7 +40,8 @@ class ClaimController extends Controller
             'date_start' => $request->date_start,
             'date_end' => $request->date_end,
             'comment' => $request->comment,
-            'manager' => $request->manager
+            'manager' => $request->manager,
+            'user_id' => Auth::user()->id
         ];
         $json = [];
         $errors = $validator->errors();
@@ -60,16 +57,22 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function update($id, $status)
+    public function update($id)
     {
-        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
+        // Исключение редактирования чужих записей
+        // $claim = Claim::authuser()->withTrashed()->where('id', $id)->first();
+        $claim = Claim::withTrashed()->where('id', $id)->first();
         $data = request()->validate([
             'comment' => '',
         ]);
-        $claim->update($data);
-        return response()->json([
-            'status' => 'success'
-        ]);
+        $json = [];
+        if ($claim->user_id == Auth::user()->id) {
+            $claim->update($data);
+            $json = ['status' => 'success'];
+        } else {
+            $json = ['status' => 'lock'];
+        }
+        return response()->json($json);
     }
     public function destroy($id)
     {
@@ -105,16 +108,11 @@ class ClaimController extends Controller
             'status' => 'success'
         ]);
     }
-    public function loadModal($id, $action, $status)
+    public function loadModal($id, $action)
     {
-        $claim = Claim::find($id);
-        if ($status === 'active') {
-            $claim->first();
-        } else {
-            $claim = Claim::withTrashed()
-                ->where('id', $id)
-                ->first();
-        }
+        $claim = Claim::withTrashed()
+            ->where('id', $id)
+            ->first();
         return view('claim.comment.modals.modal_comment_update', compact('claim'))->render();
     }
     // Fetch DataTable data
@@ -135,6 +133,7 @@ class ClaimController extends Controller
                     break;
                 default:
                     $query = Claim::select('claims.*');
+                    // $query = Claim::select('claims.*')->where('user_id', '=', Auth::user()->id);
                     break;
             }
             $query

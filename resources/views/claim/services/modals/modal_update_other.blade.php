@@ -7,7 +7,7 @@
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="other_service_name"
-					value="{{$other->other_service_name ?: ''}}">
+					value="{{$other->other_service_name ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -18,10 +18,11 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_start" data-format="date"
 					name="otherservice_date_start"
-					value="{{$other->otherservice_date_start ? $other->otherservice_date_start->format('Y-m-d') : ''}}">
+					value="{{$other->otherservice_date_start ? $other->otherservice_date_start->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_start">
+						<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 					</div>
 				</div>
 			</div>
@@ -33,10 +34,11 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_end" data-format="date"
 					name="otherservice_date_end"
-					value="{{$other->otherservice_date_end ? $other->otherservice_date_end->format('Y-m-d') : ''}}">
+					value="{{$other->otherservice_date_end ? $other->otherservice_date_end->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_end">
+						<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 					</div>
 				</div>
 			</div>

@@ -7,7 +7,7 @@
 			data-type="update"
 			data-claim-id="{{$claim->id}}"
 			data-url="{{route('contract.store', $claim->id)}}"
-			data-path="{{route('contract.loadModal', [$claim->id, 'update', request()->get('status')])}}"
+			data-path="{{route('contract.loadModal', [$claim->id, 'update'])}}"
 			data-title="Договор">
 			{{$claim->contract ? '[изменить]' : '[добавить]'}}
 		</button>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\TouristHelper;
 use App\Models\Claim;
 use App\Models\Tourist;
 use App\Models\TouristDataCertificate;
@@ -10,9 +9,7 @@ use App\Models\TouristDataCommons;
 use App\Models\TouristDataInternationalPassport;
 use App\Models\TouristDataPassport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 
 class TouristController extends Controller
 {
@@ -184,37 +181,6 @@ class TouristController extends Controller
             'status' => 'success'
         ]);
     }
-    // public function touristData($id)
-    // {
-    //     $currentTourist = Tourist::find($id);
-    //     $touristGenders = TouristHelper::gender();
-    //     $touristNationalities = TouristHelper::nationality();
-    //     $touristVisas = TouristHelper::visa();
-    //     $cities = TouristHelper::city();
-    //     $arr = [
-    //         'tourist' => $currentTourist,
-    //         'common' => $currentTourist->common,
-    //         'passport' => $currentTourist->passport,
-    //         'certificate' => $currentTourist->certificate,
-    //         'internationalPassport' => $currentTourist->internationalPassport,
-    //         'genders' => $touristGenders,
-    //         'nationalities' => $touristNationalities,
-    //         'visaOpts' => $touristVisas,
-    //         'cities' => $cities,
-    //     ];
-    //     // return json_encode($arr);
-    //     return response()->json([
-    //         'tourist' => $currentTourist,
-    //         'common' => $currentTourist->common,
-    //         'passport' => $currentTourist->passport,
-    //         'certificate' => $currentTourist->certificate,
-    //         'internationalPassport' => $currentTourist->internationalPassport,
-    //         'genders' => $touristGenders,
-    //         'nationalities' => $touristNationalities,
-    //         'visaOpts' => $touristVisas,
-    //         'cities' => $cities,
-    //     ]);
-    // }
     public function loadModal($id, $action)
     {
         $tourist = Tourist::findOrFail($id);

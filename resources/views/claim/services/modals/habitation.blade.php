@@ -13,7 +13,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Название</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="habitation_name">
+								<input class="field-group__input" type="text" name="habitation_name" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -21,7 +21,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Курорт</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="habitation_resort">
+								<input class="field-group__input" type="text" name="habitation_resort" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -29,7 +29,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Отель</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="habitation_hotel">
+								<input class="field-group__input" type="text" name="habitation_hotel" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -37,7 +37,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Адрес отеля</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="habitation_hotel_address">
+								<input class="field-group__input" type="text" name="habitation_hotel_address" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -45,7 +45,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Тип номера</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="habitation_type_number">
+								<input class="field-group__input" type="text" name="habitation_type_number" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -53,7 +53,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Тип размещения</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="habitation_type_placement">
+								<input class="field-group__input" type="text" name="habitation_type_placement" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -79,10 +79,10 @@
 							<label class="field-group__label">Время заезда</label>
 							<div class="field-group__box">
 								<input class="field-group__input" type="text" data-name="date_start" data-format="datetime" name="datehabitation_start"
-								>
+								autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_start">
+									<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 								</div>
 							</div>
 						</div>
@@ -92,10 +92,10 @@
 							<label class="field-group__label">Время выезда</label>
 							<div class="field-group__box">
 								<input class="field-group__input" type="text" data-name="date_end" data-format="datetime" name="datehabitation_end"
-								>
+								autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_end">
+									<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 								</div>
 							</div>
 						</div>

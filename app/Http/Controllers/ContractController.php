@@ -16,18 +16,16 @@ class ContractController extends Controller
             'number' => $request->number,
             'claim_id' => $request->claim_id,
         ];
-        $contract = Claim::findOrFail($request->claim_id)->contract;
         Contract::updateOrCreate([
             'claim_id' => $request->claim_id
         ], $data);
         return response()->json([
             'status' => 'success',
-            'data' => $contract
         ]);
     }
-    public function loadModal($id, $action, $status)
+    public function loadModal($id, $action)
     {
-        $claim = $status === 'active' ? Claim::findOrFail($id)->first() : Claim::withTrashed()->where('id', $id)->first();
+        $claim = Claim::withTrashed()->where('id', $id)->first();
         if ($claim->contract) {
             $contract = Contract::findOrFail($claim->contract->id);
             return view('claim.contract.modals.contract_update', compact('contract'))->render();

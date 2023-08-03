@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('excursion.update', $excursion->id)}}"
-							data-path="{{route('excursion.loadModal', [$excursion->id, $claim->id, request()->get('status')])}}"
+							data-path="{{route('excursion.loadModal', [$excursion->id, $claim->id, 'update'])}}"
 							data-title="Экскурсионная программа (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

@@ -3,7 +3,7 @@
 		<div class="col-12">
 			<div class="field-group__item"> 
 				<label class="field-group__label">КОММЕНТАРИЙ</label>
-				<textarea class="field-group__textarea" type="text" name="comment">{{$claim->comment ?: ''}}</textarea>
+				<textarea class="field-group__textarea" type="text" autocomplete="off" name="comment">{{$claim->comment ?: ''}}</textarea>
 			</div>
 		</div>
 	</div>

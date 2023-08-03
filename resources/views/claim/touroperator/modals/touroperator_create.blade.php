@@ -14,7 +14,7 @@
 					</select>
 				@else
 					<div class="field-group__box">
-						<input class="field-group__input" type="text" name="title">
+						<input class="field-group__input" type="text" name="title" autocomplete="off">
 					</div>
 				@endif
 			</div>

@@ -7,7 +7,7 @@
 				<label class="field-group__label">Название</label>
 				<div class="field-group__box">
 					<input class="field-group__input" type="text" name="fuelsurchange_name"
-					value="{{$fs->fuelsurchange_name ?: ''}}">
+					value="{{$fs->fuelsurchange_name ?: ''}}" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -18,10 +18,11 @@
 						<input class="field-group__input" type="text" 
 						data-name="date_start" data-format="date"
 						name="fuelsurchange_date_start"
-						value="{{$fs->fuelsurchange_date_start ? $fs->fuelsurchange_date_start->format('Y-m-d') : ''}}">
+						value="{{$fs->fuelsurchange_date_start ? $fs->fuelsurchange_date_start->format('Y-m-d') : ''}}"
+						autocomplete="off">
 						<div class="field-group__trigger">
 							<i class="fa-regular fa-calendar-days calendar-icon"></i>
-							<input class="input-trigger" type="text" data-trigger="date_start">
+							<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 						</div>
 					</div>
 				</div>
@@ -33,10 +34,11 @@
 					<input class="field-group__input" type="text" 
 					data-name="date_end" data-format="date"
 					name="fuelsurchange_date_end"
-					value="{{$fs->fuelsurchange_date_end ? $fs->fuelsurchange_date_end->format('Y-m-d') : ''}}">
+					value="{{$fs->fuelsurchange_date_end ? $fs->fuelsurchange_date_end->format('Y-m-d') : ''}}"
+					autocomplete="off">
 					<div class="field-group__trigger">
 						<i class="fa-regular fa-calendar-days calendar-icon"></i>
-						<input class="input-trigger" type="text" data-trigger="date_end">
+						<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 					</div>
 				</div>
 			</div>

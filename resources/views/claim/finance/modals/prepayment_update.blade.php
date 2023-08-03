@@ -4,7 +4,7 @@
 			<div class="field-group__item">
 				<label class="field-group__label">Предоплата не менее, %</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="percent" data-number
+					<input class="field-group__input" type="text" name="percent" autocomplete="off" data-number
 					value="{{$prepayment && $prepayment->percent ? $prepayment->percent : '' }}">
 				</div>
 			</div>
@@ -13,7 +13,7 @@
 			<div class="field-group__item">
 				<label class="field-group__label">Полная оплата не позднее, дней</label>
 				<div class="field-group__box">
-					<input class="field-group__input" type="text" name="days" data-range
+					<input class="field-group__input" type="text" name="days" autocomplete="off" data-range
 					value="{{$prepayment && $prepayment->days ? $prepayment->days : '' }}">
 				</div>
 			</div>

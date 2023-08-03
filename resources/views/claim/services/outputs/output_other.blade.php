@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('otherservice.update', $other->id)}}"
-							data-path="{{route('otherservice.loadModal', [$other->id, $claim->id, request()->get('status')])}}"
+							data-path="{{route('otherservice.loadModal', [$other->id, $claim->id, 'update'])}}"
 							data-title="Другая услуга (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

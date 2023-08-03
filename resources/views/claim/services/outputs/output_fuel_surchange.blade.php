@@ -26,7 +26,7 @@
 							data-type="update"
 							data-claim-id="{{$claim->id}}"
 							data-url="{{route('fuelsurchange.update', $fs->id)}}"
-							data-path="{{route('fuelsurchange.loadModal', [$fs->id, $claim->id, request()->get('status')])}}"
+							data-path="{{route('fuelsurchange.loadModal', [$fs->id, $claim->id, 'update'])}}"
 							data-title="Топливный сбор (редактирование)">
 							<i class="fa-solid fa-gear"></i>
 						</button>

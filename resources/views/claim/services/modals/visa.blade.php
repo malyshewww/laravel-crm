@@ -13,7 +13,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Название</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="visa_name">
+								<input class="field-group__input" type="text" name="visa_name" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -21,7 +21,7 @@
 						<div class="field-group__item">
 							<label class="field-group__label">Страна назначения</label>
 							<div class="field-group__box">
-								<input class="field-group__input" type="text" name="visa_country">
+								<input class="field-group__input" type="text" name="visa_country" autocomplete="off">
 							</div>
 						</div>
 					</div>
@@ -30,10 +30,10 @@
 							<label class="field-group__label">Начало действия</label>
 							<div class="field-group__box">
 								<input class="field-group__input" type="text" data-name="date_start" data-format="date" name="datevisa_start"
-								value=" ">
+								value="" autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_start">
+									<input class="input-trigger" type="text" data-trigger="date_start" autocomplete="off">
 								</div>
 							</div>
 						</div>
@@ -43,10 +43,10 @@
 							<label class="field-group__label">Окончание действия</label>
 							<div class="field-group__box">
 								<input class="field-group__input" type="text" data-name="date_end" data-format="date" name="datevisa_end"
-								value=" ">
+								value="" autocomplete="off">
 								<div class="field-group__trigger">
 									<i class="fa-regular fa-calendar-days calendar-icon"></i>
-									<input class="input-trigger" type="text" data-trigger="date_end">
+									<input class="input-trigger" type="text" data-trigger="date_end" autocomplete="off">
 								</div>
 							</div>
 						</div>
