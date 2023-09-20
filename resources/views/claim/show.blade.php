@@ -18,6 +18,7 @@
 					</div>
 					<div class="claim__comment comment-claim">
 						<div class="comment-claim__box">
+							{{-- Экспериментальная опция редактирования комментария тем пользователем, который его создавал --}}
 							@if ($claim->id === Auth::user()->id)
 								<button class="claim__button btn-blue btn-redact" 
 									type="button" data-bs-toggle="modal" data-bs-target="#commentModal"
