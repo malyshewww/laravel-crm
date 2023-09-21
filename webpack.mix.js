@@ -21,11 +21,11 @@ mix.browserSync({
  */
 
 mix.js('resources/js/app.js', 'public/js/')
-    // .version();
-    // .sass('resources/sass/app.scss', 'public/css').options({
-    //     processCssUrls: false
-    // })
-    // .copy('resources/fonts/**/*', 'public/fonts')
-    // .copy('resources/images/', 'public/images/', false)
-    // .sourceMaps()
-    // .version()
+// .version();
+// .sass('resources/sass/app.scss', 'public/css').options({
+//     processCssUrls: false
+// })
+// .copy('resources/fonts/**/*', 'public/fonts')
+// .copy('resources/images/', 'public/images/', false)
+// .sourceMaps()
+// .version()
